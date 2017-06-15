@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Embeddable
 public class DrivingLicense {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/17/2017.
+ * Created by Andrei.Plesca
  */
 public interface DAO<T extends Serializable> {
     T findOne(long id);

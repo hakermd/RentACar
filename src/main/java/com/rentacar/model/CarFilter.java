@@ -6,7 +6,7 @@ import com.rentacar.model.enums.EconomyClass;
 import com.rentacar.model.enums.Options;
 
 /**
- * Created by aplesca on 5/30/2017.
+ * Created by Andrei.Plesca
  */
 public class CarFilter {
     private EconomyClass economyClass;

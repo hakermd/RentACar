@@ -7,7 +7,7 @@ import com.rentacar.model.enums.CarAvailability;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 public interface CarDao extends DAO<Car> {
 

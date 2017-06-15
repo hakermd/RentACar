@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Created by Andrei.Plesca
+ */
 @Service
 public class InsuranceServiceImpl implements InsuranceService {
     @Autowired

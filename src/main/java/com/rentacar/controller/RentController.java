@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/11/2017.
+ * Created by Andrei.Plesca
  */
 @Controller
 public class RentController {

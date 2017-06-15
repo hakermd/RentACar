@@ -1,13 +1,12 @@
 package com.rentacar.model;
 
 import com.rentacar.model.enums.*;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Entity
 @Table(name = "car")

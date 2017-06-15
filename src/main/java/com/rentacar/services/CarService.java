@@ -4,6 +4,9 @@ import com.rentacar.model.Car;
 
 import java.util.List;
 
+/**
+ * Created by Andrei.Plesca
+ */
 public interface CarService {
     public List<Car> findAllCars();
 

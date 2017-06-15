@@ -1,17 +1,17 @@
 package com.rentacar.model.enums;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 public enum Options {
-    BASE("BASE"), //base
-    PREMIUM("PREMIUM"), //premium
-    FULL("FULL"); //full
+    BASE("BASE"),
+    PREMIUM("PREMIUM"),
+    FULL("FULL");
 
     private final String options;
 
-    Options(String complectation) {
-        this.options = complectation;
+    Options(String options) {
+        this.options = options;
     }
 
     public String getValue() {

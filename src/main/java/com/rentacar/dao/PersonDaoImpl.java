@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Repository
 @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)

@@ -6,7 +6,6 @@ import com.rentacar.model.enums.CarAvailability;
 import com.rentacar.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Repository
 @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)

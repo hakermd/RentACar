@@ -1,7 +1,7 @@
 package com.rentacar.model.enums;
 
 /**
- * Created by aplesca on 5/22/2017.
+ * Created by Andrei.Plesca
  */
 public enum CarTransmission {
     AUTOMATIC("AUTOMATIC"),

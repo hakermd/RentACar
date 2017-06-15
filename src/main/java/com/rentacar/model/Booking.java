@@ -9,7 +9,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 
 /**
- * Created by aplesca on 5/10/2017.
+ * Created by Andrei.Plesca
  */
 @Entity
 @Table(name = "booking", uniqueConstraints = {

@@ -1,19 +1,15 @@
 package com.rentacar.services;
 
 import com.rentacar.dao.CarDao;
-import com.rentacar.dao.InsuranceDao;
-import com.rentacar.model.*;
-import com.rentacar.model.enums.*;
-import com.rentacar.util.HibernateUtil;
-import org.hibernate.Session;
+import com.rentacar.model.Car;
+import com.rentacar.model.enums.CarAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Service
 public class AdminRentACarServiceImpl implements AdminRentACarService {
@@ -125,8 +121,8 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     public List<Car> getAllCars() {
         List<Car> cars = carDao.searchACarByStatus(CarAvailability.AVAILABLE);
 //        List<Car> cars = carDao.findAll();
-        for (Car c:cars) {
-            System.out.println("-----------------"+c.getModel());
+        for (Car c : cars) {
+            System.out.println("-----------------" + c.getModel());
         }
 //        List<Insurance> insurances = insuranceDao.findAll();
 //        for (Insurance i:insurances) {
@@ -136,7 +132,7 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
         return cars;
     }
 
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //
 //        for (int i = 1; i<101;i++){
 //            StringBuffer sb = new StringBuffer();

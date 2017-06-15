@@ -7,7 +7,7 @@ import com.rentacar.model.Rent;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 public interface UserRentACarService {
     public List<Car> showAllCars();

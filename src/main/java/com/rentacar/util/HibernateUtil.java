@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 import javax.annotation.Resource;
 
 /**
- * Created by aplesca on 5/12/2017.
+ * Created by Andrei.Plesca
  */
 @Resource
 public class HibernateUtil {

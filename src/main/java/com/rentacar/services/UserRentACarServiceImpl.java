@@ -1,8 +1,6 @@
 package com.rentacar.services;
 
 import com.rentacar.dao.CarDao;
-import com.rentacar.dao.InsuranceDao;
-import com.rentacar.dao.PersonDao;
 import com.rentacar.dao.RentDao;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/8/2017.
+ * Created by Andrei.Plesca
  */
 @Service
 public class UserRentACarServiceImpl implements UserRentACarService {

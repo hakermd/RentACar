@@ -1,16 +1,14 @@
 package com.rentacar.dao;
 
 import com.rentacar.util.HibernateUtil;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by aplesca on 5/16/2017.
+ * Created by Andrei.Plesca
  */
 public abstract class AbstractHibernateDAO<T extends Serializable> implements DAO<T> {
     private Class<T> clazz;
