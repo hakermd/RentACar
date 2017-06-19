@@ -50,8 +50,10 @@ public class UserRentACarServiceImpl implements UserRentACarService {
 
     @Override
     public void returnACar(Car car) {
-        car.setAvailability(CarAvailability.AVAILABLE);
-        carDao.update(car);
+        Rent rent = rentDao.getRentByCar(car);
+        rent.getCar().setAvailability(CarAvailability.AVAILABLE);
+        rent.setActive(false);
+        rentDao.update(rent);
     }
 
     @Override

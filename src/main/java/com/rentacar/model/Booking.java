@@ -38,12 +38,13 @@ public class Booking implements Serializable {
     private String bookingCode;
     @Column(name = "bookingActive", nullable = false, columnDefinition = "TINYINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean active = true;
+    private boolean active;
     @Transient
     private SecureRandom random = new SecureRandom();
 
     public Booking() {
         this.bookingCode = new BigInteger(32, random).toString(32).toUpperCase();
+        this.active = true;
     }
 
     public long getBookingId() {

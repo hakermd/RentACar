@@ -31,7 +31,11 @@ public class Rent implements Serializable {
     @Column(name = "rentEndDate")
     private LocalDate end;
     @Column(name = "rentActive")
-    private boolean active = true;
+    private boolean active;
+
+    public Rent() {
+        this.active = true;
+    }
 
     public long getRentId() {
         return rentId;
