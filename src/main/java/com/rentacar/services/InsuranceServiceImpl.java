@@ -1,6 +1,7 @@
 package com.rentacar.services;
 
 import com.rentacar.dao.InsuranceDao;
+import com.rentacar.model.Car;
 import com.rentacar.model.Insurance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,12 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public List<Insurance> findAllInsurances() {
-        List<Insurance> persons = insuranceDao.findAll();
-        for (Insurance i : persons) {
-            System.out.println("-----------------" + i.getCar().getModel());
-        }
-        return persons;
+        return insuranceDao.findAll();
     }
 
     @Override
     public void saveInsurance(Insurance insurance) {
+        insurance.setCost(insuranceCostCalculate(insurance));
         insuranceDao.save(insurance);
     }
 
@@ -38,4 +36,18 @@ public class InsuranceServiceImpl implements InsuranceService {
     public void deleteInsurance(Insurance insurance) {
         insuranceDao.delete(insurance);
     }
+
+    public double insuranceCostCalculate(Insurance insurance) {
+        Car car = insurance.getCar();
+        switch (car.getEconomyClass()) {
+            case ECONOMY:
+                return 0.3 * car.getCarPrice();
+            case PREMIUM:
+                return 0.5 * car.getCarPrice();
+            case BUSINESS:
+                return 0.7 * car.getCarPrice();
+        }
+        return 0;
+    }
+
 }

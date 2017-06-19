@@ -7,6 +7,9 @@ import com.rentacar.services.CarServiceImpl;
 import com.rentacar.services.InsuranceServiceImpl;
 import com.rentacar.services.PersonServiceImpl;
 import com.rentacar.services.UserRentACarServiceImpl;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,8 @@ import java.util.List;
  */
 @Controller
 public class RentController {
+    private static final Logger logger = LoggerFactory
+            .getLogger(RentController.class);
 
     @Autowired
     private UserRentACarServiceImpl userRentACarService;
@@ -41,84 +46,92 @@ public class RentController {
 
     @PostConstruct
     public void init() {
-        cars = userRentACarService.showAllAvailableCars();
         carFilter = new CarFilter();
-        insurance = new Insurance();
     }
 
-    @RequestMapping(value = "/viewCar", method = RequestMethod.POST)
+    @ModelAttribute("filter")
+    public CarFilter createFilterModel() {
+        // ModelAttribute value should be same as used in the empSave.jsp
+        return new CarFilter();
+    }
+
+    @RequestMapping(value = "/carListAction", method = RequestMethod.GET)
     public String viewCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         return carAction(carWinCode, model, request);
     }
 
-    @RequestMapping(value = "/rentCar", method = RequestMethod.POST)
+    @RequestMapping(value = "/rentCar.do", method = RequestMethod.POST)
     public String rentCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
+        Person rentPerson = (Person) request.getSession().getAttribute("user");
         if ("RENT".equals(action) && carWinCode != null) {
             car = userRentACarService.findCarByWinCode(carWinCode);
 
             /*------------------------------*/
-            DrivingLicense drivingLicense = new DrivingLicense();
-            drivingLicense.setLicenseNumber("sb434242");
-            drivingLicense.setObtainingDate("08-02-2008");
-            drivingLicense.setExpiringDate("08-02-2018");
-
-            /*------------------------------*/
-            Person person = new Person();
-            person.setFirstName("Andrei");
-            person.setLastName("Plesca");
-            person.setGender(Gender.M);
-            person.setBirthDate("23-12-1990");
-            person.setPersonalNumber("56156561561661");
-            person.setDrivingLicense(drivingLicense);
-//            personService.savePerson(person);
-
-            /*------------------------------*/
             car.setAvailability(CarAvailability.RENTED);
-//            carService.saveCar(car);
             /*------------------------------*/
             insurance = new Insurance();
             insurance.setCar(car);
-            insurance.setPerson(person);
-            insurance.setCost();
-//            insuranceService.saveInsurance(insurance);
+            insurance.setPerson(rentPerson);
+            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
             /*------------------------------*/
             Rent rent = new Rent();
             rent.setActive(true);
             rent.setCar(car);
             rent.setInsurance(insurance);
-            rent.setCost();
-            rent.setPerson(person);
+            rent.setCost(car.getCarPrice() + insurance.getCost());
+            rent.setPerson(rentPerson);
             userRentACarService.rentACar(rent);
         }
         List<Car> cars = userRentACarService.searchACar(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "home";
+        return "availableCars";
     }
 
-    @RequestMapping(value = "/bookCar", method = RequestMethod.POST)
+    @RequestMapping(value = "/bookCar.do", method = RequestMethod.POST)
     public String bookCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
-        return carAction(carWinCode, model, request);
-    }
+        Person bookPerson = (Person) request.getSession().getAttribute("user");
+        if ("BOOK".equals(action) && carWinCode != null) {
+            car = userRentACarService.findCarByWinCode(carWinCode);
 
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Model model) {
+            /*------------------------------*/
+            car.setAvailability(CarAvailability.BOOKED);
+            /*------------------------------*/
+            insurance = new Insurance();
+            insurance.setCar(car);
+            insurance.setPerson(bookPerson);
+            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
+            /*------------------------------*/
+            Booking booking = new Booking();
+            booking.setActive(true);
+            booking.setCar(car);
+            booking.setInsurance(insurance);
+            booking.setCost(car.getCarPrice() + insurance.getCost());
+            booking.setPerson(bookPerson);
+            userRentACarService.bookACar(booking);
+        }
         List<Car> cars = userRentACarService.searchACar(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "home";
+        return "availableCars";
     }
 
-    @RequestMapping(value = "filterCars", method = RequestMethod.POST)
+    @RequestMapping(value = "/availableCars", method = RequestMethod.GET)
+    public String availableCars(Model model) {
+        List<Car> cars = userRentACarService.showAllAvailableCars();
+        model.addAttribute("cars", cars);
+        return "availableCars";
+    }
+
+    @RequestMapping(value = "/filterCars", method = RequestMethod.POST)
     public String filterCars(@ModelAttribute("filter") CarFilter filter, Model model) {
         cars = userRentACarService.searchACar(filter);
         carFilter = filter;
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "filterCars";
+        return "availableCars";
     }
 
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
@@ -128,11 +141,12 @@ public class RentController {
             car = userRentACarService.findCarByWinCode(carWinCode);
             insurance = new Insurance();
             insurance.setCar(car);
+            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
         } else {
             List<Car> cars = userRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
-            return "home";
+            return "availableCars";
         }
 
         if ("BOOK".equals(action)) {
@@ -148,10 +162,18 @@ public class RentController {
             List<Car> cars = userRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
-            return "home";
+            return "availableCars";
         }
         model.addAttribute("car", car);
         model.addAttribute("insurance", insurance);
         return "viewCar";
     }
+
+//    private String cancelAction(Model model) {
+//        List<Car> cars = userRentACarService.searchACar(carFilter);
+//        model.addAttribute("cars", cars);
+//        model.addAttribute("filter", carFilter);
+//        return "availableCars";
+//    }
 }
+

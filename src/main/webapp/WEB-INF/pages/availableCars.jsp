@@ -25,7 +25,7 @@
 
                 <table id="centralContentTable">
                     <c:forEach items="${cars}" var="car">
-                        <form:form name="${car.winCode}" method="POST" action="/viewCar.html">
+                        <form:form name="${car.winCode}" method="GET" action="carListAction">
                             <tr class="carRow" id="${car.winCode}">
                                 <td class="carItemSpecial"><img class="carIcon"
                                                                 src="resources/img/${car.carPhoto}"
@@ -62,7 +62,7 @@
                 <div id="centralContentFilterTitle">
                     <h2>FILTER</h2>
                 </div>
-                <form:form method="POST" action="/filterCars.html" modelAttribute="filter">
+                <form:form method="POST" action="filterCars" commandName="filter">
                     <table id="centralContentFilterTable">
                         <tr>
                             <td><label for="economyClassFilter">Economy Class: </label>
@@ -170,14 +170,5 @@
         </div>
     </div>
 </div>
-
-<%--<select class="form-control">--%>
-<%--<c:forEach items="${test}" var="test">--%>
-<%--<option value="${test.person.firstName}">${test.person.firstName}</option>--%>
-<%--</c:forEach>--%>
-<%--</select>--%>
 </body>
-<%--<script>--%>
-<%--$(".carRow").click(function(){alert("test")});--%>
-<%--</script>--%>
 </html>

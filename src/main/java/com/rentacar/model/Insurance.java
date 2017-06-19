@@ -19,11 +19,11 @@ public class Insurance implements Serializable {
     private int id;
     @Column(name = "insuranceCost")
     private double cost;
-    @OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "personPersonalNumber")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "personId")
     private Person person;
 
     public int getId() {
@@ -34,8 +34,8 @@ public class Insurance implements Serializable {
         return cost;
     }
 
-    public void setCost() {
-        this.cost = insuranceCostCalculate(this.car.getEconomyClass());
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     public Car getCar() {
@@ -52,17 +52,5 @@ public class Insurance implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-    public double insuranceCostCalculate(EconomyClass economyClass) {
-        switch (economyClass) {
-            case ECONOMY:
-                return 0.3 * this.car.getCarPrice();
-            case PREMIUM:
-                return 0.5 * this.car.getCarPrice();
-            case BUSINESS:
-                return 0.7 * this.car.getCarPrice();
-        }
-        return 0;
     }
 }

@@ -1,7 +1,9 @@
 package com.rentacar.services;
 
+import com.rentacar.dao.BookingDao;
 import com.rentacar.dao.CarDao;
 import com.rentacar.dao.RentDao;
+import com.rentacar.model.Booking;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.Rent;
@@ -20,6 +22,8 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     private CarDao carDao;
     @Autowired
     private RentDao rentDao;
+    @Autowired
+    private BookingDao bookingDao;
 
     public Car findCarByWinCode(String carWinCode) {
         return carDao.findCarByWinCode(carWinCode);
@@ -45,8 +49,9 @@ public class UserRentACarServiceImpl implements UserRentACarService {
         return null;
     }
 
-    public int bookACar(Car car) {
-        return 0;
+    public String bookACar(Booking booking) {
+        bookingDao.save(booking);
+        return booking.getBookingCode();
     }
 
     public void returnACar(Car car) {

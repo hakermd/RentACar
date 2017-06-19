@@ -13,17 +13,24 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "person", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "personalNumber"),
-        @UniqueConstraint(columnNames = "licenseNumber") })
+        @UniqueConstraint(columnNames = "email"),
+        @UniqueConstraint(columnNames = "licenseNumber")})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "personalNumber")
-    private String personalNumber;
+    @Column(name = "personId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long personId;
     @Column(name = "firstName")
     private String firstName;
     @Column(name = "lastName")
     private String lastName;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "password", nullable = false)
+    private String password;
     @Column(name = "birthDate")
     private Date birthDate;
     @Column(name = "gender")
@@ -31,16 +38,13 @@ public class Person implements Serializable {
     private Gender gender;
     @Embedded
     private DrivingLicense drivingLicense;
-    @Column(name = "address")
-    private String address;
 
-
-    public String getPersonalNumber() {
-        return personalNumber;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setPersonalNumber(String personalNumber) {
-        this.personalNumber = personalNumber;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public String getFirstName() {
@@ -59,19 +63,42 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
-        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
-        try {
-            this.birthDate = fmt.parse(birthDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
+//    public Date getBirthDate() {
+//        return birthDate;
+//    }
+//
+//    public void setBirthDate(String birthDate) {
+//        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+//        Date date = null;
+//        try {
+//            this.birthDate = fmt.parse(birthDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public Gender getGender() {
         return gender;

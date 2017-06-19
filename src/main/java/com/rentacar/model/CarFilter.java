@@ -10,7 +10,6 @@ import com.rentacar.model.enums.Options;
  */
 public class CarFilter {
     private EconomyClass economyClass;
-    //    private String manufacturer;
     private CarType carType;
     private Options options;
     private CarTransmission transmission;
@@ -24,14 +23,6 @@ public class CarFilter {
     public void setEconomyClass(EconomyClass economyClass) {
         this.economyClass = economyClass;
     }
-
-//    public String getManufacturer() {
-//        return manufacturer;
-//    }
-//
-//    public void setManufacturer(String manufacturer) {
-//        this.manufacturer = manufacturer;
-//    }
 
     public CarType getCarType() {
         return carType;

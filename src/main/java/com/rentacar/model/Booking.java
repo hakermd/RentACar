@@ -20,17 +20,20 @@ public class Booking implements Serializable {
     @Id
     @Column(name = "bookingId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long bookingId;
     @Column(name = "bookingDate")
     private Date bookDate;
     @Column(name = "bookingCost", nullable = false, columnDefinition = "double default 5.0")
     private double cost;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "personPersonalNumber")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "personId")
     private Person person;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "insuranceId")
+    private Insurance insurance;
     @Column(name = "bookingCode", nullable = false, unique = true)
     private String bookingCode;
     @Column(name = "bookingActive", nullable = false, columnDefinition = "TINYINT")
@@ -39,16 +42,16 @@ public class Booking implements Serializable {
     @Transient
     private SecureRandom random = new SecureRandom();
 
-    public String bookACar(Car car) {
-        return new BigInteger(32, random).toString(32);
+    public Booking() {
+        this.bookingCode = new BigInteger(32, random).toString(32).toUpperCase();
     }
 
-    public void cancelBookingByCode(String code) {
-        //TODO
+    public long getBookingId() {
+        return bookingId;
     }
 
-    public int getId() {
-        return id;
+    public void setBookingId(long bookingId) {
+        this.bookingId = bookingId;
     }
 
     public Date getBookDate() {
@@ -81,6 +84,14 @@ public class Booking implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
     }
 
     public String getBookingCode() {

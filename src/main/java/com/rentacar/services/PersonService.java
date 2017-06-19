@@ -1,5 +1,6 @@
 package com.rentacar.services;
 
+import com.rentacar.model.Login;
 import com.rentacar.model.Person;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface PersonService {
     public void updatePerson(Person person);
 
     public void deletePerson(Person person);
+
+    public Person logIn(Login login);
 }

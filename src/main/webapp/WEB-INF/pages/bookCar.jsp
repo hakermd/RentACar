@@ -17,7 +17,7 @@
             <h1>RENT A CAR</h1>
         </div>
         <div>
-            <form:form name="${car.winCode}" method="POST" action="/viewCar.html">
+            <form:form name="${car.winCode}" method="POST" action="bookCar.do">
                 <div id="viewCarDetails">
                     <div class="carDetailsViewDescription"><h2>${car.manufacturer} ${car.model} ${car.type}</h2></div>
                     <hr>
@@ -52,12 +52,12 @@
                         <output id="carRentPrice">${car.carPrice} $</output>
                         <br>
                         <label for="carInsurancePrice">Insurance :</label>
-                        <output id="carInsurancePrice">${insurance.insuranceCostCalculate(car.economyClass)} $
+                        <output id="carInsurancePrice">${insurance.cost} $
                         </output>
                         <h2>
                             <label for="carTotalPrice">Total Price :</label>
                             <output id="carTotalPrice">
-                                    ${car.carPrice + insurance.insuranceCostCalculate(car.economyClass)} $
+                                    ${car.carPrice + insurance.cost} $
                             </output>
                         </h2>
                         <hr>

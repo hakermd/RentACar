@@ -13,7 +13,7 @@ import java.util.Date;
 @Embeddable
 public class DrivingLicense {
 
-    @Column(name = "licenseNumber")
+    @Column(name = "licenseNumber", unique = true, nullable = false)
     private String licenseNumber;
     @Column(name = "licenseObtainingDate")
     private Date obtainingDate;
@@ -34,23 +34,39 @@ public class DrivingLicense {
         return obtainingDate;
     }
 
-    public void setObtainingDate(String obtainingDate) {
-        try {
-            this.obtainingDate = fmt.parse(obtainingDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setObtainingDate(Date obtainingDate) {
+        this.obtainingDate = obtainingDate;
     }
 
     public Date getExpiringDate() {
         return expiringDate;
     }
 
-    public void setExpiringDate(String expiringDate) {
-        try {
-            this.expiringDate = fmt.parse(expiringDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setExpiringDate(Date expiringDate) {
+        this.expiringDate = expiringDate;
     }
+
+//    public Date getObtainingDate() {
+//        return obtainingDate;
+//    }
+//
+//    public void setObtainingDate(String obtainingDate) {
+//        try {
+//            this.obtainingDate = fmt.parse(obtainingDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public Date getExpiringDate() {
+//        return expiringDate;
+//    }
+//
+//    public void setExpiringDate(String expiringDate) {
+//        try {
+//            this.expiringDate = fmt.parse(expiringDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

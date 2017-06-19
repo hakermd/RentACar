@@ -15,13 +15,13 @@ public class Rent implements Serializable {
     @Column(name = "rentId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rentId;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "personPersonalNumber")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "personId")
     private Person person;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "insuranceId")
     private Insurance insurance;
     @Column(name = "rentCost")
@@ -69,8 +69,8 @@ public class Rent implements Serializable {
         return cost;
     }
 
-    public void setCost() {
-        this.cost = this.car.getCarPrice() + this.insurance.getCost();
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     public LocalDate getStart() {
