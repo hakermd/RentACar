@@ -23,7 +23,6 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public void saveInsurance(Insurance insurance) {
-        insurance.setCost(insuranceCostCalculate(insurance));
         insuranceDao.save(insurance);
     }
 

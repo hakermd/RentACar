@@ -2,12 +2,10 @@ package com.rentacar.controller;
 
 import com.rentacar.model.*;
 import com.rentacar.model.enums.CarAvailability;
-import com.rentacar.model.enums.Gender;
 import com.rentacar.services.CarServiceImpl;
 import com.rentacar.services.InsuranceServiceImpl;
 import com.rentacar.services.PersonServiceImpl;
 import com.rentacar.services.UserRentACarServiceImpl;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +63,7 @@ public class RentController {
         String action = request.getParameter("action");
         Person rentPerson = (Person) request.getSession().getAttribute("user");
         if ("RENT".equals(action) && carWinCode != null) {
-            car = userRentACarService.findCarByWinCode(carWinCode);
+            car = carService.findCarByWinCode(carWinCode);
 
             /*------------------------------*/
             car.setAvailability(CarAvailability.RENTED);
@@ -83,7 +81,7 @@ public class RentController {
             rent.setPerson(rentPerson);
             userRentACarService.rentACar(rent);
         }
-        List<Car> cars = userRentACarService.searchACar(carFilter);
+        List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return "availableCars";
@@ -94,7 +92,7 @@ public class RentController {
         String action = request.getParameter("action");
         Person bookPerson = (Person) request.getSession().getAttribute("user");
         if ("BOOK".equals(action) && carWinCode != null) {
-            car = userRentACarService.findCarByWinCode(carWinCode);
+            car = carService.findCarByWinCode(carWinCode);
 
             /*------------------------------*/
             car.setAvailability(CarAvailability.BOOKED);
@@ -112,7 +110,7 @@ public class RentController {
             booking.setPerson(bookPerson);
             userRentACarService.bookACar(booking);
         }
-        List<Car> cars = userRentACarService.searchACar(carFilter);
+        List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return "availableCars";
@@ -120,14 +118,14 @@ public class RentController {
 
     @RequestMapping(value = "/availableCars", method = RequestMethod.GET)
     public String availableCars(Model model) {
-        List<Car> cars = userRentACarService.showAllAvailableCars();
+        List<Car> cars = carService.showAllAvailableCars();
         model.addAttribute("cars", cars);
         return "availableCars";
     }
 
     @RequestMapping(value = "/filterCars", method = RequestMethod.POST)
     public String filterCars(@ModelAttribute("filter") CarFilter filter, Model model) {
-        cars = userRentACarService.searchACar(filter);
+        cars = carService.filterCars(filter);
         carFilter = filter;
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
@@ -138,12 +136,12 @@ public class RentController {
         String action = request.getParameter("action");
 
         if (carWinCode != null) {
-            car = userRentACarService.findCarByWinCode(carWinCode);
+            car = carService.findCarByWinCode(carWinCode);
             insurance = new Insurance();
             insurance.setCar(car);
             insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
         } else {
-            List<Car> cars = userRentACarService.searchACar(carFilter);
+            List<Car> cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return "availableCars";
@@ -159,7 +157,7 @@ public class RentController {
             return "rentCar";
         }
         if ("CANCEL".equals(action)) {
-            List<Car> cars = userRentACarService.searchACar(carFilter);
+            List<Car> cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return "availableCars";
@@ -168,12 +166,5 @@ public class RentController {
         model.addAttribute("insurance", insurance);
         return "viewCar";
     }
-
-//    private String cancelAction(Model model) {
-//        List<Car> cars = userRentACarService.searchACar(carFilter);
-//        model.addAttribute("cars", cars);
-//        model.addAttribute("filter", carFilter);
-//        return "availableCars";
-//    }
 }
 
