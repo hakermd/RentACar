@@ -4,8 +4,12 @@ import com.rentacar.dao.CarDao;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
+import com.rentacar.model.enums.EconomyClass;
+import com.rentacar.model.enums.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +17,7 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 @Service
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class CarServiceImpl implements CarService {
     @Autowired
     private CarDao carDao;
@@ -38,17 +43,48 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void saveCar(Car car) {
         carDao.save(car);
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void updateCar(Car car) {
         carDao.update(car);
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void deleteCar(Car car) {
         carDao.delete(car);
+    }
+
+    public double calculateCarPrice(Car car) {
+        return economyClassPriceCalculate(car.getEconomyClass()) * optionsPriceCalculate(car.getOptions());
+    }
+
+    private double economyClassPriceCalculate(EconomyClass economyClass) {
+        switch (economyClass) {
+            case ECONOMY:
+                return 15;
+            case PREMIUM:
+                return 30;
+            case BUSINESS:
+                return 50;
+        }
+        return 0;
+    }
+
+    private double optionsPriceCalculate(Options complectation) {
+        switch (complectation) {
+            case BASE:
+                return 1;
+            case PREMIUM:
+                return 1.5;
+            case FULL:
+                return 2;
+        }
+        return 0;
     }
 }

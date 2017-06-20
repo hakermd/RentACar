@@ -3,12 +3,10 @@ package com.rentacar.dao;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
-import com.rentacar.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,30 +19,29 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 @Repository
-@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
 public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public CarDaoImpl() {
         super(Car.class);
     }
 
     public List<Car> searchACarByStatus(CarAvailability carAvailability) {
+        Session session = sessionFactory.getCurrentSession();
         String hql = "from Car c where c.availability  =  :carAvailability";
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
 
         List<Car> carList = session.createQuery(hql)
                 .setParameter("carAvailability", carAvailability)
                 .list();
-        tx.commit();
 
         return carList;
     }
 
     public List<Car> searchACarByCriteria(CarFilter filter) {
         // Create CriteriaBuilder
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
@@ -61,18 +58,12 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         );
         criteria.select(carRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
-        List<Car> carList = query.getResultList();
-        for (Car c : carList) {
-            System.out.println(c.toString());
-        }
-        tx.commit();
-        return carList;
+        return query.getResultList();
     }
 
     @Override
     public Car findCarByWinCode(String carWinCode) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
@@ -80,9 +71,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         Root<Car> carRoot = criteria.from(Car.class);
         criteria.select(carRoot).where(builder.equal(carRoot.get("winCode"), carWinCode));
         TypedQuery query = session.createQuery(criteria);
-        Car car = (Car) query.getSingleResult();
-        tx.commit();
-        return car;
+        return (Car) query.getSingleResult();
     }
 
 }

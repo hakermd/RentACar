@@ -2,10 +2,7 @@ package com.rentacar.controller;
 
 import com.rentacar.model.*;
 import com.rentacar.model.enums.CarAvailability;
-import com.rentacar.services.CarServiceImpl;
-import com.rentacar.services.InsuranceServiceImpl;
-import com.rentacar.services.PersonServiceImpl;
-import com.rentacar.services.UserRentACarServiceImpl;
+import com.rentacar.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +25,11 @@ public class RentController {
             .getLogger(RentController.class);
 
     @Autowired
-    private UserRentACarServiceImpl userRentACarService;
+    private UserRentACarService userRentACarService;
     @Autowired
-    private PersonServiceImpl personService;
+    private InsuranceService insuranceService;
     @Autowired
-    private InsuranceServiceImpl insuranceService;
-    @Autowired
-    private CarServiceImpl carService;
+    private CarService carService;
 
     public List<Car> cars;
     private CarFilter carFilter;

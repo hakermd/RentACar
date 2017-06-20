@@ -1,7 +1,5 @@
 package com.rentacar.model;
 
-import com.rentacar.model.enums.EconomyClass;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

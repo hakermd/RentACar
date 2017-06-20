@@ -156,32 +156,8 @@ public class Car implements Serializable {
         return carPrice;
     }
 
-    public void setCarPrice() {
-        this.carPrice = economyClassPriceCalculate(this.economyClass) * optionsPriceCalculate(this.options);
-    }
-
-    private double economyClassPriceCalculate(EconomyClass economyClass) {
-        switch (economyClass) {
-            case ECONOMY:
-                return 15;
-            case PREMIUM:
-                return 30;
-            case BUSINESS:
-                return 50;
-        }
-        return 0;
-    }
-
-    private double optionsPriceCalculate(Options complectation) {
-        switch (complectation) {
-            case BASE:
-                return 1;
-            case PREMIUM:
-                return 1.5;
-            case FULL:
-                return 2;
-        }
-        return 0;
+    public void setCarPrice(double carPrice) {
+        this.carPrice = carPrice;
     }
 
     public CarAvailability getAvailability() {
@@ -190,6 +166,51 @@ public class Car implements Serializable {
 
     public void setAvailability(CarAvailability availability) {
         this.availability = availability;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Car car = (Car) o;
+
+        if (engineVolume != car.engineVolume) return false;
+        if (Double.compare(car.carPrice, carPrice) != 0) return false;
+        if (winCode != null ? !winCode.equals(car.winCode) : car.winCode != null) return false;
+        if (manufacturer != null ? !manufacturer.equals(car.manufacturer) : car.manufacturer != null) return false;
+        if (model != null ? !model.equals(car.model) : car.model != null) return false;
+        if (type != car.type) return false;
+        if (yearOfProduction != null ? !yearOfProduction.equals(car.yearOfProduction) : car.yearOfProduction != null)
+            return false;
+        if (registrationNumber != null ? !registrationNumber.equals(car.registrationNumber) : car.registrationNumber != null)
+            return false;
+        if (fuelType != car.fuelType) return false;
+        if (transmission != car.transmission) return false;
+        if (economyClass != car.economyClass) return false;
+        if (options != car.options) return false;
+        return availability == car.availability;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = winCode != null ? winCode.hashCode() : 0;
+        result = 31 * result + (manufacturer != null ? manufacturer.hashCode() : 0);
+        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (yearOfProduction != null ? yearOfProduction.hashCode() : 0);
+        result = 31 * result + (registrationNumber != null ? registrationNumber.hashCode() : 0);
+        result = 31 * result + engineVolume;
+        result = 31 * result + (fuelType != null ? fuelType.hashCode() : 0);
+        result = 31 * result + (transmission != null ? transmission.hashCode() : 0);
+        result = 31 * result + (economyClass != null ? economyClass.hashCode() : 0);
+        result = 31 * result + (options != null ? options.hashCode() : 0);
+        temp = Double.doubleToLongBits(carPrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (availability != null ? availability.hashCode() : 0);
+        return result;
     }
 
     @Override

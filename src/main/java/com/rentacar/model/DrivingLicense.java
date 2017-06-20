@@ -3,7 +3,6 @@ package com.rentacar.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

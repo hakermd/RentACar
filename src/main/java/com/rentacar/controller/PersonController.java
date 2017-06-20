@@ -4,8 +4,8 @@ import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
-import com.rentacar.services.CarServiceImpl;
-import com.rentacar.services.PersonServiceImpl;
+import com.rentacar.services.CarService;
+import com.rentacar.services.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ public class PersonController {
     private static final Logger logger = LoggerFactory
             .getLogger(PersonController.class);
     @Autowired
-    private PersonServiceImpl personService;
+    private PersonService personService;
 
     @Autowired
-    private CarServiceImpl carService;
+    private CarService carService;
 
     @ModelAttribute("person")
     public Person createEmployeeModel() {

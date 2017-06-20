@@ -1,8 +1,7 @@
 package com.rentacar.dao;
 
-import com.rentacar.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,60 +10,41 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public abstract class AbstractHibernateDAO<T extends Serializable> implements DAO<T> {
+
+    @Autowired
+    private SessionFactory sessionFactory;
     private Class<T> clazz;
 
     protected AbstractHibernateDAO(Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    private Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//    Session session;
-
     @Override
     public T findOne(final long id) {
-         session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        T t = (T) session.get(clazz, id);
-        tx.commit();
+        T t = (T) sessionFactory.getCurrentSession().get(clazz, id);
         return t;
     }
 
     @Override
     public List<T> findAll() {
-         session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        List<T> list = session.createQuery("from " + clazz.getName()).getResultList();
-        tx.commit();
-        return list;
+        return sessionFactory.getCurrentSession().createQuery("from " + clazz.getName()).getResultList();
     }
 
     @Override
 //    @Transactional
     public void save(final T entity) {
-         session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        session.save(entity);
-            tx.commit();
-//        getCurrentSession().close();
+        sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
 //    @Transactional
     public void update(final T entity) {
-         session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        session.saveOrUpdate(entity);
-            tx.commit();
-//        getCurrentSession().close();
+        sessionFactory.getCurrentSession().saveOrUpdate(entity);
     }
 
     @Override
     public void delete(final T entity) {
-         session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        session.delete(entity);
-            tx.commit();
-//        getCurrentSession().close();
+        sessionFactory.getCurrentSession().delete(entity);
     }
 
     @Override
@@ -72,13 +52,4 @@ public abstract class AbstractHibernateDAO<T extends Serializable> implements DA
         final T entity = findOne(id);
         delete(entity);
     }
-//
-//    protected final Session getCurrentSession() {
-//        try {
-//            session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        } catch (HibernateException e) {
-//            session = HibernateUtil.getSessionFactory().openSession();
-//        }
-//        return session;
-//    }
 }

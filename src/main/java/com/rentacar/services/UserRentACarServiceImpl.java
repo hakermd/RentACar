@@ -1,7 +1,6 @@
 package com.rentacar.services;
 
 import com.rentacar.dao.BookingDao;
-import com.rentacar.dao.CarDao;
 import com.rentacar.dao.RentDao;
 import com.rentacar.model.Booking;
 import com.rentacar.model.Car;
@@ -9,25 +8,28 @@ import com.rentacar.model.Rent;
 import com.rentacar.model.enums.CarAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Andrei.Plesca
  */
 @Service
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class UserRentACarServiceImpl implements UserRentACarService {
-    @Autowired
-    private CarDao carDao;
     @Autowired
     private RentDao rentDao;
     @Autowired
     private BookingDao bookingDao;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void rentACar(Rent rent) {
         rentDao.save(rent);
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void rentACarByBookingCode(String bookingCode) {
         Booking booking = bookingDao.findBookingByCode(bookingCode);
         booking.getCar().setAvailability(CarAvailability.RENTED);
@@ -43,12 +45,14 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public String bookACar(Booking booking) {
         bookingDao.save(booking);
         return booking.getBookingCode();
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void returnACar(Car car) {
         Rent rent = rentDao.getRentByCar(car);
         rent.getCar().setAvailability(CarAvailability.AVAILABLE);
@@ -57,6 +61,7 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void cancelBooking(Booking booking) {
         booking.getCar().setAvailability(CarAvailability.AVAILABLE);
         booking.setActive(false);
@@ -64,6 +69,7 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByCode(String bookingCode) {
         Booking booking = bookingDao.findBookingByCode(bookingCode);
         cancelBooking(booking);
