@@ -19,8 +19,8 @@
         <div>
 
             <div id="loginPageCentral">
-                <h1>Login Into Rent A Car Service</h1>
-                <form:form name="loginForm" method="POST" commandName="login" action="login.do">
+                <h1>Admin Login</h1>
+                <form:form name="loginForm" method="POST" commandName="admin" action="adminLogin.do">
                     <div class="carDetailsViewDescription"><label for="userLogin">Login :</label>
                         <form:input type="text" id="userLogin" path="email"/>
                         <form:errors type="text" id="userLogin" path="email" cssClass="error"/>
@@ -32,12 +32,6 @@
                     <div><input class="button button1" type="submit" name="action"
                                 value="LOGIN"/></div>
                 </form:form>
-                <form name="createNewAccount" method="GET" action="/register.html">
-                    <div>
-                        <output id="createNewAccount">Create New Account</output>
-                    </div>
-                </form>
-
             </div>
 
         </div>

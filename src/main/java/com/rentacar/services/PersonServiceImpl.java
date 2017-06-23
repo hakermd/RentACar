@@ -46,4 +46,14 @@ public class PersonServiceImpl implements PersonService {
     public Person logIn(Login login) {
         return personDao.logIn(login.getEmail(), login.getPassword());
     }
+
+    @Override
+    public Person adminLogIn(Login login) {
+        return personDao.adminLogIn(login.getEmail(), login.getPassword());
+    }
+
+    @Override
+    public Person findByEmail(String email) {
+        return personDao.findByEmail(email);
+    }
 }

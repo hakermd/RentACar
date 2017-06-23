@@ -1,9 +1,12 @@
 package com.rentacar.model;
 
 import com.rentacar.model.enums.Gender;
+import com.rentacar.model.enums.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -29,11 +32,16 @@ public class Person implements Serializable {
     private String address;
     @Column(name = "password", nullable = false)
     private String password;
+    @Transient
+    private String checkPassword;
     @Column(name = "birthDate")
     private Date birthDate;
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Column(name = "userRole", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private final UserRole userRole = UserRole.USER;
     @Embedded
     private DrivingLicense drivingLicense;
 
@@ -77,6 +85,14 @@ public class Person implements Serializable {
         this.password = password;
     }
 
+    public String getCheckPassword() {
+        return checkPassword;
+    }
+
+    public void setCheckPassword(String checkPassword) {
+        this.checkPassword = checkPassword;
+    }
+
     public Date getBirthDate() {
         return birthDate;
     }
@@ -84,19 +100,6 @@ public class Person implements Serializable {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
-//    public Date getBirthDate() {
-//        return birthDate;
-//    }
-//
-//    public void setBirthDate(String birthDate) {
-//        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
-//        Date date = null;
-//        try {
-//            this.birthDate = fmt.parse(birthDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public Gender getGender() {
         return gender;
@@ -120,5 +123,9 @@ public class Person implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
     }
 }

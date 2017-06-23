@@ -44,28 +44,4 @@ public class DrivingLicense {
     public void setExpiringDate(Date expiringDate) {
         this.expiringDate = expiringDate;
     }
-
-//    public Date getObtainingDate() {
-//        return obtainingDate;
-//    }
-//
-//    public void setObtainingDate(String obtainingDate) {
-//        try {
-//            this.obtainingDate = fmt.parse(obtainingDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public Date getExpiringDate() {
-//        return expiringDate;
-//    }
-//
-//    public void setExpiringDate(String expiringDate) {
-//        try {
-//            this.expiringDate = fmt.parse(expiringDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

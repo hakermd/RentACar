@@ -18,4 +18,8 @@ public interface PersonService {
     public void deletePerson(Person person);
 
     public Person logIn(Login login);
+
+    public Person adminLogIn(Login login);
+
+    public Person findByEmail(String email);
 }
