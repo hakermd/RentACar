@@ -23,7 +23,7 @@ public class Booking implements Serializable {
     private long bookingId;
     @Column(name = "bookingDate")
     private Date bookDate;
-    @Column(name = "bookingCost", nullable = false, columnDefinition = "double default 5.0")
+    @Column(name = "bookingCost", nullable = false, precision = 2)
     private double cost;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")

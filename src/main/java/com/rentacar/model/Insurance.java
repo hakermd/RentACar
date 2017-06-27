@@ -15,7 +15,7 @@ public class Insurance implements Serializable {
     @Column(name = "insuranceId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "insuranceCost")
+    @Column(name = "insuranceCost", precision = 2)
     private double cost;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")

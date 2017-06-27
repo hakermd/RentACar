@@ -22,40 +22,50 @@
         </div>
         <div>
             <div id="centralContentCarList">
+                <c:choose>
+                    <c:when test="${empty  cars}">
+                        <div class="centralContentTableNoResults">
+                            <h1>No results ...</h1>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <table class="centralContentTable">
+                            <c:forEach items="${cars}" var="car">
+                                <form:form name="${car.winCode}" method="POST" action="/viewCar.html">
+                                    <tr class="carRow" id="${car.winCode}">
+                                        <td class="carItemSpecial"><img class="carIcon"
+                                                                        src="resources/img/${car.carPhoto}"
+                                                                        alt="Car Photo"></td>
+                                        <td class="carItem">
+                                                ${car.manufacturer}
+                                            <br>
+                                                ${car.model}
+                                            <br>
+                                                ${car.yearOfProduction}
+                                        </td>
+                                        <input type="hidden" name="carWinCode" value="${car.winCode}"/></td>
+                                        <td class="carItem">
+                                                ${car.type}
+                                            <br>
+                                                ${car.fuelType}
+                                        </td>
+                                        <td class="carItem">${car.engineVolume} cm3</td>
+                                        <td class="carItem">${car.carPrice} $</td>
+                                        <td class="carItemSpecial"><input class="button button1" type="submit"
+                                                                          name="action"
+                                                                          value="RENT"/>
+                                        </td>
+                                        <td class="carItemSpecial"><input class="button button2" type="submit"
+                                                                          name="action"
+                                                                          value="BOOK"/>
+                                        </td>
+                                    </tr>
+                                </form:form>
+                            </c:forEach>
 
-                <table id="centralContentTable">
-                    <c:forEach items="${cars}" var="car">
-                        <form:form name="${car.winCode}" method="POST" action="/viewCar.html">
-                            <tr class="carRow" id="${car.winCode}">
-                                <td class="carItemSpecial"><img class="carIcon"
-                                                                src="resources/img/${car.carPhoto}"
-                                                                alt="Car Photo"></td>
-                                <td class="carItem">
-                                        ${car.manufacturer}
-                                    <br>
-                                        ${car.model}
-                                    <br>
-                                        ${car.yearOfProduction}
-                                </td>
-                                <input type="hidden" name="carWinCode" value="${car.winCode}"/></td>
-                                <td class="carItem">
-                                        ${car.type}
-                                    <br>
-                                        ${car.fuelType}
-                                </td>
-                                <td class="carItem">${car.engineVolume} cm3</td>
-                                <td class="carItem">${car.carPrice} $</td>
-                                <td class="carItemSpecial"><input class="button button1" type="submit" name="action"
-                                                                  value="RENT"/>
-                                </td>
-                                <td class="carItemSpecial"><input class="button button2" type="submit" name="action"
-                                                                  value="BOOK"/>
-                                </td>
-                            </tr>
-                        </form:form>
-                    </c:forEach>
-
-                </table>
+                        </table>
+                    </c:otherwise>
+                </c:choose>
 
             </div>
             <div id="centralContentFilter">

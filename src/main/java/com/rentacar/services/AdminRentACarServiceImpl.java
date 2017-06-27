@@ -116,4 +116,14 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
         Booking booking = bookingDao.getBookingByCar(car);
         cancelBooking(booking);
     }
+
+    @Override
+    public Rent getRentByCar(Car car) {
+        return rentDao.getRentByCar(car);
+    }
+
+    @Override
+    public Booking getBookingByCar(Car car) {
+        return bookingDao.getBookingByCar(car);
+    }
 }

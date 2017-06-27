@@ -5,9 +5,12 @@ import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @Repository
 public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
+    private static final Logger logger = LoggerFactory
+            .getLogger(Car.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -28,6 +33,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         super(Car.class);
     }
 
+    @Override
     public List<Car> searchACarByStatus(CarAvailability carAvailability) {
         Session session = sessionFactory.getCurrentSession();
         String hql = "from Car c where c.availability  =  :carAvailability";
@@ -39,6 +45,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         return carList;
     }
 
+    @Override
     public List<Car> searchACarByCriteria(CarFilter filter) {
         // Create CriteriaBuilder
         Session session = sessionFactory.getCurrentSession();
@@ -53,12 +60,18 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
                 filter.getCarType() != null ? builder.equal(carRoot.get("type"), filter.getCarType()) : builder.conjunction(),
                 filter.getOptions() != null ? builder.equal(carRoot.get("options"), filter.getOptions()) : builder.conjunction(),
                 filter.getTransmission() != null ? builder.equal(carRoot.get("transmission"), filter.getTransmission()) : builder.conjunction(),
-                builder.equal(carRoot.get("availability"), CarAvailability.AVAILABLE),
+                filter.getCarAvailability() != null ? builder.equal(carRoot.get("availability"), filter.getCarAvailability()) : builder.conjunction(),
                 filter.getYearOfProduction() > 0 ? builder.equal(carRoot.get("yearOfProduction"), filter.getYearOfProduction()) : builder.conjunction()
         );
         criteria.select(carRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
-        return query.getResultList();
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            logger.info("Car Not Found! ");
+            return null;
+        }
     }
 
     @Override
@@ -71,7 +84,32 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         Root<Car> carRoot = criteria.from(Car.class);
         criteria.select(carRoot).where(builder.equal(carRoot.get("winCode"), carWinCode));
         TypedQuery query = session.createQuery(criteria);
-        return (Car) query.getSingleResult();
+
+        try {
+            return (Car) query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Car Not Found! ");
+            return null;
+        }
+    }
+
+    @Override
+    public Car findCarByRegistrationNumber(String registrationNumber) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        // Create CriteriaQuery
+        CriteriaQuery criteria = builder.createQuery();
+        Root<Car> carRoot = criteria.from(Car.class);
+        criteria.select(carRoot).where(builder.equal(carRoot.get("registrationNumber"), registrationNumber));
+        TypedQuery query = session.createQuery(criteria);
+
+        try {
+            return (Car) query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Car Not Found! ");
+            return null;
+        }
     }
 
 }

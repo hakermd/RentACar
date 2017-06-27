@@ -31,13 +31,11 @@ public abstract class AbstractHibernateDAO<T extends Serializable> implements DA
     }
 
     @Override
-//    @Transactional
     public void save(final T entity) {
         sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
-//    @Transactional
     public void update(final T entity) {
         sessionFactory.getCurrentSession().saveOrUpdate(entity);
     }

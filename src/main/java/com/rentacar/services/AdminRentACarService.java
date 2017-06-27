@@ -37,4 +37,8 @@ public interface AdminRentACarService {
 
     public void cancelBookingByCar(Car car);
 
+    public Rent getRentByCar(Car car);
+
+    public Booking getBookingByCar(Car car);
+
 }

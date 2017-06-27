@@ -23,6 +23,9 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    private CarDao carDao;
+
     protected RentDaoImpl() {
         super(Rent.class);
     }
@@ -36,8 +39,8 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
         CriteriaQuery criteria = builder.createQuery();
         Root<Rent> rentRoot = criteria.from(Rent.class);
         Predicate carRestriction = builder.and(
-                builder.equal(rentRoot.get("carId"), car.getCarId()),
-                builder.equal(rentRoot.get("rentActive"), true)
+                builder.equal(rentRoot.get("car"), car.getCarId()),
+                builder.equal(rentRoot.get("active"), true)
         );
         criteria.select(rentRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);

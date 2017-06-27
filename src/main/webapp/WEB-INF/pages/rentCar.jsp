@@ -43,7 +43,6 @@
                     <div class="carDetailsViewDescription"><label for="carTransmission">Transmission :</label>
                         <output id="carTransmission">${car.transmission}</output>
                     </div>
-                    <hr>
                 </div>
 
                 <div id="detailedLeftPanel">

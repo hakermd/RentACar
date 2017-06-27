@@ -5,8 +5,6 @@ import com.rentacar.model.enums.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**

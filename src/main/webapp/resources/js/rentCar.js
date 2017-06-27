@@ -1,19 +1,16 @@
-/**
- * Created by aplesca on 6/5/2017.
- */
 $(document).ready(function () {
 
-    $('#centralContentTable').find('tr').click(function () {
+    $('.centralContentTable').find('tr').click(function () {
         var id = $(this).attr("id");
-        console.log(id)
         document.forms[id].submit();
     });
 
     $('#createNewAccount').click(function () {
         var id = $(this).attr("id");
-        console.log(id)
         document.forms[id].submit();
     });
-
-
+    $('#createNewCar').click(function () {
+        var id = $(this).attr("id");
+        document.forms[id].submit();
+    });
 });

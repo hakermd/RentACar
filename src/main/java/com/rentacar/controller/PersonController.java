@@ -13,7 +13,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,6 +57,12 @@ public class PersonController {
     public Person createEmployeeModel() {
         // ModelAttribute value should be same as used in the empSave.jsp
         return new Person();
+    }
+
+    @ModelAttribute("car")
+    public Car createCarModel() {
+        // ModelAttribute value should be same as used in the empSave.jsp
+        return new Car();
     }
 
     @ModelAttribute("filter")
@@ -111,9 +116,9 @@ public class PersonController {
         }
         Person person = personService.adminLogIn(login);
         session.setAttribute("user", person);
-        List<Car> cars = carService.showAllAvailableCars();
+        List<Car> cars = carService.showAllCars();
         model.addAttribute("cars", cars);
-        return "availableCars";
+        return "adminHome";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

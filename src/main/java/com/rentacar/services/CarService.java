@@ -11,6 +11,8 @@ import java.util.List;
 public interface CarService {
     public Car findCarByWinCode(String carWinCode);
 
+    public Car findCarByRegistrationNumber(String registrationNumber);
+
     public List<Car> showAllAvailableCars();
 
     public List<Car> filterCars(CarFilter filter);

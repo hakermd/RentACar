@@ -40,6 +40,7 @@ public class RentController {
     @PostConstruct
     public void init() {
         carFilter = new CarFilter();
+        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
     }
 
     @ModelAttribute("filter")
@@ -126,6 +127,7 @@ public class RentController {
         model.addAttribute("filter", carFilter);
         return "availableCars";
     }
+
 
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");

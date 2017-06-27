@@ -4,9 +4,9 @@ package com.rentacar.model.enums;
  * Created by Andrei.Plesca
  */
 public enum FuelType {
-    BENZINE("Benzine"),
-    DIESEL("Diesel"),
-    LPG("Autogas");
+    BENZINE("BENZINE"),
+    DIESEL("DIESEL"),
+    AUTOGAS("AUTOGAS");
 
     private final String fuelType;
 

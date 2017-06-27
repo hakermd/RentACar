@@ -24,7 +24,7 @@ public class Rent implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "insuranceId")
     private Insurance insurance;
-    @Column(name = "rentCost")
+    @Column(name = "rentCost", precision = 2)
     private double cost;
     @Column(name = "rentStartDate")
     private LocalDate start;

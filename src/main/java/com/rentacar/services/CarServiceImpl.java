@@ -28,6 +28,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public Car findCarByRegistrationNumber(String registrationNumber) {
+        return carDao.findCarByRegistrationNumber(registrationNumber);
+    }
+
+    @Override
     public List<Car> showAllAvailableCars() {
         return carDao.searchACarByStatus(CarAvailability.AVAILABLE);
     }
@@ -58,33 +63,5 @@ public class CarServiceImpl implements CarService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void deleteCar(Car car) {
         carDao.delete(car);
-    }
-
-    public double calculateCarPrice(Car car) {
-        return economyClassPriceCalculate(car.getEconomyClass()) * optionsPriceCalculate(car.getOptions());
-    }
-
-    private double economyClassPriceCalculate(EconomyClass economyClass) {
-        switch (economyClass) {
-            case ECONOMY:
-                return 15;
-            case PREMIUM:
-                return 30;
-            case BUSINESS:
-                return 50;
-        }
-        return 0;
-    }
-
-    private double optionsPriceCalculate(Options complectation) {
-        switch (complectation) {
-            case BASE:
-                return 1;
-            case PREMIUM:
-                return 1.5;
-            case FULL:
-                return 2;
-        }
-        return 0;
     }
 }

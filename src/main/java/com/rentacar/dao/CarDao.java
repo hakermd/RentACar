@@ -16,4 +16,6 @@ public interface CarDao extends DAO<Car> {
     public List<Car> searchACarByCriteria(CarFilter filter);
 
     public Car findCarByWinCode(String carWinCode);
+
+    public Car findCarByRegistrationNumber(String registrationNumber);
 }

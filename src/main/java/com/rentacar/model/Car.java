@@ -43,7 +43,7 @@ public class Car implements Serializable {
     @Column(name = "options", nullable = false)
     @Enumerated(EnumType.STRING)
     private Options options;
-    @Column(name = "carPrice", nullable = false)
+    @Column(name = "carPrice", nullable = false, precision = 2)
     private double carPrice = 0.0;
     @Column(name = "carAvailability", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -88,7 +88,7 @@ public class Car implements Serializable {
     }
 
     public void setWinCode(String winCode) {
-        this.winCode = winCode;
+        this.winCode = winCode.toUpperCase();
     }
 
     public String getYearOfProduction() {

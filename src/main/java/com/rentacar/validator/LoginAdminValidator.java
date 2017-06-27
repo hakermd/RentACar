@@ -1,7 +1,6 @@
 package com.rentacar.validator;
 
 import com.rentacar.model.Login;
-import com.rentacar.model.enums.UserRole;
 import com.rentacar.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

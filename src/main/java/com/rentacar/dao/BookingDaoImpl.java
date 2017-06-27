@@ -49,8 +49,8 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         CriteriaQuery criteria = builder.createQuery();
         Root<Booking> bookingRoot = criteria.from(Booking.class);
         Predicate carRestriction = builder.and(
-                builder.equal(bookingRoot.get("carId"), car.getCarId()),
-                builder.equal(bookingRoot.get("bookingActive"), true)
+                builder.equal(bookingRoot.get("car"), car.getCarId()),
+                builder.equal(bookingRoot.get("active"), true)
         );
         criteria.select(bookingRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);

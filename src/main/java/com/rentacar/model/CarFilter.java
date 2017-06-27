@@ -1,9 +1,6 @@
 package com.rentacar.model;
 
-import com.rentacar.model.enums.CarTransmission;
-import com.rentacar.model.enums.CarType;
-import com.rentacar.model.enums.EconomyClass;
-import com.rentacar.model.enums.Options;
+import com.rentacar.model.enums.*;
 
 /**
  * Created by Andrei.Plesca
@@ -13,8 +10,8 @@ public class CarFilter {
     private CarType carType;
     private Options options;
     private CarTransmission transmission;
+    private CarAvailability carAvailability;
     private int yearOfProduction;
-
 
     public EconomyClass getEconomyClass() {
         return economyClass;
@@ -46,6 +43,14 @@ public class CarFilter {
 
     public void setTransmission(CarTransmission transmission) {
         this.transmission = transmission;
+    }
+
+    public CarAvailability getCarAvailability() {
+        return carAvailability;
+    }
+
+    public void setCarAvailability(CarAvailability carAvailability) {
+        this.carAvailability = carAvailability;
     }
 
     public int getYearOfProduction() {
