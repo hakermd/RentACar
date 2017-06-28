@@ -42,4 +42,35 @@ public class DrivingLicense {
     public void setExpiringDate(Date expiringDate) {
         this.expiringDate = expiringDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DrivingLicense that = (DrivingLicense) o;
+
+        if (licenseNumber != null ? !licenseNumber.equals(that.licenseNumber) : that.licenseNumber != null)
+            return false;
+        if (obtainingDate != null ? !obtainingDate.equals(that.obtainingDate) : that.obtainingDate != null)
+            return false;
+        return expiringDate != null ? expiringDate.equals(that.expiringDate) : that.expiringDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = licenseNumber != null ? licenseNumber.hashCode() : 0;
+        result = 31 * result + (obtainingDate != null ? obtainingDate.hashCode() : 0);
+        result = 31 * result + (expiringDate != null ? expiringDate.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DrivingLicense{" +
+                "\n licenseNumber='" + licenseNumber + '\'' +
+                ",\n obtainingDate=" + obtainingDate +
+                ",\n expiringDate=" + expiringDate +
+                "\n}";
+    }
 }

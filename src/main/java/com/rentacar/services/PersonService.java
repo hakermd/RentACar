@@ -22,4 +22,6 @@ public interface PersonService {
     public Person adminLogIn(Login login);
 
     public Person findByEmail(String email);
+
+    public Person findById(long id);
 }

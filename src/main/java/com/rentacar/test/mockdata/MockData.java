@@ -24,7 +24,7 @@ public class MockData {
         person.setLastName("Doe");
         person.setEmail("john.doe@test.com");
         person.setAddress("jd street, apt 5");
-        person.setPassword("john");
+        person.setPassword("john1234");
         person.setBirthDate(sdf.parse("20-05-1988"));
         person.setGender(Gender.M);
         //Add Driving License

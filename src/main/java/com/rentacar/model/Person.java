@@ -126,4 +126,58 @@ public class Person implements Serializable {
     public UserRole getUserRole() {
         return userRole;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (personId != null ? !personId.equals(person.personId) : person.personId != null) return false;
+        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
+        if (email != null ? !email.equals(person.email) : person.email != null) return false;
+        if (address != null ? !address.equals(person.address) : person.address != null) return false;
+        if (password != null ? !password.equals(person.password) : person.password != null) return false;
+        if (checkPassword != null ? !checkPassword.equals(person.checkPassword) : person.checkPassword != null)
+            return false;
+        if (birthDate != null ? !birthDate.equals(person.birthDate) : person.birthDate != null) return false;
+        if (gender != person.gender) return false;
+        if (userRole != person.userRole) return false;
+        return drivingLicense != null ? drivingLicense.equals(person.drivingLicense) : person.drivingLicense == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = personId != null ? personId.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (checkPassword != null ? checkPassword.hashCode() : 0);
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (userRole != null ? userRole.hashCode() : 0);
+        result = 31 * result + (drivingLicense != null ? drivingLicense.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "\n personId=" + personId +
+                ",\n  firstName='" + firstName + '\'' +
+                ",\n  lastName='" + lastName + '\'' +
+                ",\n  email='" + email + '\'' +
+                ",\n  address='" + address + '\'' +
+                ",\n  password='" + password + '\'' +
+                ",\n  checkPassword='" + checkPassword + '\'' +
+                ",\n  birthDate=" + birthDate +
+                ",\n  gender=" + gender +
+                ",\n  userRole=" + userRole +
+                ",\n  drivingLicense=" + drivingLicense +
+                "\n }";
+    }
 }

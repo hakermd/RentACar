@@ -56,4 +56,9 @@ public class PersonServiceImpl implements PersonService {
     public Person findByEmail(String email) {
         return personDao.findByEmail(email);
     }
+
+    @Override
+    public Person findById(long id) {
+        return personDao.findOne(id);
+    }
 }
