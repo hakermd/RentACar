@@ -7,6 +7,7 @@ import com.rentacar.model.*;
 import com.rentacar.model.enums.CarAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,10 +40,19 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
     public void suspendACar(Car car) {
-        car.setAvailability(CarAvailability.BROKEN);
-        carDao.update(car);
+        if (car.getAvailability().equalsName(CarAvailability.RENTED.toString())) {
+            Rent rent = rentDao.getRentByCar(car);
+            rent.getCar().setAvailability(CarAvailability.BROKEN);
+            rent.setActive(false);
+            rentDao.update(rent);
+        } else if (car.getAvailability().equalsName(CarAvailability.BOOKED.toString())) {
+            Booking booking = bookingDao.getBookingByCar(car);
+            booking.getCar().setAvailability(CarAvailability.BROKEN);
+            booking.setActive(false);
+            bookingDao.update(booking);
+        }
     }
 
     @Override

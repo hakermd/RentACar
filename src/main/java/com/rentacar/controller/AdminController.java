@@ -169,11 +169,6 @@ public class AdminController {
             model.addAttribute("filter", carFilter);
             return "adminHome";
         } else if ("SUSPEND".equals(action)) {
-            if (car.getAvailability().equalsName(CarAvailability.RENTED.toString())) {
-                rentACarService.returnACar(car);
-            } else if (car.getAvailability().equalsName(CarAvailability.BOOKED.toString())) {
-                adminRentACarService.cancelBookingByCar(car);
-            }
             adminRentACarService.suspendACar(car);
             List<Car> cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
