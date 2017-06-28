@@ -52,6 +52,9 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
             booking.getCar().setAvailability(CarAvailability.BROKEN);
             booking.setActive(false);
             bookingDao.update(booking);
+        } else {
+            car.setAvailability(CarAvailability.BROKEN);
+            carDao.update(car);
         }
     }
 
