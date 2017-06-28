@@ -4,8 +4,6 @@ import com.rentacar.dao.CarDao;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
-import com.rentacar.model.enums.EconomyClass;
-import com.rentacar.model.enums.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +19,11 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
     @Autowired
     private CarDao carDao;
+
+    @Override
+    public Car findCarById(long carId) {
+        return carDao.findOne(carId);
+    }
 
     @Override
     public Car findCarByWinCode(String carWinCode) {

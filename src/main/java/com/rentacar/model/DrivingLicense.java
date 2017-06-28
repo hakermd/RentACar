@@ -18,8 +18,6 @@ public class DrivingLicense {
     private Date obtainingDate;
     @Column(name = "licenseExpiringDate")
     private Date expiringDate;
-    @Transient
-    private SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
 
     public String getLicenseNumber() {
         return licenseNumber;

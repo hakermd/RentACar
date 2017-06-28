@@ -38,11 +38,12 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         Session session = sessionFactory.getCurrentSession();
         String hql = "from Car c where c.availability  =  :carAvailability";
 
-        List<Car> carList = session.createQuery(hql)
-                .setParameter("carAvailability", carAvailability)
-                .list();
-
-        return carList;
+        try {
+            return session.createQuery(hql).setParameter("carAvailability", carAvailability).list();
+        } catch (NoResultException e) {
+            logger.info("Cars Not Found! ");
+            return null;
+        }
     }
 
     @Override
@@ -61,7 +62,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
                 filter.getOptions() != null ? builder.equal(carRoot.get("options"), filter.getOptions()) : builder.conjunction(),
                 filter.getTransmission() != null ? builder.equal(carRoot.get("transmission"), filter.getTransmission()) : builder.conjunction(),
                 filter.getCarAvailability() != null ? builder.equal(carRoot.get("availability"), filter.getCarAvailability()) : builder.conjunction(),
-                filter.getYearOfProduction() > 0 ? builder.equal(carRoot.get("yearOfProduction"), filter.getYearOfProduction()) : builder.conjunction()
+                (filter.getYearOfProduction() != null && !filter.getYearOfProduction().isEmpty()) ? builder.equal(carRoot.get("yearOfProduction"), filter.getYearOfProduction()) : builder.conjunction()
         );
         criteria.select(carRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);

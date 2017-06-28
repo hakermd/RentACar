@@ -9,6 +9,8 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public interface CarService {
+    public Car findCarById(long carId);
+
     public Car findCarByWinCode(String carWinCode);
 
     public Car findCarByRegistrationNumber(String registrationNumber);

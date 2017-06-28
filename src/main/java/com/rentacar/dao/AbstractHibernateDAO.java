@@ -42,7 +42,8 @@ public abstract class AbstractHibernateDAO<T extends Serializable> implements DA
 
     @Override
     public void delete(final T entity) {
-        sessionFactory.getCurrentSession().delete(entity);
+        if (entity != null)
+            sessionFactory.getCurrentSession().delete(entity);
     }
 
     @Override

@@ -11,7 +11,7 @@ public class CarFilter {
     private Options options;
     private CarTransmission transmission;
     private CarAvailability carAvailability;
-    private int yearOfProduction;
+    private String yearOfProduction;
 
     public EconomyClass getEconomyClass() {
         return economyClass;
@@ -53,11 +53,11 @@ public class CarFilter {
         this.carAvailability = carAvailability;
     }
 
-    public int getYearOfProduction() {
+    public String getYearOfProduction() {
         return yearOfProduction;
     }
 
-    public void setYearOfProduction(int yearOfProduction) {
+    public void setYearOfProduction(String yearOfProduction) {
         this.yearOfProduction = yearOfProduction;
     }
 }
