@@ -2,6 +2,7 @@ package com.rentacar.test.mockdata;
 
 import com.rentacar.model.Car;
 import com.rentacar.model.DrivingLicense;
+import com.rentacar.model.Insurance;
 import com.rentacar.model.Person;
 import com.rentacar.model.enums.*;
 
@@ -54,5 +55,14 @@ public class MockData {
         car.setCarPrice(50.0);
         car.setAvailability(CarAvailability.AVAILABLE);
         return car;
+    }
+
+    public static Insurance getMockInsurance() throws ParseException {
+        Insurance insurance = new Insurance();
+        Car car = getMockCar();
+        Person person = getMockPerson();
+        insurance.setId(1L);
+        insurance.setCost(10.0);
+        return insurance;
     }
 }

@@ -20,6 +20,11 @@ public class InsuranceServiceImpl implements InsuranceService {
     private InsuranceDao insuranceDao;
 
     @Override
+    public Insurance findInsuranceById(long id) {
+        return insuranceDao.findOne(id);
+    }
+
+    @Override
     public List<Insurance> findAllInsurances() {
         return insuranceDao.findAll();
     }

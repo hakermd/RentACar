@@ -14,18 +14,22 @@ public class Insurance implements Serializable {
     @Id
     @Column(name = "insuranceId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "insuranceCost", precision = 2)
     private double cost;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "personId")
     private Person person;
 
-    public int getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public double getCost() {
@@ -50,5 +54,40 @@ public class Insurance implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Insurance insurance = (Insurance) o;
+
+        if (id != insurance.id) return false;
+        if (Double.compare(insurance.cost, cost) != 0) return false;
+        if (car != null ? !car.equals(insurance.car) : insurance.car != null) return false;
+        return person != null ? person.equals(insurance.person) : insurance.person == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (id ^ (id >>> 32));
+        temp = Double.doubleToLongBits(cost);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (car != null ? car.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Insurance{" +
+                "\n id=" + id +
+                ",\n cost=" + cost +
+                ",\n car=" + car +
+                ",\n person=" + person +
+                "\n}";
     }
 }

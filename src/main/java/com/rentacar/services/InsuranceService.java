@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public interface InsuranceService {
+    public Insurance findInsuranceById(long id);
+
     public List<Insurance> findAllInsurances();
 
     public void saveInsurance(Insurance insurance);
