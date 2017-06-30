@@ -87,7 +87,7 @@ public class CarServiceTest {
         List<Car> carList = carService.showAllAvailableCars();
         assertNotNull(carList);
         for (Car c : carList) {
-            assertEquals(CarAvailability.AVAILABLE, currentCar.getAvailability());
+            assertEquals(CarAvailability.AVAILABLE, c.getAvailability());
         }
     }
 
@@ -105,12 +105,12 @@ public class CarServiceTest {
         List<Car> carList = carService.filterCars(carFilter);
         assertNotNull(carList);
         for (Car c : carList) {
-            assertEquals(carFilter.getEconomyClass(), currentCar.getEconomyClass());
-            assertEquals(carFilter.getCarType(), currentCar.getType());
-            assertEquals(carFilter.getOptions(), currentCar.getOptions());
-            assertEquals(carFilter.getTransmission(), currentCar.getTransmission());
-            assertEquals(carFilter.getCarAvailability(), currentCar.getAvailability());
-            assertEquals(carFilter.getYearOfProduction(), currentCar.getYearOfProduction());
+            assertEquals(carFilter.getEconomyClass(), c.getEconomyClass());
+            assertEquals(carFilter.getCarType(), c.getType());
+            assertEquals(carFilter.getOptions(), c.getOptions());
+            assertEquals(carFilter.getTransmission(), c.getTransmission());
+            assertEquals(carFilter.getCarAvailability(), c.getAvailability());
+            assertEquals(carFilter.getYearOfProduction(), c.getYearOfProduction());
         }
 
     }
