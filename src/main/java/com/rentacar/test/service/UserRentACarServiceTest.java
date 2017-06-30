@@ -1,9 +1,11 @@
 package com.rentacar.test.service;
 
-import com.rentacar.model.*;
+import com.rentacar.model.Booking;
+import com.rentacar.model.Car;
+import com.rentacar.model.Person;
+import com.rentacar.model.Rent;
 import com.rentacar.model.enums.CarAvailability;
 import com.rentacar.services.CarService;
-import com.rentacar.services.InsuranceService;
 import com.rentacar.services.PersonService;
 import com.rentacar.services.UserRentACarService;
 import com.rentacar.test.mockdata.MockData;
@@ -31,30 +33,20 @@ public class UserRentACarServiceTest {
     private CarService carService;
     @Autowired
     private PersonService personService;
-    @Autowired
-    private InsuranceService insuranceService;
-
 
     private Rent rent;
     private Rent currentRent;
-    private Rent expectedRent;
 
     private Booking booking;
     private Booking currentBooking;
 
     private Car car;
     private Car currentCar;
-    private Car expectedCar;
-    private Person expectedPerson;
     private Person currentPerson;
     private Person person;
-    private Insurance insurance;
-    private Insurance currentInsurance;
-    private Insurance expectedInsurance;
 
     @Before
     public void setUp() throws ParseException {
-        insurance = MockData.getMockInsurance();
         car = MockData.getMockCar();
         person = MockData.getMockPerson();
 
