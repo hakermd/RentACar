@@ -23,8 +23,6 @@ import static org.junit.Assert.*;
 import java.text.ParseException;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Andrei.Plesca
  */
@@ -47,19 +45,16 @@ public class InsuranceDaoTest {
     @Autowired
     private void setInsuranceDao(InsuranceDao insuranceDao) {
         this.insuranceDao = insuranceDao;
-
     }
 
     @Autowired
     private void setPersonDao(PersonDao personDao) {
         this.personDao = personDao;
-
     }
 
     @Autowired
     private void setCarDao(CarDao carDao) {
         this.carDao = carDao;
-
     }
 
     @Before
@@ -81,14 +76,12 @@ public class InsuranceDaoTest {
         if (!session.getTransaction().isActive()) {
             session.getTransaction().begin();
         }
-
         insuranceDao.delete(currentInsurance);
         session.getTransaction().commit();
         session.getTransaction().begin();
         personDao.delete(person);
         carDao.delete(car);
         session.getTransaction().commit();
-
         session.close();
     }
 
@@ -118,7 +111,6 @@ public class InsuranceDaoTest {
         List<Insurance> insuranceList = insuranceDao.findAll();
         assertNotNull(insuranceList);
         assertTrue(insuranceList.size() >= 0);
-
     }
 
     @Test
@@ -172,7 +164,6 @@ public class InsuranceDaoTest {
         session.getTransaction().begin();
         currentInsurance = insuranceDao.findOne(insurance.getId());
         session.getTransaction().commit();
-
     }
 
     @Test
