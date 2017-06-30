@@ -44,13 +44,17 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     public void suspendACar(Car car) {
         if (car.getAvailability().equalsName(CarAvailability.RENTED.toString())) {
             Rent rent = rentDao.getRentByCar(car);
-            rent.getCar().setAvailability(CarAvailability.BROKEN);
+            Car updateCar = rent.getCar();
+            updateCar.setAvailability(CarAvailability.BROKEN);
             rent.setActive(false);
+            carDao.update(updateCar);
             rentDao.update(rent);
         } else if (car.getAvailability().equalsName(CarAvailability.BOOKED.toString())) {
             Booking booking = bookingDao.getBookingByCar(car);
-            booking.getCar().setAvailability(CarAvailability.BROKEN);
+            Car updateCar = booking.getCar();
+            updateCar.setAvailability(CarAvailability.BROKEN);
             booking.setActive(false);
+            carDao.update(updateCar);
             bookingDao.update(booking);
         } else {
             car.setAvailability(CarAvailability.BROKEN);
@@ -89,8 +93,10 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void cancelRent(Rent rent) {
-        rent.getCar().setAvailability(CarAvailability.AVAILABLE);
+        Car updateCar = rent.getCar();
+        updateCar.setAvailability(CarAvailability.AVAILABLE);
         rent.setActive(false);
+        carDao.update(updateCar);
         rentDao.update(rent);
     }
 
@@ -111,8 +117,10 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void cancelBooking(Booking booking) {
-        booking.getCar().setAvailability(CarAvailability.AVAILABLE);
+        Car updateCar = booking.getCar();
+        updateCar.setAvailability(CarAvailability.AVAILABLE);
         booking.setActive(false);
+        carDao.update(updateCar);
         bookingDao.update(booking);
     }
 

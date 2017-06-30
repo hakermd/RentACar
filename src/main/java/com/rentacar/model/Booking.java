@@ -25,13 +25,13 @@ public class Booking implements Serializable {
     private Date bookDate;
     @Column(name = "bookingCost", nullable = false, precision = 2)
     private double cost;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "personId")
     private Person person;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "insuranceId")
     private Insurance insurance;
     @Column(name = "bookingCode", nullable = false, unique = true)

@@ -5,9 +5,12 @@ import com.rentacar.model.Person;
 import com.rentacar.model.Rent;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,6 +22,8 @@ import javax.persistence.criteria.Root;
  */
 @Repository
 public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
+    private static final Logger logger = LoggerFactory
+            .getLogger(RentDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -44,7 +49,13 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
         );
         criteria.select(rentRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
-        return (Rent) query.getSingleResult();
+
+        try {
+            return (Rent) query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Rent Not Found! ");
+            return null;
+        }
     }
 
     @Override
@@ -56,11 +67,16 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
         CriteriaQuery criteria = builder.createQuery();
         Root<Rent> rentRoot = criteria.from(Rent.class);
         Predicate carRestriction = builder.and(
-                builder.equal(rentRoot.get("personId"), person.getPersonId()),
-                builder.equal(rentRoot.get("rentActive"), true)
+                builder.equal(rentRoot.get("person"), person.getPersonId()),
+                builder.equal(rentRoot.get("active"), true)
         );
         criteria.select(rentRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
-        return (Rent) query.getSingleResult();
+        try {
+            return (Rent) query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Rent Not Found! ");
+            return null;
+        }
     }
 }

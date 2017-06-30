@@ -22,11 +22,11 @@ import javax.persistence.criteria.Root;
 @Repository
 public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements PersonDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
     private static final Logger logger = LoggerFactory
             .getLogger(PersonDaoImpl.class);
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     protected PersonDaoImpl() {
         super(Person.class);
@@ -55,15 +55,15 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
     @Override
     public Person findByEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        // Create CriteriaQuery
+        CriteriaQuery criteria = builder.createQuery();
+        Root<Person> personRoot = criteria.from(Person.class);
+        criteria.select(personRoot).where(builder.equal(personRoot.get("email"), email));
+        TypedQuery query = session.createQuery(criteria);
         try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            // Create CriteriaQuery
-            CriteriaQuery criteria = builder.createQuery();
-            Root<Person> personRoot = criteria.from(Person.class);
-            criteria.select(personRoot).where(builder.equal(personRoot.get("email"), email));
-            TypedQuery query = session.createQuery(criteria);
-            Person person = (Person) query.getSingleResult();
-            return person;
+            return (Person) query.getSingleResult();
         } catch (NoResultException e) {
             logger.info("Registration Not Found! ");
             return null;
@@ -72,20 +72,19 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
 
     private Person login(String email, String password, UserRole userRole) {
         Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        // Create CriteriaQuery
+        CriteriaQuery criteria = builder.createQuery();
+        Root<Person> personRoot = criteria.from(Person.class);
+        Predicate carRestriction = builder.and(
+                builder.equal(personRoot.get("email"), email),
+                builder.equal(personRoot.get("password"), password),
+                builder.equal(personRoot.get("userRole"), userRole)
+        );
+        criteria.select(personRoot).where(builder.and(carRestriction));
+        TypedQuery query = session.createQuery(criteria);
         try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            // Create CriteriaQuery
-            CriteriaQuery criteria = builder.createQuery();
-            Root<Person> personRoot = criteria.from(Person.class);
-            Predicate carRestriction = builder.and(
-                    builder.equal(personRoot.get("email"), email),
-                    builder.equal(personRoot.get("password"), password),
-                    builder.equal(personRoot.get("userRole"), userRole)
-            );
-            criteria.select(personRoot).where(builder.and(carRestriction));
-            TypedQuery query = session.createQuery(criteria);
-            Person person = (Person) query.getSingleResult();
-            return person;
+            return (Person) query.getSingleResult();
         } catch (NoResultException e) {
             logger.info("Registration Not Found! ");
             return null;

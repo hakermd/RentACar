@@ -17,10 +17,10 @@ public class Insurance implements Serializable {
     private long id;
     @Column(name = "insuranceCost", precision = 2)
     private double cost;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "personId")
     private Person person;
 

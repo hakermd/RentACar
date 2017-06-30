@@ -15,13 +15,13 @@ public class Rent implements Serializable {
     @Column(name = "rentId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rentId;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "personId")
     private Person person;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "insuranceId")
     private Insurance insurance;
     @Column(name = "rentCost", precision = 2)

@@ -181,13 +181,5 @@
     </div>
 </div>
 
-<%--<select class="form-control">--%>
-<%--<c:forEach items="${test}" var="test">--%>
-<%--<option value="${test.person.firstName}">${test.person.firstName}</option>--%>
-<%--</c:forEach>--%>
-<%--</select>--%>
 </body>
-<%--<script>--%>
-<%--$(".carRow").click(function(){alert("test")});--%>
-<%--</script>--%>
 </html>

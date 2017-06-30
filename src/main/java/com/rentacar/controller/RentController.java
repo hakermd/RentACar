@@ -60,22 +60,7 @@ public class RentController {
         Person rentPerson = (Person) request.getSession().getAttribute("user");
         if ("RENT".equals(action) && carWinCode != null) {
             car = carService.findCarByWinCode(carWinCode);
-
-            /*------------------------------*/
-            car.setAvailability(CarAvailability.RENTED);
-            /*------------------------------*/
-            insurance = new Insurance();
-            insurance.setCar(car);
-            insurance.setPerson(rentPerson);
-            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
-            /*------------------------------*/
-            Rent rent = new Rent();
-            rent.setActive(true);
-            rent.setCar(car);
-            rent.setInsurance(insurance);
-            rent.setCost(car.getCarPrice() + insurance.getCost());
-            rent.setPerson(rentPerson);
-            userRentACarService.rentACar(rent);
+            userRentACarService.rentACar(car, rentPerson);
         }
         List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
@@ -89,22 +74,7 @@ public class RentController {
         Person bookPerson = (Person) request.getSession().getAttribute("user");
         if ("BOOK".equals(action) && carWinCode != null) {
             car = carService.findCarByWinCode(carWinCode);
-
-            /*------------------------------*/
-            car.setAvailability(CarAvailability.BOOKED);
-            /*------------------------------*/
-            insurance = new Insurance();
-            insurance.setCar(car);
-            insurance.setPerson(bookPerson);
-            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
-            /*------------------------------*/
-            Booking booking = new Booking();
-            booking.setActive(true);
-            booking.setCar(car);
-            booking.setInsurance(insurance);
-            booking.setCost(car.getCarPrice() + insurance.getCost());
-            booking.setPerson(bookPerson);
-            userRentACarService.bookACar(booking);
+            userRentACarService.bookACar(car, bookPerson);
         }
         List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
@@ -121,8 +91,9 @@ public class RentController {
 
     @RequestMapping(value = "/filterCars", method = RequestMethod.POST)
     public String filterCars(@ModelAttribute("filter") CarFilter filter, Model model) {
-        cars = carService.filterCars(filter);
         carFilter = filter;
+        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
+        cars = carService.filterCars(filter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return "availableCars";
@@ -136,7 +107,7 @@ public class RentController {
             car = carService.findCarByWinCode(carWinCode);
             insurance = new Insurance();
             insurance.setCar(car);
-            insurance.setCost(insuranceService.insuranceCostCalculate(insurance));
+            insurance.setCost(userRentACarService.insuranceCostCalculate(insurance));
         } else {
             List<Car> cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);

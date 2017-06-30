@@ -62,8 +62,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
                 filter.getOptions() != null ? builder.equal(carRoot.get("options"), filter.getOptions()) : builder.conjunction(),
                 filter.getTransmission() != null ? builder.equal(carRoot.get("transmission"), filter.getTransmission()) : builder.conjunction(),
                 filter.getCarAvailability() != null ? builder.equal(carRoot.get("availability"), filter.getCarAvailability()) : builder.conjunction(),
-                (filter.getYearOfProduction() != null && !filter.getYearOfProduction().isEmpty()) ? builder.equal(carRoot.get("yearOfProduction"), filter.getYearOfProduction()) : builder.conjunction()
-        );
+                (filter.getYearOfProduction() != null && !filter.getYearOfProduction().isEmpty() && !filter.getYearOfProduction().equals("0")) ? builder.equal(carRoot.get("yearOfProduction"), filter.getYearOfProduction()) : builder.conjunction());
         criteria.select(carRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
 

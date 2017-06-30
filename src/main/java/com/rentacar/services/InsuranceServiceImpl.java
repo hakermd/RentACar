@@ -46,18 +46,4 @@ public class InsuranceServiceImpl implements InsuranceService {
     public void deleteInsurance(Insurance insurance) {
         insuranceDao.delete(insurance);
     }
-
-    public double insuranceCostCalculate(Insurance insurance) {
-        Car car = insurance.getCar();
-        switch (car.getEconomyClass()) {
-            case ECONOMY:
-                return 0.3 * car.getCarPrice();
-            case PREMIUM:
-                return 0.5 * car.getCarPrice();
-            case BUSINESS:
-                return 0.7 * car.getCarPrice();
-        }
-        return 0;
-    }
-
 }

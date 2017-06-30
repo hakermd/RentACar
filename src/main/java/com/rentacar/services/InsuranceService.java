@@ -17,6 +17,4 @@ public interface InsuranceService {
     public void updateInsurance(Insurance insurance);
 
     public void deleteInsurance(Insurance insurance);
-
-    double insuranceCostCalculate(Insurance insurance);
 }
