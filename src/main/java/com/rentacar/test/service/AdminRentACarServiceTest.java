@@ -46,23 +46,17 @@ public class AdminRentACarServiceTest {
     public void setUp() throws ParseException {
         car = MockData.getMockCar();
         person = MockData.getMockPerson();
-//
         personService.savePerson(person);
-//        carService.saveCar(car);
-//        currentPerson = personService.findById(person.getPersonId());
-//        currentCar = carService.findCarById(car.getCarId());
     }
 
     @After
     public void cleanUp() {
         if (rent != null) {
             userRentACarService.deleteRent(rent);
-            //booking = null;
         }
         if (booking != null) {
             userRentACarService.deleteBooking(booking);
         }
-
         personService.deletePerson(person);
         carService.deleteCar(currentCar);
     }

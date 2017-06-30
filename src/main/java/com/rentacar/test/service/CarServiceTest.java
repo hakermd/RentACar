@@ -112,7 +112,6 @@ public class CarServiceTest {
             assertEquals(carFilter.getCarAvailability(), c.getAvailability());
             assertEquals(carFilter.getYearOfProduction(), c.getYearOfProduction());
         }
-
     }
 
     @Test

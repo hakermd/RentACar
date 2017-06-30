@@ -1,5 +1,7 @@
 package com.rentacar.dao;
 
+import org.hibernate.SessionFactory;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,4 +20,6 @@ public interface DAO<T extends Serializable> {
     void delete(T entity);
 
     void deleteById(long id);
+
+    public SessionFactory getSessionFactory();
 }

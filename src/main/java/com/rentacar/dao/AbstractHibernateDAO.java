@@ -51,4 +51,9 @@ public abstract class AbstractHibernateDAO<T extends Serializable> implements DA
         final T entity = findOne(id);
         delete(entity);
     }
+
+    @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 }
