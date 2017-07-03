@@ -1,9 +1,6 @@
 package com.rentacar.test.mockdata;
 
-import com.rentacar.model.Car;
-import com.rentacar.model.DrivingLicense;
-import com.rentacar.model.Insurance;
-import com.rentacar.model.Person;
+import com.rentacar.model.*;
 import com.rentacar.model.enums.*;
 
 import java.math.BigInteger;
@@ -59,10 +56,15 @@ public class MockData {
 
     public static Insurance getMockInsurance() throws ParseException {
         Insurance insurance = new Insurance();
-        Car car = getMockCar();
-        Person person = getMockPerson();
         insurance.setId(1L);
         insurance.setCost(10.0);
         return insurance;
+    }
+
+    public static Rent getMockRent() throws ParseException {
+        Rent rent = new Rent();
+        rent.setRentId(1L);
+        rent.setActive(true);
+        return rent;
     }
 }
