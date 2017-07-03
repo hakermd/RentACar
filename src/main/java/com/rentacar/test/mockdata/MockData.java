@@ -67,4 +67,11 @@ public class MockData {
         rent.setActive(true);
         return rent;
     }
+
+    public static Booking getMockBooking() throws ParseException {
+        Booking booking = new Booking();
+        booking.setBookingId(1L);
+        booking.setActive(true);
+        return booking;
+    }
 }

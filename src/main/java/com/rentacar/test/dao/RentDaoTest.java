@@ -115,7 +115,6 @@ public class RentDaoTest {
         currentRent = rentDao.findOne(rent.getRentId());
         assertNotNull(currentRent);
         assertEquals(rent, currentRent);
-
     }
 
     @Test
@@ -132,7 +131,6 @@ public class RentDaoTest {
         List<Rent> rents = rentDao.findAll();
         assertNotNull(rents);
         assertTrue(rents.size() >= 1);
-
     }
 
     @Test
@@ -166,7 +164,6 @@ public class RentDaoTest {
         currentRent = rentDao.findOne(rent.getRentId());
         assertNotNull(currentRent);
         assertEquals(rent, currentRent);
-
     }
 
     @Test
@@ -230,5 +227,4 @@ public class RentDaoTest {
         assertNotNull(currentRent);
         assertEquals(rent, currentRent);
     }
-
 }
