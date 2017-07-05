@@ -3,11 +3,10 @@ package com.rentacar.test.service;
 import com.rentacar.model.Car;
 import com.rentacar.model.Insurance;
 import com.rentacar.model.Person;
-import com.rentacar.model.Rent;
 import com.rentacar.services.CarService;
 import com.rentacar.services.InsuranceService;
 import com.rentacar.services.PersonService;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +43,9 @@ public class InsuranceServiceTest {
 
     @Before
     public void setUp() throws ParseException {
-        insurance = MockData.getMockInsurance();
-        car = MockData.getMockCar();
-        person = MockData.getMockPerson();
+        insurance = TestDataUtil.getMockInsurance();
+        car = TestDataUtil.getMockCar();
+        person = TestDataUtil.getMockPerson();
         currentInsurance = insurance;
         expectedInsurance = insurance;
 

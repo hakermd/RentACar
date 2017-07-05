@@ -6,8 +6,7 @@ import com.rentacar.services.AdminRentACarService;
 import com.rentacar.services.CarService;
 import com.rentacar.services.PersonService;
 import com.rentacar.services.UserRentACarService;
-import com.rentacar.test.mockdata.MockData;
-import com.sun.org.apache.regexp.internal.RE;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,8 +43,8 @@ public class AdminRentACarServiceTest {
 
     @Before
     public void setUp() throws ParseException {
-        car = MockData.getMockCar();
-        person = MockData.getMockPerson();
+        car = TestDataUtil.getMockCar();
+        person = TestDataUtil.getMockPerson();
         personService.savePerson(person);
     }
 

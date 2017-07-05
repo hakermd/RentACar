@@ -3,7 +3,7 @@ package com.rentacar.test.service;
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
 import com.rentacar.services.PersonService;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class PersonServiceTest {
 
     @Before
     public void setUp() throws ParseException {
-        person = MockData.getMockPerson();
+        person = TestDataUtil.getMockPerson();
         currentPerson = person;
         expectedPerson = person;
     }

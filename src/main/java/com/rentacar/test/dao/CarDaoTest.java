@@ -4,7 +4,7 @@ import com.rentacar.dao.CarDao;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.*;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
@@ -44,7 +44,7 @@ public class CarDaoTest {
 
     @Before
     public void setUp() throws ParseException {
-        car = MockData.getMockCar();
+        car = TestDataUtil.getMockCar();
         currentCar = car;
         session = carDao.getSessionFactory().getCurrentSession();
     }

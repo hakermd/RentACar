@@ -1,10 +1,8 @@
 package com.rentacar.test.dao;
 
 import com.rentacar.dao.PersonDao;
-import com.rentacar.model.DrivingLicense;
 import com.rentacar.model.Person;
-import com.rentacar.model.enums.Gender;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
@@ -16,10 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -46,7 +41,7 @@ public class PersonDaoTest {
     @Before
     public void setUp() throws ParseException {
         session = personDao.getSessionFactory().getCurrentSession();
-        person = MockData.getMockPerson();
+        person = TestDataUtil.getMockPerson();
         currentPerson = person;
     }
 

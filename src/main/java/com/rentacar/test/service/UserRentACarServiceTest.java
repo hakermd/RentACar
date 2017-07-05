@@ -8,7 +8,7 @@ import com.rentacar.model.enums.CarAvailability;
 import com.rentacar.services.CarService;
 import com.rentacar.services.PersonService;
 import com.rentacar.services.UserRentACarService;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,8 +47,8 @@ public class UserRentACarServiceTest {
 
     @Before
     public void setUp() throws ParseException {
-        car = MockData.getMockCar();
-        person = MockData.getMockPerson();
+        car = TestDataUtil.getMockCar();
+        person = TestDataUtil.getMockPerson();
 
         personService.savePerson(person);
         carService.saveCar(car);

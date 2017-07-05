@@ -8,7 +8,7 @@ import com.rentacar.model.Car;
 import com.rentacar.model.Insurance;
 import com.rentacar.model.Person;
 import com.rentacar.model.Rent;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
@@ -69,10 +69,10 @@ public class RentDaoTest {
     @Before
     public void setUp() throws ParseException {
         session = insuranceDao.getSessionFactory().getCurrentSession();
-        insurance = MockData.getMockInsurance();
-        car = MockData.getMockCar();
-        person = MockData.getMockPerson();
-        rent = MockData.getMockRent();
+        insurance = TestDataUtil.getMockInsurance();
+        car = TestDataUtil.getMockCar();
+        person = TestDataUtil.getMockPerson();
+        rent = TestDataUtil.getMockRent();
 
         personDao.save(person);
         carDao.save(car);

@@ -4,7 +4,7 @@ import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.*;
 import com.rentacar.services.CarService;
-import com.rentacar.test.mockdata.MockData;
+import com.rentacar.test.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class CarServiceTest {
 
     @Before
     public void setUp() throws ParseException {
-        car = MockData.getMockCar();
+        car = TestDataUtil.getMockCar();
         currentCar = car;
         expectedCar = car;
     }

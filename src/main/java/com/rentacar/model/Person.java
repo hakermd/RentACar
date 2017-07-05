@@ -140,8 +140,6 @@ public class Person implements Serializable {
         if (email != null ? !email.equals(person.email) : person.email != null) return false;
         if (address != null ? !address.equals(person.address) : person.address != null) return false;
         if (password != null ? !password.equals(person.password) : person.password != null) return false;
-        if (checkPassword != null ? !checkPassword.equals(person.checkPassword) : person.checkPassword != null)
-            return false;
         if (birthDate != null ? !birthDate.equals(person.birthDate) : person.birthDate != null) return false;
         if (gender != person.gender) return false;
         if (userRole != person.userRole) return false;
