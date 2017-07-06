@@ -46,13 +46,11 @@ public class AdminController {
 
     @ModelAttribute("car")
     public Car createCarModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new Car();
     }
 
     @ModelAttribute("filter")
     public CarFilter createCarFilterModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new CarFilter();
     }
 
@@ -77,7 +75,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/addCarAdmin", method = RequestMethod.GET)
-    public String getAddCarForm(@ModelAttribute("car") Car car, Model model) {
+    public String getAddCarFormPage(@ModelAttribute("car") Car car, Model model) {
         return "addCarAdmin";
     }
 
@@ -89,7 +87,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/addCar.do", method = RequestMethod.POST)
-    public String getRegistrationFormAction(@ModelAttribute("car") Car car, BindingResult bindingResult, Model model, HttpServletRequest request) {
+    public String getAddCarFormAction(@ModelAttribute("car") Car car, BindingResult bindingResult, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
         if ("CANCEL".equals(action)) {
             return cancelAction(model);
@@ -130,8 +128,8 @@ public class AdminController {
         return "adminHome";
     }
 
-    @RequestMapping(value = "/carListAdminAction", method = RequestMethod.GET)
-    public String viewCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
+    @RequestMapping(value = "/carListAdminAction", method = RequestMethod.POST)
+    public String viewCarAction(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         return carAction(carWinCode, model, request);
     }
 
@@ -181,6 +179,4 @@ public class AdminController {
         model.addAttribute("car", car);
         return "viewCarAdmin";
     }
-
-
 }

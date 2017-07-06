@@ -141,7 +141,7 @@ public class PersonControllerTest {
     @Test
     public void testGetRegistrationFormAction() throws Exception {
         BindingResult bindingResult = mock(BindingResult.class);
-        doNothing().when(personValidator).validate(null, bindingResult);
+        doNothing().when(personValidator).validate(person, bindingResult);
         when(bindingResult.hasErrors()).thenReturn(true);
 
         doNothing().when(personService).savePerson(person);

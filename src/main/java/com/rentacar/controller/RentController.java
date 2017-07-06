@@ -27,8 +27,6 @@ public class RentController {
     @Autowired
     private UserRentACarService userRentACarService;
     @Autowired
-    private InsuranceService insuranceService;
-    @Autowired
     private CarService carService;
 
     public List<Car> cars;
@@ -45,17 +43,16 @@ public class RentController {
 
     @ModelAttribute("filter")
     public CarFilter createFilterModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new CarFilter();
     }
 
     @RequestMapping(value = "/carListAction", method = RequestMethod.GET)
-    public String viewCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
+    public String viewCarAction(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         return carAction(carWinCode, model, request);
     }
 
     @RequestMapping(value = "/rentCar.do", method = RequestMethod.POST)
-    public String rentCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
+    public String rentCarAction(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
         Person rentPerson = (Person) request.getSession().getAttribute("user");
         if ("RENT".equals(action) && carWinCode != null) {
@@ -69,7 +66,7 @@ public class RentController {
     }
 
     @RequestMapping(value = "/bookCar.do", method = RequestMethod.POST)
-    public String bookCar(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
+    public String bookCarAction(@ModelAttribute("carWinCode") String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
         Person bookPerson = (Person) request.getSession().getAttribute("user");
         if ("BOOK".equals(action) && carWinCode != null) {
@@ -83,7 +80,7 @@ public class RentController {
     }
 
     @RequestMapping(value = "/availableCars", method = RequestMethod.GET)
-    public String availableCars(Model model) {
+    public String getAvailableCarsPage(Model model) {
         List<Car> cars = carService.showAllAvailableCars();
         model.addAttribute("cars", cars);
         return "availableCars";
@@ -98,7 +95,6 @@ public class RentController {
         model.addAttribute("filter", carFilter);
         return "availableCars";
     }
-
 
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");

@@ -40,11 +40,13 @@ public class AdminRentACarServiceTest {
     private Person person;
     private Rent rent;
     private Booking booking;
+    private CarFilter carFilter;
 
     @Before
     public void setUp() throws ParseException {
         car = TestDataUtil.getMockCar();
         person = TestDataUtil.getMockPerson();
+        carFilter = TestDataUtil.getMockCarFilter();
         personService.savePerson(person);
     }
 
@@ -120,13 +122,6 @@ public class AdminRentACarServiceTest {
 
     @Test
     public void searchACar() throws Exception {
-        CarFilter carFilter = new CarFilter();
-        carFilter.setEconomyClass(EconomyClass.PREMIUM);
-        carFilter.setCarType(CarType.COUPE);
-        carFilter.setOptions(Options.PREMIUM);
-        carFilter.setTransmission(CarTransmission.AUTOMATIC);
-        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
-        carFilter.setYearOfProduction("2012");
         adminRentACarService.addACar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);

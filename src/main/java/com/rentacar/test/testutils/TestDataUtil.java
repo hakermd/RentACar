@@ -77,6 +77,17 @@ public class TestDataUtil {
         return booking;
     }
 
+    public static CarFilter getMockCarFilter() throws ParseException {
+        CarFilter carFilter = new CarFilter();
+        carFilter.setEconomyClass(EconomyClass.PREMIUM);
+        carFilter.setCarType(CarType.COUPE);
+        carFilter.setOptions(Options.PREMIUM);
+        carFilter.setTransmission(CarTransmission.AUTOMATIC);
+        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
+        carFilter.setYearOfProduction("2012");
+        return carFilter;
+    }
+
     public static String buildUrlEncodedFormEntity(String... params) {
         if ((params.length % 2) > 0) {
             throw new IllegalArgumentException("Need to give an even number of parameters");

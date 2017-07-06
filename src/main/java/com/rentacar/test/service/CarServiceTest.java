@@ -30,10 +30,12 @@ public class CarServiceTest {
     private Car car;
     private Car currentCar;
     private Car expectedCar;
+    private CarFilter carFilter;
 
     @Before
     public void setUp() throws ParseException {
         car = TestDataUtil.getMockCar();
+        carFilter = TestDataUtil.getMockCarFilter();
         currentCar = car;
         expectedCar = car;
     }
@@ -93,14 +95,6 @@ public class CarServiceTest {
 
     @Test
     public void filterCars() throws Exception {
-        CarFilter carFilter = new CarFilter();
-        carFilter.setEconomyClass(EconomyClass.PREMIUM);
-        carFilter.setCarType(CarType.COUPE);
-        carFilter.setOptions(Options.PREMIUM);
-        carFilter.setTransmission(CarTransmission.AUTOMATIC);
-        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
-        carFilter.setYearOfProduction("2012");
-
         carService.saveCar(car);
         List<Car> carList = carService.filterCars(carFilter);
         assertNotNull(carList);

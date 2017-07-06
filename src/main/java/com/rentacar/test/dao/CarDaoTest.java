@@ -33,6 +33,7 @@ public class CarDaoTest {
     private Session session;
     private Car car;
     private Car currentCar;
+    private CarFilter carFilter;
 
     private CarDao carDao;
 
@@ -45,6 +46,7 @@ public class CarDaoTest {
     @Before
     public void setUp() throws ParseException {
         car = TestDataUtil.getMockCar();
+        carFilter = TestDataUtil.getMockCarFilter();
         currentCar = car;
         session = carDao.getSessionFactory().getCurrentSession();
     }
@@ -172,14 +174,6 @@ public class CarDaoTest {
 
     @Test
     public void searchACarByCriteria() throws Exception {
-        CarFilter carFilter = new CarFilter();
-        carFilter.setEconomyClass(EconomyClass.PREMIUM);
-        carFilter.setCarType(CarType.COUPE);
-        carFilter.setOptions(Options.PREMIUM);
-        carFilter.setTransmission(CarTransmission.AUTOMATIC);
-        carFilter.setCarAvailability(CarAvailability.AVAILABLE);
-        carFilter.setYearOfProduction("2012");
-
         carDao.save(car);
         session.getTransaction().commit();
         session.getTransaction().begin();
