@@ -1,4 +1,4 @@
-package com.rentacar.test.testutils;
+package com.rentacar.testutils;
 
 import com.rentacar.model.*;
 import com.rentacar.model.enums.*;

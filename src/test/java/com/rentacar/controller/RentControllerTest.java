@@ -1,11 +1,10 @@
-package com.rentacar.test.controller;
+package com.rentacar.controller;
 
-import com.rentacar.controller.RentController;
 import com.rentacar.model.Car;
 import com.rentacar.model.Person;
 import com.rentacar.services.CarService;
 import com.rentacar.services.UserRentACarService;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

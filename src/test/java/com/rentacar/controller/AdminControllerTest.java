@@ -1,11 +1,10 @@
-package com.rentacar.test.controller;
+package com.rentacar.controller;
 
-import com.rentacar.controller.AdminController;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.services.AdminRentACarService;
 import com.rentacar.services.CarService;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import com.rentacar.validator.CarValidator;
 import com.rentacar.validator.EditCarValidator;
 import org.junit.Before;

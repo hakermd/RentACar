@@ -1,8 +1,7 @@
-package com.rentacar.test.dao;
+package com.rentacar.dao;
 
-import com.rentacar.dao.*;
 import com.rentacar.model.*;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;

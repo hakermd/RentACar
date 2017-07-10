@@ -1,10 +1,9 @@
-package com.rentacar.test.service;
+package com.rentacar.services;
 
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.*;
-import com.rentacar.services.CarService;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

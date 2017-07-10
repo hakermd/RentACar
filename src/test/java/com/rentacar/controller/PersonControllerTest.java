@@ -1,12 +1,11 @@
-package com.rentacar.test.controller;
+package com.rentacar.controller;
 
-import com.rentacar.controller.PersonController;
 import com.rentacar.model.Car;
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
 import com.rentacar.services.CarService;
 import com.rentacar.services.PersonService;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import com.rentacar.validator.LoginAdminValidator;
 import com.rentacar.validator.LoginUserValidator;
 import com.rentacar.validator.PersonValidator;

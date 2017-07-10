@@ -1,9 +1,8 @@
-package com.rentacar.test.service;
+package com.rentacar.services;
 
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
-import com.rentacar.services.PersonService;
-import com.rentacar.test.testutils.TestDataUtil;
+import com.rentacar.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
