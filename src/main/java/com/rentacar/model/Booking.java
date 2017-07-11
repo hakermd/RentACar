@@ -110,12 +110,4 @@ public class Booking implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    public SecureRandom getRandom() {
-        return random;
-    }
-
-    public void setRandom(SecureRandom random) {
-        this.random = random;
-    }
 }

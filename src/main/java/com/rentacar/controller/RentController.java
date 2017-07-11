@@ -16,6 +16,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.rentacar.util.PageNavigationConstants.*;
+
 /**
  * Created by Andrei.Plesca
  */
@@ -62,7 +64,7 @@ public class RentController {
         List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "availableCars";
+        return USER_PAGE_AVAILABLE_CARS;
     }
 
     @RequestMapping(value = "/bookCar.do", method = RequestMethod.POST)
@@ -76,14 +78,14 @@ public class RentController {
         List<Car> cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "availableCars";
+        return USER_PAGE_AVAILABLE_CARS;
     }
 
     @RequestMapping(value = "/availableCars", method = RequestMethod.GET)
     public String getAvailableCarsPage(Model model) {
         List<Car> cars = carService.showAllAvailableCars();
         model.addAttribute("cars", cars);
-        return "availableCars";
+        return USER_PAGE_AVAILABLE_CARS;
     }
 
     @RequestMapping(value = "/filterCars", method = RequestMethod.POST)
@@ -93,7 +95,7 @@ public class RentController {
         cars = carService.filterCars(filter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
-        return "availableCars";
+        return USER_PAGE_AVAILABLE_CARS;
     }
 
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
@@ -102,33 +104,32 @@ public class RentController {
         if (carWinCode != null) {
             car = carService.findCarByWinCode(carWinCode);
             insurance = new Insurance();
-            insurance.setCar(car);
             insurance.setCost(userRentACarService.insuranceCostCalculate(insurance));
         } else {
             List<Car> cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
-            return "availableCars";
+            return USER_PAGE_AVAILABLE_CARS;
         }
 
         if ("BOOK".equals(action)) {
             model.addAttribute("car", car);
             model.addAttribute("insurance", insurance);
-            return "bookCar";
+            return USER_PAGE_BOOK_CAR;
         } else if ("RENT".equals(action)) {
             model.addAttribute("car", car);
             model.addAttribute("insurance", insurance);
-            return "rentCar";
+            return USER_PAGE_RENT_CAR;
         }
         if ("CANCEL".equals(action)) {
             List<Car> cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
-            return "availableCars";
+            return USER_PAGE_AVAILABLE_CARS;
         }
         model.addAttribute("car", car);
         model.addAttribute("insurance", insurance);
-        return "viewCar";
+        return USER_PAGE_VIEW_CAR;
     }
 }
 

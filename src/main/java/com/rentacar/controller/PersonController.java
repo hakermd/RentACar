@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.rentacar.util.PageNavigationConstants.*;
+
 /**
  * Created by Andrei.Plesca
  */
@@ -85,7 +87,7 @@ public class PersonController {
 
     @RequestMapping(value = {"/login", "/"}, method = RequestMethod.GET)
     public String getLoginFormPage(Model model) {
-        return "login";
+        return USER_PAGE_LOGIN;
     }
 
     @RequestMapping(value = "/login.do", method = RequestMethod.POST)
@@ -93,18 +95,18 @@ public class PersonController {
         loginUserValidator.validate(login, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "login";
+            return USER_PAGE_LOGIN;
         }
         Person person = personService.logIn(login);
         session.setAttribute("user", person);
         List<Car> cars = carService.showAllAvailableCars();
         model.addAttribute("cars", cars);
-        return "availableCars";
+        return USER_PAGE_AVAILABLE_CARS;
     }
 
     @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
     public String getLoginAdminFormPage(Model model) {
-        return "adminLogin";
+        return ADMIN_PAGE_LOGIN;
     }
 
     @RequestMapping(value = "/adminLogin.do", method = RequestMethod.POST)
@@ -112,18 +114,18 @@ public class PersonController {
         loginAdminValidator.validate(login, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "adminLogin";
+            return ADMIN_PAGE_LOGIN;
         }
         Person person = personService.adminLogIn(login);
         session.setAttribute("user", person);
         List<Car> cars = carService.showAllCars();
         model.addAttribute("cars", cars);
-        return "adminHome";
+        return ADMIN_PAGE_HOME;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegistrationFormPage(Model model) {
-        return "register";
+        return USER_PAGE_REGISTER;
     }
 
     @RequestMapping(value = "/register.do", method = RequestMethod.POST)
@@ -131,11 +133,11 @@ public class PersonController {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "register";
+            return USER_PAGE_REGISTER;
         }
 
         personService.savePerson(person);
-        return "login";
+        return USER_PAGE_LOGIN;
     }
 
     private boolean isNullOrEmpty(String str) {
