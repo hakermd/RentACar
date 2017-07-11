@@ -63,10 +63,9 @@ public class Insurance implements Serializable {
 
         Insurance insurance = (Insurance) o;
 
-        if (id != insurance.id) return false;
-        if (Double.compare(insurance.cost, cost) != 0) return false;
-        if (car != null ? !car.equals(insurance.car) : insurance.car != null) return false;
-        return person != null ? person.equals(insurance.person) : insurance.person == null;
+        return id == insurance.id && Double.compare(insurance.cost, cost) == 0
+                && (car != null ? car.equals(insurance.car) : insurance.car == null)
+                && (person != null ? person.equals(insurance.person) : insurance.person == null);
     }
 
     @Override

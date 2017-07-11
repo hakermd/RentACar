@@ -16,15 +16,16 @@ import java.util.regex.Pattern;
  */
 @Component
 public class CarValidator implements Validator {
-    private Pattern pattern;
-    private Matcher matcher;
-    String NO_DIGITS_PATTERN = "[a-zA-Z]+";
-    String STRING_PATTERN = "[a-zA-Z0-9 ]+";
-    String WIN_CODE_PATTERN = "[a-zA-Z0-9]{17}";
-    String YEAR_PATTERN = "^\\d{4}$";
+    private static final String NO_DIGITS_PATTERN = "[a-zA-Z]+";
+    private static final String STRING_PATTERN = "[a-zA-Z0-9 ]+";
+    private static final String WIN_CODE_PATTERN = "[a-zA-Z0-9]{17}";
+
+    private final CarService carService;
 
     @Autowired
-    private CarService carService;
+    public CarValidator(CarService carService) {
+        this.carService = carService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -36,6 +37,8 @@ public class CarValidator implements Validator {
         Car car = (Car) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "winCode", "NotEmpty");
+        Pattern pattern;
+        Matcher matcher;
         if (car.getWinCode() != null && !car.getWinCode().isEmpty()) {
             if (car.getWinCode().length() != 17) {
                 errors.rejectValue("winCode", "Size.carForm.winCode");

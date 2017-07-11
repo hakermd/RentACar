@@ -1,14 +1,12 @@
 package com.rentacar.controller;
 
-import com.rentacar.model.*;
+import com.rentacar.model.Car;
+import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
 import com.rentacar.services.AdminRentACarService;
 import com.rentacar.services.CarService;
-import com.rentacar.services.UserRentACarService;
 import com.rentacar.validator.CarValidator;
 import com.rentacar.validator.EditCarValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,23 +26,21 @@ import static com.rentacar.util.PageNavigationConstants.*;
  */
 @Controller
 public class AdminController {
-    @Autowired
-    private AdminRentACarService adminRentACarService;
-    @Autowired
-    private CarService carService;
-    @Autowired
-    private UserRentACarService rentACarService;
-    @Autowired
-    private CarValidator carValidator;
-    @Autowired
-    private EditCarValidator editCarValidator;
+    private final AdminRentACarService adminRentACarService;
+    private final CarService carService;
+    private final CarValidator carValidator;
+    private final EditCarValidator editCarValidator;
 
-
-    public List<Car> cars;
+    private List<Car> cars;
     private CarFilter carFilter;
-    private Car car;
-    private static final Logger logger = LoggerFactory
-            .getLogger(AdminController.class);
+
+    @Autowired
+    public AdminController(AdminRentACarService adminRentACarService, CarService carService, CarValidator carValidator, EditCarValidator editCarValidator) {
+        this.adminRentACarService = adminRentACarService;
+        this.carService = carService;
+        this.carValidator = carValidator;
+        this.editCarValidator = editCarValidator;
+    }
 
     @ModelAttribute("car")
     public Car createCarModel() {
@@ -62,7 +58,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/adminHome", method = RequestMethod.GET)
-    public String getAdminHomePage(Model model) {
+    public String getAdminHomePage() {
         return ADMIN_PAGE_HOME;
     }
 
@@ -77,12 +73,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/addCarAdmin", method = RequestMethod.GET)
-    public String getAddCarFormPage(@ModelAttribute("car") Car car, Model model) {
+    public String getAddCarFormPage(@ModelAttribute("car") Car car) {
         return ADMIN_PAGE_ADD_CAR;
     }
 
     private String cancelAction(Model model) {
-        List<Car> cars = adminRentACarService.searchACar(carFilter);
+        cars = adminRentACarService.searchACar(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return ADMIN_PAGE_HOME;
@@ -101,14 +97,14 @@ public class AdminController {
         }
         car.setAvailability(CarAvailability.AVAILABLE);
         adminRentACarService.addACar(car);
-        List<Car> cars = adminRentACarService.searchACar(carFilter);
+        cars = adminRentACarService.searchACar(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return ADMIN_PAGE_HOME;
     }
 
     @RequestMapping(value = "/editCar", method = RequestMethod.GET)
-    public String getEditCarForm(@ModelAttribute("car") Car car, Model model) {
+    public String getEditCarForm(@ModelAttribute("car") Car car) {
         return ADMIN_PAGE_EDIT_CAR;
     }
 
@@ -124,7 +120,7 @@ public class AdminController {
             return ADMIN_PAGE_EDIT_CAR;
         }
         carService.updateCar(car);
-        List<Car> cars = adminRentACarService.searchACar(carFilter);
+        cars = adminRentACarService.searchACar(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return ADMIN_PAGE_HOME;
@@ -138,10 +134,11 @@ public class AdminController {
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
 
+        Car car;
         if (carWinCode != null) {
             car = carService.findCarByWinCode(carWinCode);
         } else {
-            List<Car> cars = adminRentACarService.searchACar(carFilter);
+            cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return ADMIN_PAGE_HOME;
@@ -149,13 +146,13 @@ public class AdminController {
 
         if ("CANCEL BOOK".equals(action)) {
             adminRentACarService.cancelBookingByCar(car);
-            List<Car> cars = adminRentACarService.searchACar(carFilter);
+            cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return ADMIN_PAGE_HOME;
         } else if ("CANCEL RENT".equals(action)) {
             adminRentACarService.cancelRentByCar(car);
-            List<Car> cars = adminRentACarService.searchACar(carFilter);
+            cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return ADMIN_PAGE_HOME;
@@ -164,13 +161,13 @@ public class AdminController {
             return ADMIN_PAGE_EDIT_CAR;
         } else if ("UNSUSPEND".equals(action)) {
             adminRentACarService.unsuspendACar(car);
-            List<Car> cars = adminRentACarService.searchACar(carFilter);
+            cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return ADMIN_PAGE_HOME;
         } else if ("SUSPEND".equals(action)) {
             adminRentACarService.suspendACar(car);
-            List<Car> cars = adminRentACarService.searchACar(carFilter);
+            cars = adminRentACarService.searchACar(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return ADMIN_PAGE_HOME;

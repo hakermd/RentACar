@@ -3,6 +3,7 @@ package com.rentacar.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,8 +11,8 @@ import java.util.Date;
  * Created by Andrei.Plesca
  */
 @Embeddable
-public class DrivingLicense {
-
+public class DrivingLicense implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Column(name = "licenseNumber", unique = true, nullable = false)
     private String licenseNumber;
     @Column(name = "licenseObtainingDate")
@@ -50,11 +51,9 @@ public class DrivingLicense {
 
         DrivingLicense that = (DrivingLicense) o;
 
-        if (licenseNumber != null ? !licenseNumber.equals(that.licenseNumber) : that.licenseNumber != null)
-            return false;
-        if (obtainingDate != null ? !obtainingDate.equals(that.obtainingDate) : that.obtainingDate != null)
-            return false;
-        return expiringDate != null ? expiringDate.equals(that.expiringDate) : that.expiringDate == null;
+        return (licenseNumber != null ? licenseNumber.equals(that.licenseNumber) : that.licenseNumber == null)
+                && (obtainingDate != null ? obtainingDate.equals(that.obtainingDate) : that.obtainingDate == null)
+                && (expiringDate != null ? expiringDate.equals(that.expiringDate) : that.expiringDate == null);
     }
 
     @Override

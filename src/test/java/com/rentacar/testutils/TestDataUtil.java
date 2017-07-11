@@ -23,7 +23,7 @@ public class TestDataUtil {
         person.setLastName("Doe");
         person.setEmail("john.doe@test.com");
         person.setAddress("jd street, apt 5");
-        person.setPassword("john1234");
+        person.setUserPassword("john1234");
         person.setCheckPassword("john1234");
         person.setBirthDate(sdf.parse("1988-01-01T00:00:00.000Z"));
         person.setGender(Gender.M);

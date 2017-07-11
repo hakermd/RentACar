@@ -1,10 +1,12 @@
 package com.rentacar.controller;
 
-import com.rentacar.model.*;
+import com.rentacar.model.Car;
+import com.rentacar.model.CarFilter;
+import com.rentacar.model.Insurance;
+import com.rentacar.model.Person;
 import com.rentacar.model.enums.CarAvailability;
-import com.rentacar.services.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.rentacar.services.CarService;
+import com.rentacar.services.UserRentACarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +25,18 @@ import static com.rentacar.util.PageNavigationConstants.*;
  */
 @Controller
 public class RentController {
-    private static final Logger logger = LoggerFactory
-            .getLogger(RentController.class);
+    private final UserRentACarService userRentACarService;
+    private final CarService carService;
 
-    @Autowired
-    private UserRentACarService userRentACarService;
-    @Autowired
-    private CarService carService;
-
-    public List<Car> cars;
+    private List<Car> cars;
     private CarFilter carFilter;
     private Car car;
-    private Insurance insurance;
 
+    @Autowired
+    public RentController(UserRentACarService userRentACarService, CarService carService) {
+        this.userRentACarService = userRentACarService;
+        this.carService = carService;
+    }
 
     @PostConstruct
     public void init() {
@@ -61,7 +62,7 @@ public class RentController {
             car = carService.findCarByWinCode(carWinCode);
             userRentACarService.rentACar(car, rentPerson);
         }
-        List<Car> cars = carService.filterCars(carFilter);
+        cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return USER_PAGE_AVAILABLE_CARS;
@@ -75,7 +76,7 @@ public class RentController {
             car = carService.findCarByWinCode(carWinCode);
             userRentACarService.bookACar(car, bookPerson);
         }
-        List<Car> cars = carService.filterCars(carFilter);
+        cars = carService.filterCars(carFilter);
         model.addAttribute("cars", cars);
         model.addAttribute("filter", carFilter);
         return USER_PAGE_AVAILABLE_CARS;
@@ -83,7 +84,7 @@ public class RentController {
 
     @RequestMapping(value = "/availableCars", method = RequestMethod.GET)
     public String getAvailableCarsPage(Model model) {
-        List<Car> cars = carService.showAllAvailableCars();
+        cars = carService.showAllAvailableCars();
         model.addAttribute("cars", cars);
         return USER_PAGE_AVAILABLE_CARS;
     }
@@ -101,12 +102,13 @@ public class RentController {
     private String carAction(String carWinCode, Model model, HttpServletRequest request) {
         String action = request.getParameter("action");
 
+        Insurance insurance;
         if (carWinCode != null) {
             car = carService.findCarByWinCode(carWinCode);
             insurance = new Insurance();
             insurance.setCost(userRentACarService.insuranceCostCalculate(insurance));
         } else {
-            List<Car> cars = carService.filterCars(carFilter);
+            cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return USER_PAGE_AVAILABLE_CARS;
@@ -122,7 +124,7 @@ public class RentController {
             return USER_PAGE_RENT_CAR;
         }
         if ("CANCEL".equals(action)) {
-            List<Car> cars = carService.filterCars(carFilter);
+            cars = carService.filterCars(carFilter);
             model.addAttribute("cars", cars);
             model.addAttribute("filter", carFilter);
             return USER_PAGE_AVAILABLE_CARS;

@@ -26,8 +26,8 @@
                         <form:errors type="text" id="userLogin" path="email" cssClass="error"/>
                     </div>
                     <div class="carDetailsViewDescription"><label for="userPassword">Password :</label>
-                        <form:input type="password" id="userPassword" path="password"/>
-                        <form:errors type="password" id="userPassword" path="password" cssClass="error"/>
+                        <form:input type="password" id="userPassword" path="userPassword"/>
+                        <form:errors type="password" id="userPassword" path="userPassword" cssClass="error"/>
                     </div>
                     <div><input class="button button1" type="submit" name="action"
                                 value="LOGIN"/></div>

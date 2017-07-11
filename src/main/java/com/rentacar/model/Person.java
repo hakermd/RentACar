@@ -28,8 +28,8 @@ public class Person implements Serializable {
     private String email;
     @Column(name = "address")
     private String address;
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "userPassword", nullable = false)
+    private String userPassword;
     @Transient
     private String checkPassword;
     @Column(name = "birthDate")
@@ -75,12 +75,12 @@ public class Person implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String password) {
+        this.userPassword = password;
     }
 
     public String getCheckPassword() {
@@ -134,16 +134,15 @@ public class Person implements Serializable {
 
         Person person = (Person) o;
 
-        if (personId != null ? !personId.equals(person.personId) : person.personId != null) return false;
-        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
-        if (email != null ? !email.equals(person.email) : person.email != null) return false;
-        if (address != null ? !address.equals(person.address) : person.address != null) return false;
-        if (password != null ? !password.equals(person.password) : person.password != null) return false;
-        if (birthDate != null ? !birthDate.equals(person.birthDate) : person.birthDate != null) return false;
-        if (gender != person.gender) return false;
-        if (userRole != person.userRole) return false;
-        return drivingLicense != null ? drivingLicense.equals(person.drivingLicense) : person.drivingLicense == null;
+        return (personId != null ? personId.equals(person.personId) : person.personId == null)
+                && (firstName != null ? firstName.equals(person.firstName) : person.firstName == null)
+                && (lastName != null ? lastName.equals(person.lastName) : person.lastName == null)
+                && (email != null ? email.equals(person.email) : person.email == null)
+                && (address != null ? address.equals(person.address) : person.address == null)
+                && (userPassword != null ? userPassword.equals(person.userPassword) : person.userPassword == null)
+                && (birthDate != null ? birthDate.equals(person.birthDate) : person.birthDate == null)
+                && gender == person.gender && userRole == person.userRole
+                && (drivingLicense != null ? drivingLicense.equals(person.drivingLicense) : person.drivingLicense == null);
     }
 
     @Override
@@ -153,11 +152,11 @@ public class Person implements Serializable {
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
         result = 31 * result + (checkPassword != null ? checkPassword.hashCode() : 0);
         result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (userRole != null ? userRole.hashCode() : 0);
+        result = 31 * result + userRole.hashCode();
         result = 31 * result + (drivingLicense != null ? drivingLicense.hashCode() : 0);
         return result;
     }
@@ -170,8 +169,6 @@ public class Person implements Serializable {
                 ",\n  lastName='" + lastName + '\'' +
                 ",\n  email='" + email + '\'' +
                 ",\n  address='" + address + '\'' +
-                ",\n  password='" + password + '\'' +
-                ",\n  checkPassword='" + checkPassword + '\'' +
                 ",\n  birthDate=" + birthDate +
                 ",\n  gender=" + gender +
                 ",\n  userRole=" + userRole +

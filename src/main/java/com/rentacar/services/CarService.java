@@ -9,21 +9,21 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public interface CarService {
-    public Car findCarById(long carId);
+    Car findCarById(long carId);
 
-    public Car findCarByWinCode(String carWinCode);
+    Car findCarByWinCode(String carWinCode);
 
-    public Car findCarByRegistrationNumber(String registrationNumber);
+    Car findCarByRegistrationNumber(String registrationNumber);
 
-    public List<Car> showAllAvailableCars();
+    List<Car> showAllAvailableCars();
 
-    public List<Car> filterCars(CarFilter filter);
+    List<Car> filterCars(CarFilter filter);
 
-    public List<Car> showAllCars();
+    List<Car> showAllCars();
 
-    public void saveCar(Car car);
+    void saveCar(Car car);
 
-    public void updateCar(Car car);
+    void updateCar(Car car);
 
-    public void deleteCar(Car car);
+    void deleteCar(Car car);
 }

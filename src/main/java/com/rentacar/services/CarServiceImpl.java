@@ -17,8 +17,12 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class CarServiceImpl implements CarService {
+    private final CarDao carDao;
+
     @Autowired
-    private CarDao carDao;
+    public CarServiceImpl(CarDao carDao) {
+        this.carDao = carDao;
+    }
 
     @Override
     public Car findCarById(long carId) {
@@ -42,7 +46,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> filterCars(CarFilter filter) {
-        return carDao.searchACarByCriteria(filter);
+        return (List<Car>) carDao.searchACarByCriteria(filter);
     }
 
     @Override
@@ -51,19 +55,19 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveCar(Car car) {
         carDao.save(car);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateCar(Car car) {
         carDao.update(car);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteCar(Car car) {
         carDao.delete(car);
     }

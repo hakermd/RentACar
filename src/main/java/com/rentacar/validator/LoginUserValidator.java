@@ -16,13 +16,15 @@ import java.util.regex.Pattern;
  */
 @Component
 public class LoginUserValidator implements Validator {
-    private Pattern pattern;
-    private Matcher matcher;
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    private final PersonService personService;
+
     @Autowired
-    private PersonService personService;
+    public LoginUserValidator(PersonService personService) {
+        this.personService = personService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -35,17 +37,17 @@ public class LoginUserValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
         if (login.getEmail() != null && !login.getEmail().isEmpty()) {
-            pattern = Pattern.compile(EMAIL_PATTERN);
-            matcher = pattern.matcher(login.getEmail());
+            Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+            Matcher matcher = pattern.matcher(login.getEmail());
             if (!matcher.matches()) {
                 errors.rejectValue("email", "Incorrect.loginForm.email");
             }
         }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (login.getPassword().length() < 5 || login.getPassword().length() > 20) {
-            errors.rejectValue("password", "Size.loginForm.password");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "NotEmpty");
+        if (login.getUserPassword().length() < 5 || login.getUserPassword().length() > 20) {
+            errors.rejectValue("userPassword", "Size.loginForm.password");
         } else if (personService.logIn(login) == null) {
-            errors.rejectValue("password", "Error.loginForm.login");
+            errors.rejectValue("userPassword", "Error.loginForm.login");
         }
     }
 }

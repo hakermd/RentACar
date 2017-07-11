@@ -19,7 +19,6 @@ public enum CarAvailability {
     }
 
     public boolean equalsName(String otherName) {
-        // (otherName == null) check is not needed because name.equals(null) returns false
         return carAvailability.equals(otherName);
     }
 

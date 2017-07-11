@@ -93,6 +93,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -132,6 +133,11 @@
             <version>1.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -147,6 +153,11 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPaths>C:\Users\aplesca\IdeaProjects\RentACar\RentACar\target\jacoco.exec
         </sonar.jacoco.reportPaths>
+        <sonar.coverage.exclusions>
+            **/model/**/*,
+            **/validator/**/*,
+            **/util/**/*
+        </sonar.coverage.exclusions>
         <sonar.language>java</sonar.language>
     </properties>
 </project>

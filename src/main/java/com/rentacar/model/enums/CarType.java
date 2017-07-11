@@ -23,11 +23,10 @@ public enum CarType {
     }
 
     public boolean equalsName(String otherName) {
-        // (otherName == null) check is not needed because name.equals(null) returns false
         return carType.equals(otherName);
     }
-
     public String toString() {
         return this.carType;
     }
 }
+

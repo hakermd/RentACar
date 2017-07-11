@@ -9,36 +9,36 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public interface AdminRentACarService {
-    public void addACar(Car car);
+    void addACar(Car car);
 
-    public void removeACar(Car car);
+    void removeACar(Car car);
 
-    public void suspendACar(Car car);
+    void suspendACar(Car car);
 
-    public void unsuspendACar(Car car);
+    void unsuspendACar(Car car);
 
-    public List<Car> getAllCars();
+    List<Car> getAllCars();
 
-    public List<Car> searchACar(CarFilter carFilter);
+    List<Car> searchACar(CarFilter carFilter);
 
-    public void changeACarInfo(Car car);
+    void changeACarInfo(Car car);
 
-    public List<Car> searchACarByStatus(CarAvailability carAvailability);
+    List<Car> searchACarByStatus(CarAvailability carAvailability);
 
-    public void cancelRent(Rent rent);
+    void cancelRent(Rent rent);
 
-    public void cancelRentByPerson(Person person);
+    void cancelRentByPerson(Person person);
 
-    public void cancelRentByCar(Car car);
+    void cancelRentByCar(Car car);
 
-    public void cancelBooking(Booking booking);
+    void cancelBooking(Booking booking);
 
-    public void cancelBookingByPerson(Person person);
+    void cancelBookingByPerson(Person person);
 
-    public void cancelBookingByCar(Car car);
+    void cancelBookingByCar(Car car);
 
-    public Rent getRentByCar(Car car);
+    Rent getRentByCar(Car car);
 
-    public Booking getBookingByCar(Car car);
+    Booking getBookingByCar(Car car);
 
 }

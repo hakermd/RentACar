@@ -1,13 +1,14 @@
 package com.rentacar.controller;
 
-import com.rentacar.model.*;
+import com.rentacar.model.Car;
+import com.rentacar.model.CarFilter;
+import com.rentacar.model.Login;
+import com.rentacar.model.Person;
 import com.rentacar.services.CarService;
 import com.rentacar.services.PersonService;
 import com.rentacar.validator.LoginAdminValidator;
 import com.rentacar.validator.LoginUserValidator;
 import com.rentacar.validator.PersonValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -31,22 +32,20 @@ import static com.rentacar.util.PageNavigationConstants.*;
  */
 @Controller
 public class PersonController {
-    private static final Logger logger = LoggerFactory
-            .getLogger(PersonController.class);
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
+    private final CarService carService;
+    private final PersonValidator personValidator;
+    private final LoginUserValidator loginUserValidator;
+    private final LoginAdminValidator loginAdminValidator;
 
     @Autowired
-    private CarService carService;
-
-    @Autowired
-    private PersonValidator personValidator;
-
-    @Autowired
-    private LoginUserValidator loginUserValidator;
-
-    @Autowired
-    private LoginAdminValidator loginAdminValidator;
+    public PersonController(PersonService personService, CarService carService, PersonValidator personValidator, LoginUserValidator loginUserValidator, LoginAdminValidator loginAdminValidator) {
+        this.personService = personService;
+        this.carService = carService;
+        this.personValidator = personValidator;
+        this.loginUserValidator = loginUserValidator;
+        this.loginAdminValidator = loginAdminValidator;
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -57,25 +56,21 @@ public class PersonController {
 
     @ModelAttribute("person")
     public Person createEmployeeModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new Person();
     }
 
     @ModelAttribute("car")
     public Car createCarModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new Car();
     }
 
     @ModelAttribute("filter")
     public CarFilter createFilterModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new CarFilter();
     }
 
     @ModelAttribute("admin")
     public Login createLoginModelForAdmin() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new Login();
     }
 
@@ -86,7 +81,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = {"/login", "/"}, method = RequestMethod.GET)
-    public String getLoginFormPage(Model model) {
+    public String getLoginFormPage() {
         return USER_PAGE_LOGIN;
     }
 
@@ -105,7 +100,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
-    public String getLoginAdminFormPage(Model model) {
+    public String getLoginAdminFormPage() {
         return ADMIN_PAGE_LOGIN;
     }
 
@@ -124,12 +119,12 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String getRegistrationFormPage(Model model) {
+    public String getRegistrationFormPage() {
         return USER_PAGE_REGISTER;
     }
 
     @RequestMapping(value = "/register.do", method = RequestMethod.POST)
-    public String getRegistrationFormAction(@ModelAttribute("person") Person person, BindingResult bindingResult, Model model) {
+    public String getRegistrationFormAction(@ModelAttribute("person") Person person, BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -138,9 +133,5 @@ public class PersonController {
 
         personService.savePerson(person);
         return USER_PAGE_LOGIN;
-    }
-
-    private boolean isNullOrEmpty(String str) {
-        return str == null || str.isEmpty();
     }
 }

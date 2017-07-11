@@ -39,10 +39,9 @@ public class Booking implements Serializable {
     @Column(name = "bookingActive", nullable = false, columnDefinition = "TINYINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean active;
-    @Transient
-    private SecureRandom random = new SecureRandom();
 
     public Booking() {
+        SecureRandom random = new SecureRandom();
         this.bookingCode = new BigInteger(32, random).toString(32).toUpperCase();
         this.active = true;
     }

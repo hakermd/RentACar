@@ -5,7 +5,7 @@ package com.rentacar.model;
  */
 public class Login {
     private String email;
-    private String password;
+    private String userPassword;
 
     public String getEmail() {
         return email;
@@ -15,11 +15,11 @@ public class Login {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String password) {
+        this.userPassword = password;
     }
 }

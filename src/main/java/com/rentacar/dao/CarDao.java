@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface CarDao extends DAO<Car> {
 
-    public List<Car> searchACarByStatus(CarAvailability carAvailability);
+    List<Car> searchACarByStatus(CarAvailability carAvailability);
 
-    public List<Car> searchACarByCriteria(CarFilter filter);
+    List searchACarByCriteria(CarFilter filter);
 
-    public Car findCarByWinCode(String carWinCode);
+    Car findCarByWinCode(String carWinCode);
 
-    public Car findCarByRegistrationNumber(String registrationNumber);
+    Car findCarByRegistrationNumber(String registrationNumber);
 }

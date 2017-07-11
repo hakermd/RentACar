@@ -38,8 +38,8 @@
                         <form:errors type="text" path="address" cssClass="error"/>
                     </div>
                     <div class="carDetailsViewDescription"><label for="userPasswordRegister">Password :</label>
-                        <form:input type="password" id="userPasswordRegister" path="password"/>
-                        <form:errors type="text" path="password" cssClass="error"/>
+                        <form:input type="password" id="userPasswordRegister" path="userPassword"/>
+                        <form:errors type="text" path="userPassword" cssClass="error"/>
                     </div>
                     <div class="carDetailsViewDescription"><label for="userPasswordCheckRegister">Confirm Password
                         :</label>

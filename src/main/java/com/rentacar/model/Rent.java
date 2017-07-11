@@ -2,7 +2,7 @@ package com.rentacar.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Created by Andrei.Plesca
@@ -27,9 +27,9 @@ public class Rent implements Serializable {
     @Column(name = "rentCost", precision = 2)
     private double cost;
     @Column(name = "rentStartDate")
-    private LocalDate start;
+    private Date start;
     @Column(name = "rentEndDate")
-    private LocalDate end;
+    private Date end;
     @Column(name = "rentActive")
     private boolean active;
 
@@ -77,19 +77,19 @@ public class Rent implements Serializable {
         this.cost = cost;
     }
 
-    public LocalDate getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDate getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 

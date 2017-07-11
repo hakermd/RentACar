@@ -19,28 +19,32 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class AdminRentACarServiceImpl implements AdminRentACarService {
+    private final CarDao carDao;
+    private final RentDao rentDao;
+    private final BookingDao bookingDao;
+
     @Autowired
-    private CarDao carDao;
-    @Autowired
-    private RentDao rentDao;
-    @Autowired
-    private BookingDao bookingDao;
+    public AdminRentACarServiceImpl(CarDao carDao, RentDao rentDao, BookingDao bookingDao) {
+        this.carDao = carDao;
+        this.rentDao = rentDao;
+        this.bookingDao = bookingDao;
+    }
 
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addACar(Car car) {
         carDao.save(car);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void removeACar(Car car) {
         carDao.delete(car);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
     public void suspendACar(Car car) {
         if (car.getAvailability().equalsName(CarAvailability.RENTED.toString())) {
             Rent rent = rentDao.getRentByCar(car);
@@ -76,11 +80,11 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
 
     @Override
     public List<Car> searchACar(CarFilter carFilter) {
-        return carDao.searchACarByCriteria(carFilter);
+        return (List<Car>) carDao.searchACarByCriteria(carFilter);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void changeACarInfo(Car car) {
         carDao.update(car);
     }
@@ -91,48 +95,46 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelRent(Rent rent) {
-        Car updateCar = rent.getCar();
-        updateCar.setAvailability(CarAvailability.AVAILABLE);
+        Car updateCar = updateCar(rent.getCar());
         rent.setActive(false);
         carDao.update(updateCar);
         rentDao.update(rent);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelRentByPerson(Person person) {
         Rent rent = rentDao.getRentByPerson(person);
         cancelRent(rent);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelRentByCar(Car car) {
         Rent rent = rentDao.getRentByCar(car);
         cancelRent(rent);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBooking(Booking booking) {
-        Car updateCar = booking.getCar();
-        updateCar.setAvailability(CarAvailability.AVAILABLE);
+        Car updateCar = updateCar(booking.getCar());
         booking.setActive(false);
         carDao.update(updateCar);
         bookingDao.update(booking);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByPerson(Person person) {
         Booking booking = bookingDao.getBookingByPerson(person);
         cancelBooking(booking);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByCar(Car car) {
         Booking booking = bookingDao.getBookingByCar(car);
         cancelBooking(booking);
@@ -146,5 +148,10 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     @Override
     public Booking getBookingByCar(Car car) {
         return bookingDao.getBookingByCar(car);
+    }
+
+    private Car updateCar(Car car) {
+        car.setAvailability(CarAvailability.AVAILABLE);
+        return car;
     }
 }

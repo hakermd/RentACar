@@ -8,7 +8,7 @@ import com.rentacar.model.Rent;
  * Created by Andrei.Plesca
  */
 public interface RentDao extends DAO<Rent> {
-    public Rent getRentByCar(Car car);
+    Rent getRentByCar(Car car);
 
-    public Rent getRentByPerson(Person person);
+    Rent getRentByPerson(Person person);
 }

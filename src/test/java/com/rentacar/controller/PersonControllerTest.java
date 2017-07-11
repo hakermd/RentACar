@@ -78,7 +78,7 @@ public class PersonControllerTest {
     public void testGetLoginFormAction() throws Exception {
         Login login = new Login();
         login.setEmail(person.getEmail());
-        login.setPassword(person.getPassword());
+        login.setUserPassword(person.getUserPassword());
 
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
@@ -93,7 +93,7 @@ public class PersonControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
                         "email", login.getEmail(),
-                        "password", login.getPassword()
+                        "userPassword", login.getUserPassword()
                 )))
                 .andExpect(status().isOk())
                 .andExpect(view().name("availableCars"));
@@ -110,7 +110,7 @@ public class PersonControllerTest {
     public void testGetLoginAdminFormAction() throws Exception {
         Login login = new Login();
         login.setEmail(person.getEmail());
-        login.setPassword(person.getPassword());
+        login.setUserPassword(person.getUserPassword());
 
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
@@ -125,7 +125,7 @@ public class PersonControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
                         "email", login.getEmail(),
-                        "password", login.getPassword())))
+                        "userPassword", login.getUserPassword())))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adminHome"));
     }
@@ -152,7 +152,7 @@ public class PersonControllerTest {
                         "lastName", person.getLastName(),
                         "email", person.getEmail(),
                         "address", person.getAddress(),
-                        "password", person.getPassword(),
+                        "userPassword", person.getUserPassword(),
                         "checkPassword", person.getCheckPassword(),
                         "birthDate", "1988-01-01T00:00:00.000Z",
                         "gender", person.getGender().getValue(),

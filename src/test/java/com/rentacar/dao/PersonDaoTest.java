@@ -145,7 +145,7 @@ public class PersonDaoTest {
         currentPerson = personDao.findOne(person.getPersonId());
         assertNotNull(currentPerson);
         assertEquals(person, currentPerson);
-        currentPerson = personDao.logIn(person.getEmail(), person.getPassword());
+        currentPerson = personDao.logIn(person.getEmail(), person.getUserPassword());
         assertNotNull(currentPerson);
         assertEquals(person, currentPerson);
     }

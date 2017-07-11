@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class PersonServiceImpl implements PersonService {
+    private final PersonDao personDao;
+
     @Autowired
-    private PersonDao personDao;
+    public PersonServiceImpl(PersonDao personDao) {
+        this.personDao = personDao;
+    }
 
     @Override
     public List<Person> findAllPersons() {
@@ -25,31 +29,31 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void savePerson(Person person) {
         personDao.save(person);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updatePerson(Person person) {
         personDao.update(person);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deletePerson(Person person) {
         personDao.delete(person);
     }
 
     @Override
     public Person logIn(Login login) {
-        return personDao.logIn(login.getEmail(), login.getPassword());
+        return personDao.logIn(login.getEmail(), login.getUserPassword());
     }
 
     @Override
     public Person adminLogIn(Login login) {
-        return personDao.adminLogIn(login.getEmail(), login.getPassword());
+        return personDao.adminLogIn(login.getEmail(), login.getUserPassword());
     }
 
     @Override

@@ -17,14 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class UserRentACarServiceImpl implements UserRentACarService {
+    private final RentDao rentDao;
+    private final InsuranceDao insuranceDao;
+    private final CarDao carDao;
+    private final BookingDao bookingDao;
+
     @Autowired
-    private RentDao rentDao;
-    @Autowired
-    private InsuranceDao insuranceDao;
-    @Autowired
-    private CarDao carDao;
-    @Autowired
-    private BookingDao bookingDao;
+    public UserRentACarServiceImpl(RentDao rentDao, InsuranceDao insuranceDao, CarDao carDao, BookingDao bookingDao) {
+        this.rentDao = rentDao;
+        this.insuranceDao = insuranceDao;
+        this.carDao = carDao;
+        this.bookingDao = bookingDao;
+    }
 
     @Override
     public Rent getRentByPerson(Person person) {
@@ -37,16 +41,16 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void rentACar(Car car, Person person) {
         car.setAvailability(CarAvailability.RENTED);
-            /*------------------------------*/
+
         Insurance insurance = new Insurance();
         insurance.setCar(car);
         insurance.setPerson(person);
         insurance.setCost(insuranceCostCalculate(insurance));
         insuranceDao.save(insurance);
-            /*------------------------------*/
+
         Rent rent = new Rent();
         rent.setActive(true);
         rent.setCar(car);
@@ -55,15 +59,15 @@ public class UserRentACarServiceImpl implements UserRentACarService {
         rent.setPerson(person);
         carDao.update(car);
         rentDao.save(rent);
-
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void rentACarByBookingCode(String bookingCode) {
         Booking booking = bookingDao.findBookingByCode(bookingCode);
         Car updateCar = booking.getCar();
         updateCar.setAvailability(CarAvailability.RENTED);
+
         booking.setActive(false);
         Rent rent = new Rent();
         rent.setCar(booking.getCar());
@@ -71,22 +75,23 @@ public class UserRentACarServiceImpl implements UserRentACarService {
         rent.setInsurance(booking.getInsurance());
         rent.setCost(booking.getCost());
         rent.setActive(true);
+
         bookingDao.delete(booking);
         carDao.update(updateCar);
         rentDao.save(rent);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String bookACar(Car car, Person person) {
         car.setAvailability(CarAvailability.BOOKED);
-            /*------------------------------*/
+
         Insurance insurance = new Insurance();
         insurance.setCar(car);
         insurance.setPerson(person);
         insurance.setCost(insuranceCostCalculate(insurance));
         insuranceDao.save(insurance);
-            /*------------------------------*/
+
         Booking booking = new Booking();
         booking.setActive(true);
         booking.setCar(car);
@@ -99,7 +104,7 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void returnACar(Car car) {
         Rent rent = rentDao.getRentByCar(car);
         Car updateCar = rent.getCar();
@@ -110,7 +115,7 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteRent(Rent rent) {
         Car updateCar = rent.getCar();
         updateCar.setAvailability(CarAvailability.AVAILABLE);
@@ -120,7 +125,7 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBooking(Booking booking) {
         Car updateCar = booking.getCar();
         updateCar.setAvailability(CarAvailability.AVAILABLE);
@@ -130,14 +135,14 @@ public class UserRentACarServiceImpl implements UserRentACarService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByCode(String bookingCode) {
         Booking booking = bookingDao.findBookingByCode(bookingCode);
         cancelBooking(booking);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteBooking(Booking booking) {
         Car updateCar = booking.getCar();
         updateCar.setAvailability(CarAvailability.AVAILABLE);

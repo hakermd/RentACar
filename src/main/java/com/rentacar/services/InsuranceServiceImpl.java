@@ -1,7 +1,6 @@
 package com.rentacar.services;
 
 import com.rentacar.dao.InsuranceDao;
-import com.rentacar.model.Car;
 import com.rentacar.model.Insurance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,12 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class InsuranceServiceImpl implements InsuranceService {
+    private final InsuranceDao insuranceDao;
+
     @Autowired
-    private InsuranceDao insuranceDao;
+    public InsuranceServiceImpl(InsuranceDao insuranceDao) {
+        this.insuranceDao = insuranceDao;
+    }
 
     @Override
     public Insurance findInsuranceById(long id) {
@@ -30,19 +33,19 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveInsurance(Insurance insurance) {
         insuranceDao.save(insurance);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateInsurance(Insurance insurance) {
         insuranceDao.update(insurance);
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteInsurance(Insurance insurance) {
         insuranceDao.delete(insurance);
     }

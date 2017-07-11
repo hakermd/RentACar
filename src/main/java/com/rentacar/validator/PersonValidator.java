@@ -8,8 +8,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,17 +17,16 @@ import java.util.regex.Pattern;
  */
 @Component
 public class PersonValidator implements Validator {
-    private Pattern pattern;
-    private Matcher matcher;
-    private static final DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    String STRING_PATTERN = "[a-zA-Z]+";
-    String DRIVING_LICENSE_PATTERN = "^[A-Z]{2}[0-9]{6}[A-Z]{1}";
-    String DATE_PATTERN = "^\\d{2}-\\d{2}-\\d{4}$";
+    private static final String DRIVING_LICENSE_PATTERN = "^[A-Z]{2}[0-9]{6}[A-Z]";
+
+    private final PersonService personService;
 
     @Autowired
-    private PersonService personService;
+    public PersonValidator(PersonService personService) {
+        this.personService = personService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -49,6 +46,8 @@ public class PersonValidator implements Validator {
             errors.rejectValue("lastName", "Size.personForm.lastName");
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
+        Pattern pattern;
+        Matcher matcher;
         if (person.getEmail() != null && !person.getEmail().isEmpty()) {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(person.getEmail());
@@ -64,14 +63,14 @@ public class PersonValidator implements Validator {
             errors.rejectValue("address", "Size.personForm.address");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (person.getPassword().length() < 5 || person.getPassword().length() > 20) {
-            errors.rejectValue("password", "Size.personForm.password");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "NotEmpty");
+        if (person.getUserPassword().length() < 5 || person.getUserPassword().length() > 20) {
+            errors.rejectValue("userPassword", "Size.personForm.password");
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "checkPassword", "NotEmpty");
         if (person.getCheckPassword().length() < 5 || person.getCheckPassword().length() > 20) {
             errors.rejectValue("checkPassword", "Size.personForm.checkPassword");
-        } else if (!person.getCheckPassword().equals(person.getPassword())) {
+        } else if (!person.getCheckPassword().equals(person.getUserPassword())) {
             errors.rejectValue("checkPassword", "NotMatch.personForm.checkPassword");
         }
 
@@ -89,7 +88,7 @@ public class PersonValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "drivingLicense.licenseNumber", "NotEmpty");
         if ((person.getDrivingLicense().getLicenseNumber() != null) && !person.getDrivingLicense().getLicenseNumber().isEmpty()) {
             pattern = Pattern.compile(DRIVING_LICENSE_PATTERN);
-            matcher = pattern.matcher(person.getDrivingLicense().getLicenseNumber().toString());
+            matcher = pattern.matcher(person.getDrivingLicense().getLicenseNumber());
             if (!matcher.matches()) {
                 errors.rejectValue("drivingLicense.licenseNumber", "Incorrect.personForm.licenseNumber");
             }

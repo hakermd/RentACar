@@ -65,7 +65,7 @@ public class PersonServiceTest {
         personService.savePerson(person);
         currentPerson.setLastName("Deer");
         currentPerson.setAddress("deer street");
-        currentPerson.setPassword("test1234");
+        currentPerson.setUserPassword("test1234");
         expectedPerson = currentPerson;
         personService.updatePerson(currentPerson);
         currentPerson = personService.findById(person.getPersonId());
@@ -88,7 +88,7 @@ public class PersonServiceTest {
         personService.savePerson(person);
         Login login = new Login();
         login.setEmail(person.getEmail());
-        login.setPassword(person.getPassword());
+        login.setUserPassword(person.getUserPassword());
         currentPerson = personService.logIn(login);
         assertNotNull(currentPerson);
         assertEquals(expectedPerson, currentPerson);
@@ -99,7 +99,7 @@ public class PersonServiceTest {
         personService.savePerson(person);
         Login login = new Login();
         login.setEmail(person.getEmail());
-        login.setPassword(person.getPassword());
+        login.setUserPassword(person.getUserPassword());
         expectedPerson = personService.adminLogIn(login);
         assertNull(expectedPerson);
     }

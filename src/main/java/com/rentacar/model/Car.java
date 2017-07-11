@@ -48,8 +48,6 @@ public class Car implements Serializable {
     @Column(name = "carAvailability", nullable = false)
     @Enumerated(EnumType.STRING)
     private CarAvailability availability;
-    @Transient
-    private String carPhoto;
 
     public long getCarId() {
         return carId;
@@ -148,7 +146,7 @@ public class Car implements Serializable {
     }
 
     public String getCarPhoto() {
-        carPhoto = manufacturer + "-" + model + ".png";
+        String carPhoto = manufacturer + "-" + model + ".png";
         return carPhoto.replaceAll(" ", "_").toLowerCase();
     }
 
@@ -187,9 +185,7 @@ public class Car implements Serializable {
             return false;
         if (fuelType != car.fuelType) return false;
         if (transmission != car.transmission) return false;
-        if (economyClass != car.economyClass) return false;
-        if (options != car.options) return false;
-        return availability == car.availability;
+        return economyClass == car.economyClass && options == car.options && availability == car.availability;
     }
 
     @Override

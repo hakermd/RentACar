@@ -3,7 +3,6 @@ package com.rentacar.dao;
 import com.rentacar.model.Booking;
 import com.rentacar.model.Car;
 import com.rentacar.model.Person;
-import com.rentacar.model.Rent;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -27,11 +26,12 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
     private static final Logger logger = LoggerFactory
             .getLogger(BookingDaoImpl.class);
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    protected BookingDaoImpl() {
-        super(Booking.class);
+    @Autowired
+    protected BookingDaoImpl(SessionFactory sessionFactory) {
+        super(Booking.class, sessionFactory);
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Booking> bookingRoot = criteria.from(Booking.class);
         criteria.select(bookingRoot).where(builder.equal(bookingRoot.get("bookingCode"), bookingCode));
         TypedQuery query = session.createQuery(criteria);
@@ -58,7 +58,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Booking> bookingRoot = criteria.from(Booking.class);
         Predicate carRestriction = builder.and(
                 builder.equal(bookingRoot.get("car"), car.getCarId()),
@@ -80,7 +80,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Booking> bookingRoot = criteria.from(Booking.class);
         Predicate carRestriction = builder.and(
                 builder.equal(bookingRoot.get("person"), person.getPersonId()),

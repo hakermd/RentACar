@@ -1,6 +1,8 @@
 package com.rentacar.dao;
 
 import com.rentacar.model.Insurance;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class InsuranceDaoImpl extends AbstractHibernateDAO<Insurance> implements InsuranceDao {
-    protected InsuranceDaoImpl() {
-        super(Insurance.class);
+
+    @Autowired
+    protected InsuranceDaoImpl(SessionFactory sessionFactory) {
+        super(Insurance.class, sessionFactory);
     }
 }

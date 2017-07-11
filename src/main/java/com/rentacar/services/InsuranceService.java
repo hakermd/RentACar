@@ -8,13 +8,13 @@ import java.util.List;
  * Created by Andrei.Plesca
  */
 public interface InsuranceService {
-    public Insurance findInsuranceById(long id);
+    Insurance findInsuranceById(long id);
 
-    public List<Insurance> findAllInsurances();
+    List<Insurance> findAllInsurances();
 
-    public void saveInsurance(Insurance insurance);
+    void saveInsurance(Insurance insurance);
 
-    public void updateInsurance(Insurance insurance);
+    void updateInsurance(Insurance insurance);
 
-    public void deleteInsurance(Insurance insurance);
+    void deleteInsurance(Insurance insurance);
 }

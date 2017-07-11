@@ -11,18 +11,18 @@ import java.util.List;
  */
 public abstract class AbstractHibernateDAO<T extends Serializable> implements DAO<T> {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
     private Class<T> clazz;
 
-    protected AbstractHibernateDAO(Class<T> clazz) {
+    @Autowired
+    protected AbstractHibernateDAO(Class<T> clazz, SessionFactory sessionFactory) {
         this.clazz = clazz;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public T findOne(final long id) {
-        T t = (T) sessionFactory.getCurrentSession().get(clazz, id);
-        return t;
+        return (T) sessionFactory.getCurrentSession().get(clazz, id);
     }
 
     @Override

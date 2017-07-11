@@ -26,22 +26,30 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
     private static final Logger logger = LoggerFactory
             .getLogger(Car.class);
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    public CarDaoImpl() {
-        super(Car.class);
+    @Autowired
+    public CarDaoImpl(SessionFactory sessionFactory) {
+        super(Car.class, sessionFactory);
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Car> searchACarByStatus(CarAvailability carAvailability) {
+        // Create CriteriaBuilder
         Session session = sessionFactory.getCurrentSession();
-        String hql = "from Car c where c.availability  =  :carAvailability";
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        // Create CriteriaQuery
+        CriteriaQuery<Object> criteria = builder.createQuery();
+        Root<Car> carRoot = criteria.from(Car.class);
+        criteria.select(carRoot).where(builder.and(builder.equal(carRoot.get("availability"), carAvailability)));
+        TypedQuery query = session.createQuery(criteria);
 
         try {
-            return session.createQuery(hql).setParameter("carAvailability", carAvailability).list();
+            return (List<Car>) query.getResultList();
         } catch (NoResultException e) {
-            logger.info("Cars Not Found! ");
+            logger.info("Car Not Found! ");
             return null;
         }
     }
@@ -53,7 +61,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Car> carRoot = criteria.from(Car.class);
         Predicate carRestriction = builder.and(
                 filter.getEconomyClass() != null ? builder.equal(carRoot.get("economyClass"), filter.getEconomyClass()) : builder.conjunction(),
@@ -67,9 +75,9 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         TypedQuery query = session.createQuery(criteria);
 
         try {
-            return query.getResultList();
+            return (List<Car>) query.getResultList();
         } catch (NoResultException e) {
-            logger.info("Car Not Found! ");
+            logger.info("Cars Not Found! ");
             return null;
         }
     }
@@ -80,7 +88,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Car> carRoot = criteria.from(Car.class);
         criteria.select(carRoot).where(builder.equal(carRoot.get("winCode"), carWinCode));
         TypedQuery query = session.createQuery(criteria);
@@ -99,7 +107,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Car> carRoot = criteria.from(Car.class);
         criteria.select(carRoot).where(builder.equal(carRoot.get("registrationNumber"), registrationNumber));
         TypedQuery query = session.createQuery(criteria);

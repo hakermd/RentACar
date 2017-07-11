@@ -21,5 +21,5 @@ public interface DAO<T extends Serializable> {
 
     void deleteById(long id);
 
-    public SessionFactory getSessionFactory();
+    SessionFactory getSessionFactory();
 }

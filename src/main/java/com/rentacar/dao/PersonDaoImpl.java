@@ -25,11 +25,12 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
     private static final Logger logger = LoggerFactory
             .getLogger(PersonDaoImpl.class);
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    protected PersonDaoImpl() {
-        super(Person.class);
+    @Autowired
+    protected PersonDaoImpl(SessionFactory sessionFactory) {
+        super(Person.class, sessionFactory);
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Person> personRoot = criteria.from(Person.class);
         criteria.select(personRoot).where(builder.equal(personRoot.get("email"), email));
         TypedQuery query = session.createQuery(criteria);
@@ -74,11 +75,11 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         // Create CriteriaQuery
-        CriteriaQuery criteria = builder.createQuery();
+        CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Person> personRoot = criteria.from(Person.class);
         Predicate carRestriction = builder.and(
                 builder.equal(personRoot.get("email"), email),
-                builder.equal(personRoot.get("password"), password),
+                builder.equal(personRoot.get("userPassword"), password),
                 builder.equal(personRoot.get("userRole"), userRole)
         );
         criteria.select(personRoot).where(builder.and(carRestriction));

@@ -9,9 +9,9 @@ import com.rentacar.model.Person;
  */
 
 public interface BookingDao extends DAO<Booking> {
-    public Booking findBookingByCode(String bookingCode);
+    Booking findBookingByCode(String bookingCode);
 
-    public Booking getBookingByCar(Car car);
+    Booking getBookingByCar(Car car);
 
-    public Booking getBookingByPerson(Person person);
+    Booking getBookingByPerson(Person person);
 }
