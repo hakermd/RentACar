@@ -6,21 +6,22 @@ package com.rentacar.model.enums;
 public enum CarTransmission {
     AUTOMATIC("AUTOMATIC"),
     MANUAL("MANUAL");
-    private final String carTransmission;
+    private final String transmission;
 
     CarTransmission(String carTransmission) {
-        this.carTransmission = carTransmission;
+        this.transmission = carTransmission;
     }
 
     public String getValue() {
-        return carTransmission;
+        return transmission;
     }
 
     public boolean equalsName(String otherName) {
-        return carTransmission.equals(otherName);
+        return transmission.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.carTransmission;
+        return this.transmission;
     }
 }

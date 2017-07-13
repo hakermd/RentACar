@@ -7,21 +7,22 @@ public enum UserRole {
     USER("USER"),
     ADMIN("ADMIN");
 
-    private final String userRole;
+    private final String role;
 
     UserRole(String userRole) {
-        this.userRole = userRole;
+        this.role = userRole;
     }
 
     public String getValue() {
-        return userRole;
+        return role;
     }
 
     public boolean equalsName(String otherName) {
-        return userRole.equals(otherName);
+        return role.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.userRole;
+        return this.role;
     }
 }

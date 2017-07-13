@@ -27,6 +27,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
             .getLogger(BookingDaoImpl.class);
 
     private final SessionFactory sessionFactory;
+    private static final String BOOKING_NOT_FOUND = "Booking Not Found! ";
 
     @Autowired
     protected BookingDaoImpl(SessionFactory sessionFactory) {
@@ -47,7 +48,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         try {
             return (Booking) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Booking Not Found! ");
+            logger.info(BOOKING_NOT_FOUND);
             return null;
         }
     }
@@ -69,7 +70,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         try {
             return (Booking) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Booking Not Found! ");
+            logger.info(BOOKING_NOT_FOUND);
             return null;
         }
     }
@@ -91,7 +92,7 @@ public class BookingDaoImpl extends AbstractHibernateDAO<Booking> implements Boo
         try {
             return (Booking) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Booking Not Found! ");
+            logger.info(BOOKING_NOT_FOUND);
             return null;
         }
     }

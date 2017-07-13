@@ -8,21 +8,22 @@ public enum EconomyClass {
     PREMIUM("PREMIUM"),
     BUSINESS("BUSINESS");
 
-    private final String economyClass;
+    private final String economy;
 
     EconomyClass(String economyClass) {
-        this.economyClass = economyClass;
+        this.economy = economyClass;
     }
 
     public String getValue() {
-        return economyClass;
+        return economy;
     }
 
     public boolean equalsName(String otherName) {
-        return economyClass.equals(otherName);
+        return economy.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.economyClass;
+        return this.economy;
     }
 }

@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.rentacar.util.ModelAttributeConstants.*;
+import static com.rentacar.util.PageActionsConstants.*;
 import static com.rentacar.util.PageNavigationConstants.*;
 
 /**
@@ -54,77 +56,76 @@ public class PersonController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
     }
 
-    @ModelAttribute("person")
+    @ModelAttribute(PERSON_MODEL_ATTRIBUTE)
     public Person createEmployeeModel() {
         return new Person();
     }
 
-    @ModelAttribute("car")
+    @ModelAttribute(CAR_MODEL_ATTRIBUTE)
     public Car createCarModel() {
         return new Car();
     }
 
-    @ModelAttribute("filter")
+    @ModelAttribute(FILTER_MODEL_ATTRIBUTE)
     public CarFilter createFilterModel() {
         return new CarFilter();
     }
 
-    @ModelAttribute("admin")
+    @ModelAttribute(ADMIN_MODEL_ATTRIBUTE)
     public Login createLoginModelForAdmin() {
         return new Login();
     }
 
-    @ModelAttribute("login")
+    @ModelAttribute(LOGIN_MODEL_ATTRIBUTE)
     public Login createLoginModelForUser() {
-        // ModelAttribute value should be same as used in the empSave.jsp
         return new Login();
     }
 
-    @RequestMapping(value = {"/login", "/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {USER_PAGE_LOGIN1_ACTION, USER_PAGE_LOGIN2_ACTION}, method = RequestMethod.GET)
     public String getLoginFormPage() {
         return USER_PAGE_LOGIN;
     }
 
-    @RequestMapping(value = "/login.do", method = RequestMethod.POST)
-    public String getLoginFormAction(@ModelAttribute("login") Login login, BindingResult bindingResult, Model model, HttpSession session) {
+    @RequestMapping(value = USER_PAGE_LOGIN_ACTION_ACTION, method = RequestMethod.POST)
+    public String getLoginFormAction(@ModelAttribute(LOGIN_MODEL_ATTRIBUTE) Login login, BindingResult bindingResult, Model model, HttpSession session) {
         loginUserValidator.validate(login, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return USER_PAGE_LOGIN;
         }
         Person person = personService.logIn(login);
-        session.setAttribute("user", person);
+        session.setAttribute(USER_MODEL_ATTRIBUTE, person);
         List<Car> cars = carService.showAllAvailableCars();
-        model.addAttribute("cars", cars);
+        model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         return USER_PAGE_AVAILABLE_CARS;
     }
 
-    @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
+    @RequestMapping(value = ADMIN_PAGE_LOGIN_VIEW_ACTION, method = RequestMethod.GET)
     public String getLoginAdminFormPage() {
         return ADMIN_PAGE_LOGIN;
     }
 
-    @RequestMapping(value = "/adminLogin.do", method = RequestMethod.POST)
-    public String getLoginAdminFormAction(@ModelAttribute("admin") Login login, BindingResult bindingResult, Model model, HttpSession session) {
+    @RequestMapping(value = ADMIN_PAGE_LOGIN_ACTION_ACTION, method = RequestMethod.POST)
+    public String getLoginAdminFormAction(@ModelAttribute(ADMIN_MODEL_ATTRIBUTE) Login login, BindingResult bindingResult, Model model, HttpSession session) {
         loginAdminValidator.validate(login, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return ADMIN_PAGE_LOGIN;
         }
         Person person = personService.adminLogIn(login);
-        session.setAttribute("user", person);
+        session.setAttribute(USER_MODEL_ATTRIBUTE, person);
         List<Car> cars = carService.showAllCars();
-        model.addAttribute("cars", cars);
+        model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         return ADMIN_PAGE_HOME;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = USER_PAGE_REGISTER_VIEW_ACTION, method = RequestMethod.GET)
     public String getRegistrationFormPage() {
         return USER_PAGE_REGISTER;
     }
 
-    @RequestMapping(value = "/register.do", method = RequestMethod.POST)
-    public String getRegistrationFormAction(@ModelAttribute("person") Person person, BindingResult bindingResult) {
+    @RequestMapping(value = USER_PAGE_REGISTER_ACTION_ACTION, method = RequestMethod.POST)
+    public String getRegistrationFormAction(@ModelAttribute(PERSON_MODEL_ATTRIBUTE) Person person, BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()) {

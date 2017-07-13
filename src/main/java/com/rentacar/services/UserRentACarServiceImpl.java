@@ -160,7 +160,8 @@ public class UserRentACarServiceImpl implements UserRentACarService {
                 return 0.5 * car.getCarPrice();
             case BUSINESS:
                 return 0.7 * car.getCarPrice();
+            default:
+                return 0;
         }
-        return 0;
     }
 }

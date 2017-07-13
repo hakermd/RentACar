@@ -12,21 +12,23 @@ public enum CarType {
     CROSSOVER("CROSSOVER"),
     MINIVAN("MINIVAN"),
     SUV("SUV");
-    private final String carType;
+    private final String type;
 
     CarType(String carType) {
-        this.carType = carType;
+        this.type = carType;
     }
 
     public String getValue() {
-        return carType;
+        return type;
     }
 
     public boolean equalsName(String otherName) {
-        return carType.equals(otherName);
+        return type.equals(otherName);
     }
+
+    @Override
     public String toString() {
-        return this.carType;
+        return this.type;
     }
 }
 

@@ -16,6 +16,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import static com.rentacar.util.PersonModelConstants.*;
+
 /**
  * Created by Andrei.Plesca
  */
@@ -25,6 +27,7 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
     private static final Logger logger = LoggerFactory
             .getLogger(PersonDaoImpl.class);
 
+    private static final String REGISTRATION_NOT_FOUND = "Registration Not Found! ";
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -36,9 +39,9 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
     @Override
     public Person logIn(String email, String password) {
         try {
-            return login(email, password, UserRole.USER);
+            return doLogin(email, password, UserRole.USER);
         } catch (NoResultException e) {
-            logger.info("Registration Not Found! ");
+            logger.info(REGISTRATION_NOT_FOUND);
             return null;
         }
     }
@@ -46,9 +49,9 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
     @Override
     public Person adminLogIn(String email, String password) {
         try {
-            return login(email, password, UserRole.ADMIN);
+            return doLogin(email, password, UserRole.ADMIN);
         } catch (NoResultException e) {
-            logger.info("Registration Not Found! ");
+            logger.info(REGISTRATION_NOT_FOUND);
             return null;
         }
     }
@@ -66,28 +69,28 @@ public class PersonDaoImpl extends AbstractHibernateDAO<Person> implements Perso
         try {
             return (Person) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Registration Not Found! ");
+            logger.info(REGISTRATION_NOT_FOUND);
             return null;
         }
     }
 
-    private Person login(String email, String password, UserRole userRole) {
+    private Person doLogin(String email, String password, UserRole userRole) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         // Create CriteriaQuery
         CriteriaQuery<Object> criteria = builder.createQuery();
         Root<Person> personRoot = criteria.from(Person.class);
         Predicate carRestriction = builder.and(
-                builder.equal(personRoot.get("email"), email),
-                builder.equal(personRoot.get("userPassword"), password),
-                builder.equal(personRoot.get("userRole"), userRole)
+                builder.equal(personRoot.get(PERSON_EMAIL), email),
+                builder.equal(personRoot.get(PERSON_USER_PSW), password),
+                builder.equal(personRoot.get(PERSON_ROLE), userRole)
         );
         criteria.select(personRoot).where(builder.and(carRestriction));
         TypedQuery query = session.createQuery(criteria);
         try {
             return (Person) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Registration Not Found! ");
+            logger.info(REGISTRATION_NOT_FOUND);
             return null;
         }
     }

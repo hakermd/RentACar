@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.rentacar.util.PageActionsConstants.*;
+import static com.rentacar.util.PageNavigationConstants.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -64,66 +66,66 @@ public class RentControllerTest {
     public void testGetAvailableCarsPage() throws Exception {
         List<Car> carList = Arrays.asList(new Car());
         when(carService.showAllAvailableCars()).thenReturn(carList);
-        mockMvc.perform(get("/availableCars"))
+        mockMvc.perform(get(USER_PAGE_AVAILABLE_CARS_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("availableCars"));
+                .andExpect(view().name(USER_PAGE_AVAILABLE_CARS));
     }
 
     @Test
     public void testBookCarAction() throws Exception {
-        HashMap<String, Object> sessionattr = new HashMap<String, Object>();
-        sessionattr.put("user", TestDataUtil.getMockPerson());
+        HashMap<String, Object> sessionAttr = new HashMap<String, Object>();
+        sessionAttr.put("user", TestDataUtil.getMockPerson());
         List<Car> carList = Arrays.asList(new Car());
         when(carService.showAllAvailableCars()).thenReturn(carList);
         when(userRentACarService.bookACar(car, person)).thenReturn(any());
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(post("/bookCar.do").sessionAttrs(sessionattr).param("action", "BOOK").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(USER_PAGE_BOOK_CAR_ACTION_ACTION).sessionAttrs(sessionAttr).param("book", "book").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("availableCars"));
+                .andExpect(view().name(USER_PAGE_AVAILABLE_CARS));
     }
 
     @Test
     public void testRentCarAction() throws Exception {
-        HashMap<String, Object> sessionattr = new HashMap<String, Object>();
-        sessionattr.put("user", TestDataUtil.getMockPerson());
+        HashMap<String, Object> sessionAttr = new HashMap<String, Object>();
+        sessionAttr.put("user", TestDataUtil.getMockPerson());
         List<Car> carList = Arrays.asList(new Car());
         when(carService.showAllAvailableCars()).thenReturn(carList);
         doNothing().when(userRentACarService).rentACar(car, person);
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(post("/rentCar.do").sessionAttrs(sessionattr).param("action", "RENT").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(USER_PAGE_RENT_CAR_ACTION_ACTION).sessionAttrs(sessionAttr).param("rent", "rent").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("availableCars"));
+                .andExpect(view().name(USER_PAGE_AVAILABLE_CARS));
     }
 
     @Test
     public void testViewCarActionView() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(get("/carListAction").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(get(USER_PAGE_CAR_LIST_ACTION_ACTION).param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("viewCar"));
+                .andExpect(view().name(USER_PAGE_VIEW_CAR));
     }
 
     @Test
     public void testViewCarActionRent() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(get("/carListAction").param("action", "RENT").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(get(USER_PAGE_CAR_LIST_ACTION_ACTION).param("rent", "rent").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("rentCar"));
+                .andExpect(view().name(USER_PAGE_RENT_CAR));
     }
 
     @Test
     public void testViewCarActionBook() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(get("/carListAction").param("action", "BOOK").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(get(USER_PAGE_CAR_LIST_ACTION_ACTION).param("book", "book").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("bookCar"));
+                .andExpect(view().name(USER_PAGE_BOOK_CAR));
     }
 
     @Test
-    public void testViewCarActionCancel() throws Exception {
+    public void testCancelAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(get("/carListAction").param("action", "CANCEL").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(USER_PAGE_RENT_CAR_ACTION_ACTION).param("cancel", "cancel").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("availableCars"));
+                .andExpect(view().name(USER_PAGE_AVAILABLE_CARS));
     }
 }

@@ -7,21 +7,22 @@ public enum Gender {
     M("M"),
     W("W");
 
-    private final String gender;
+    private final String gen;
 
     Gender(String gender) {
-        this.gender = gender;
+        this.gen = gender;
     }
 
     public String getValue() {
-        return gender;
+        return gen;
     }
 
     public boolean equalsName(String otherName) {
-        return gender.equals(otherName);
+        return gen.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.gender;
+        return this.gen;
     }
 }

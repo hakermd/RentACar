@@ -5,25 +5,22 @@ import com.rentacar.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static com.rentacar.util.PersonModelConstants.PERSON_USER_PSW;
 
 /**
  * Created by Andrei.Plesca
  */
 @Component
 public class LoginAdminValidator implements Validator {
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
     private final PersonService personService;
+    private final LoginValidator loginValidator;
 
     @Autowired
-    public LoginAdminValidator(PersonService personService) {
+    public LoginAdminValidator(PersonService personService, LoginValidator loginValidator) {
         this.personService = personService;
+        this.loginValidator = loginValidator;
     }
 
     @Override
@@ -34,20 +31,9 @@ public class LoginAdminValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Login login = (Login) o;
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
-        if (login.getEmail() != null && !login.getEmail().isEmpty()) {
-            Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-            Matcher matcher = pattern.matcher(login.getEmail());
-            if (!matcher.matches()) {
-                errors.rejectValue("email", "Incorrect.loginAdminForm.email");
-            }
-        }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "NotEmpty");
-        if (login.getUserPassword().length() < 5 || login.getUserPassword().length() > 20) {
-            errors.rejectValue("userPassword", "Size.loginAdminForm.password");
-        } else if (personService.adminLogIn(login) == null) {
-            errors.rejectValue("userPassword", "Error.loginAdminForm.login");
+        loginValidator.validate(o, errors);
+        if (personService.adminLogIn(login) == null) {
+            errors.rejectValue(PERSON_USER_PSW, "Error.loginAdminForm.login");
         }
     }
 }

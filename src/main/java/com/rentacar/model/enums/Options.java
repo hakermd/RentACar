@@ -8,21 +8,22 @@ public enum Options {
     PREMIUM("PREMIUM"),
     FULL("FULL");
 
-    private final String options;
+    private final String opt;
 
     Options(String options) {
-        this.options = options;
+        this.opt = options;
     }
 
     public String getValue() {
-        return options;
+        return opt;
     }
 
     public boolean equalsName(String otherName) {
-        return options.equals(otherName);
+        return opt.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.options;
+        return this.opt;
     }
 }

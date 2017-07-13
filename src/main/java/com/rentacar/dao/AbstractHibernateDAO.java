@@ -22,11 +22,11 @@ public abstract class AbstractHibernateDAO<T extends Serializable> implements DA
 
     @Override
     public T findOne(final long id) {
-        return (T) sessionFactory.getCurrentSession().get(clazz, id);
+        return sessionFactory.getCurrentSession().get(clazz, id);
     }
 
     @Override
-    public List<T> findAll() {
+    public List findAll() {
         return sessionFactory.getCurrentSession().createQuery("from " + clazz.getName()).getResultList();
     }
 

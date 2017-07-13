@@ -27,6 +27,9 @@ import org.springframework.web.servlet.View;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.rentacar.util.PageActionsConstants.*;
+import static com.rentacar.util.PageNavigationConstants.*;
+import static com.rentacar.util.PersonModelConstants.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -69,9 +72,9 @@ public class PersonControllerTest {
 
     @Test
     public void testGetLoginFormPage() throws Exception {
-        mockMvc.perform(get("/login"))
+        mockMvc.perform(get(USER_PAGE_LOGIN1_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name(USER_PAGE_LOGIN));
     }
 
     @Test
@@ -89,21 +92,21 @@ public class PersonControllerTest {
         List<Car> carList = Arrays.asList(new Car());
         when(carService.showAllAvailableCars()).thenReturn(carList);
 
-        mockMvc.perform(post("/login.do")
+        mockMvc.perform(post(USER_PAGE_LOGIN_ACTION_ACTION)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
-                        "email", login.getEmail(),
-                        "userPassword", login.getUserPassword()
+                        PERSON_EMAIL, login.getEmail(),
+                        PERSON_USER_PSW, login.getUserPassword()
                 )))
                 .andExpect(status().isOk())
-                .andExpect(view().name("availableCars"));
+                .andExpect(view().name(USER_PAGE_AVAILABLE_CARS));
     }
 
     @Test
     public void testGetLoginAdminFormPage() throws Exception {
-        mockMvc.perform(get("/admin"))
+        mockMvc.perform(get(ADMIN_PAGE_LOGIN_VIEW_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminLogin"));
+                .andExpect(view().name(ADMIN_PAGE_LOGIN));
     }
 
     @Test
@@ -121,20 +124,20 @@ public class PersonControllerTest {
         List<Car> carList = Arrays.asList(new Car());
         when(carService.showAllAvailableCars()).thenReturn(carList);
 
-        mockMvc.perform(post("/adminLogin.do")
+        mockMvc.perform(post(ADMIN_PAGE_LOGIN_ACTION_ACTION)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
-                        "email", login.getEmail(),
-                        "userPassword", login.getUserPassword())))
+                        PERSON_EMAIL, login.getEmail(),
+                        PERSON_USER_PSW, login.getUserPassword())))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
     public void testGetRegisterFormPage() throws Exception {
-        mockMvc.perform(get("/register"))
+        mockMvc.perform(get(USER_PAGE_REGISTER_VIEW_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(view().name(USER_PAGE_REGISTER));
     }
 
     @Test
@@ -145,21 +148,21 @@ public class PersonControllerTest {
 
         doNothing().when(personService).savePerson(person);
 
-        mockMvc.perform(post("/register.do")
+        mockMvc.perform(post(USER_PAGE_REGISTER_ACTION_ACTION)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
-                        "firstName", person.getFirstName(),
-                        "lastName", person.getLastName(),
-                        "email", person.getEmail(),
-                        "address", person.getAddress(),
-                        "userPassword", person.getUserPassword(),
-                        "checkPassword", person.getCheckPassword(),
-                        "birthDate", "1988-01-01T00:00:00.000Z",
-                        "gender", person.getGender().getValue(),
-                        "drivingLicense.licenseNumber", person.getDrivingLicense().getLicenseNumber(),
-                        "drivingLicense.obtainingDate", "2012-01-01T00:00:00.000Z",
-                        "drivingLicense.expiringDate", "2022-01-01T00:00:00.000Z")))
+                        PERSON_FIRST_NAME, person.getFirstName(),
+                        PERSON_LAST_NAME, person.getLastName(),
+                        PERSON_EMAIL, person.getEmail(),
+                        PERSON_ADDRESS, person.getAddress(),
+                        PERSON_USER_PSW, person.getUserPassword(),
+                        PERSON_CHECK_PSW, person.getCheckPassword(),
+                        PERSON_DOB, "1988-01-01T00:00:00.000Z",
+                        PERSON_GENDER, person.getGender().getValue(),
+                        PERSON_DRIVING_LICENSE_NUMBER, person.getDrivingLicense().getLicenseNumber(),
+                        PERSON_DRIVING_LICENSE_OBTAIN_DATE, "2012-01-01T00:00:00.000Z",
+                        PERSON_DRIVING_LICENSE_EXPIRE_DATE, "2022-01-01T00:00:00.000Z")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name(USER_PAGE_LOGIN));
     }
 }

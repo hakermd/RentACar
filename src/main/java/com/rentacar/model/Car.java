@@ -173,19 +173,19 @@ public class Car implements Serializable {
 
         Car car = (Car) o;
 
-        if (engineVolume != car.engineVolume) return false;
-        if (Double.compare(car.carPrice, carPrice) != 0) return false;
-        if (winCode != null ? !winCode.equals(car.winCode) : car.winCode != null) return false;
-        if (manufacturer != null ? !manufacturer.equals(car.manufacturer) : car.manufacturer != null) return false;
-        if (model != null ? !model.equals(car.model) : car.model != null) return false;
-        if (type != car.type) return false;
-        if (yearOfProduction != null ? !yearOfProduction.equals(car.yearOfProduction) : car.yearOfProduction != null)
-            return false;
-        if (registrationNumber != null ? !registrationNumber.equals(car.registrationNumber) : car.registrationNumber != null)
-            return false;
-        if (fuelType != car.fuelType) return false;
-        if (transmission != car.transmission) return false;
-        return economyClass == car.economyClass && options == car.options && availability == car.availability;
+        return engineVolume == car.engineVolume
+                && Double.compare(car.carPrice, carPrice) == 0
+                && (winCode != null ? winCode.equals(car.winCode) : car.winCode == null)
+                && (manufacturer != null ? manufacturer.equals(car.manufacturer) : car.manufacturer == null)
+                && (model != null ? model.equals(car.model) : car.model == null)
+                && type == car.type
+                && (yearOfProduction != null ? yearOfProduction.equals(car.yearOfProduction) : car.yearOfProduction == null)
+                && (registrationNumber != null ? registrationNumber.equals(car.registrationNumber) : car.registrationNumber == null)
+                && fuelType == car.fuelType
+                && transmission == car.transmission
+                && economyClass == car.economyClass
+                && options == car.options
+                && availability == car.availability;
     }
 
     @Override

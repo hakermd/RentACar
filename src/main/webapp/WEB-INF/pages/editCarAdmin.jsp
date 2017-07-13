@@ -169,9 +169,9 @@
                     <hr>
                     <div class="carDetailsViewDescription">
                         <input class="button button1" type="submit"
-                               name="action"
+                               name="edit"
                                value="EDIT"/>
-                        <input class=" admbtn button button3" type="submit" name="action"
+                        <input class=" admbtn button button3" type="submit" name="cancel"
                                value="CANCEL"/>
                     </div>
                 </div>

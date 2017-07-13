@@ -36,8 +36,7 @@
                         <c:otherwise>
                             <table class="centralContentTable">
                                 <c:forEach items="${cars}" var="car">
-                                    <form:form name="${car.winCode}" method="GET"
-                                               action="carListAdminAction">
+                                    <form:form name="${car.winCode}" method="GET" action="viewCar">
                                         <tr class="carRow" id="${car.winCode}">
                                             <td class="carItemSpecial"><img class="carIcon"
                                                                             src="resources/img/${car.carPhoto}"
@@ -198,6 +197,7 @@
                             </tr>
                             <tr>
                                 <td class="carItemSpecial"><input class="button button1" type="submit"
+                                                                  action="filterAdminCars"
                                                                   value="FILTER"/>
                                 </td>
                             </tr>

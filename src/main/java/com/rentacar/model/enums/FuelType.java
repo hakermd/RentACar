@@ -6,23 +6,24 @@ package com.rentacar.model.enums;
 public enum FuelType {
     BENZINE("BENZINE"),
     DIESEL("DIESEL"),
-    AUTOGAS("AUTOGAS");
+    GAS("GAS");
 
-    private final String fuelType;
+    private final String fuel;
 
     FuelType(String fuelType) {
-        this.fuelType = fuelType;
+        this.fuel = fuelType;
     }
 
     public String getValue() {
-        return fuelType;
+        return fuel;
     }
 
     public boolean equalsName(String otherName) {
-        return fuelType.equals(otherName);
+        return fuel.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.fuelType;
+        return this.fuel;
     }
 }

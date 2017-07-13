@@ -8,21 +8,22 @@ public enum CarAvailability {
     RENTED("RENTED"),
     BROKEN("BROKEN"),
     BOOKED("BOOKED");
-    private final String carAvailability;
+    private final String availability;
 
     CarAvailability(String carAvailability) {
-        this.carAvailability = carAvailability;
+        this.availability = carAvailability;
     }
 
     public String getValue() {
-        return carAvailability;
+        return availability;
     }
 
     public boolean equalsName(String otherName) {
-        return carAvailability.equals(otherName);
+        return availability.equals(otherName);
     }
 
+    @Override
     public String toString() {
-        return this.carAvailability;
+        return this.availability;
     }
 }

@@ -25,6 +25,7 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
     private static final Logger logger = LoggerFactory
             .getLogger(RentDaoImpl.class);
 
+    private static final String RENT_NOT_FOUND = "Rent Not Found! ";
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -51,7 +52,7 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
         try {
             return (Rent) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Rent Not Found! ");
+            logger.info(RENT_NOT_FOUND);
             return null;
         }
     }
@@ -73,7 +74,7 @@ public class RentDaoImpl extends AbstractHibernateDAO<Rent> implements RentDao {
         try {
             return (Rent) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Rent Not Found! ");
+            logger.info(RENT_NOT_FOUND);
             return null;
         }
     }

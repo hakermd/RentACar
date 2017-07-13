@@ -17,7 +17,7 @@
             <h1>RENT A CAR</h1>
         </div>
         <div>
-            <form:form name="${car.winCode}" method="GET" action="carListAdminAction">
+            <form:form name="${car.winCode}" method="POST" commandName="car" action="actionForm">
                 <div id="viewCarDetails">
                     <div class="carDetailsViewDescription"><h2>${car.manufacturer} ${car.model} ${car.type}</h2></div>
                     <hr>
@@ -53,13 +53,15 @@
                         <hr>
                         <c:choose>
                             <c:when test="${car.availability == 'RENTED'}">
-                                <div><input class="admbtn button button4" type="submit" name="action"
+                                <div><input class="admbtn button button4" type="submit" name="cancelRent"
+                                            action="cancelRent"
                                             value="CANCEL RENT"/></div>
 
                             </c:when>
                             <c:when test="${car.availability == 'BOOKED'}">
                                 <div>
-                                    <input class="admbtn button button4" type="submit" name="action"
+                                    <input class="admbtn button button4" type="submit" name="cancelBooking"
+                                           action="cancelBooking"
                                            value="CANCEL BOOK"/>
                                 </div>
                             </c:when>
@@ -67,24 +69,25 @@
                         <c:choose>
                             <c:when test="${car.availability == 'BROKEN'}">
                                 <div>
-                                    <input class="admbtn button button4" type="submit" name="action"
+                                    <input class="admbtn button button4" type="submit" name="unSuspend"
+                                           action="unSuspend"
                                            value="UNSUSPEND"/>
                                 </div>
                             </c:when>
                             <c:when test="${car.availability ne 'BROKEN'}">
                                 <div>
-                                    <input class="admbtn button button4" type="submit" name="action"
+                                    <input class="admbtn button button4" type="submit" name="suspend" action="suspend"
                                            value="SUSPEND"/>
                                 </div>
                             </c:when>
                         </c:choose>
 
                         <div>
-                            <input class="admbtn button button2" type="submit" name="action"
+                            <input class="admbtn button button2" type="submit" name="editCar" action="editCar"
                                    value="EDIT CAR"/>
                         </div>
                         <div>
-                            <input class=" admbtn button button3" type="submit" name="action"
+                            <input class=" admbtn button button3" type="submit" name="cancel" action="cancel"
                                    value="CANCEL"/>
                         </div>
 

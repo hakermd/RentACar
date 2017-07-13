@@ -39,7 +39,7 @@ public class Person implements Serializable {
     private Gender gender;
     @Column(name = "userRole", nullable = false)
     @Enumerated(EnumType.STRING)
-    private final UserRole userRole = UserRole.USER;
+    private UserRole userRole = UserRole.USER;
     @Embedded
     private DrivingLicense drivingLicense;
 

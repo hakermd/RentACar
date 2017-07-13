@@ -5,7 +5,7 @@ import com.rentacar.model.CarFilter;
 import com.rentacar.services.AdminRentACarService;
 import com.rentacar.services.CarService;
 import com.rentacar.testutils.TestDataUtil;
-import com.rentacar.validator.CarValidator;
+import com.rentacar.validator.AddCarValidator;
 import com.rentacar.validator.EditCarValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +25,9 @@ import org.springframework.web.servlet.View;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.rentacar.util.CarModelConstants.*;
+import static com.rentacar.util.PageActionsConstants.*;
+import static com.rentacar.util.PageNavigationConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +54,7 @@ public class AdminControllerTest {
     @Mock
     private EditCarValidator editCarValidator;
     @Mock
-    private CarValidator carValidator;
+    private AddCarValidator addCarValidator;
     @Mock
     private View mockView;
     private MockMvc mockMvc;
@@ -68,9 +71,9 @@ public class AdminControllerTest {
 
     @Test
     public void testGetAdminHomePage() throws Exception {
-        mockMvc.perform(get("/adminHome"))
+        mockMvc.perform(get(ADMIN_PAGE_HOME_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
@@ -85,52 +88,52 @@ public class AdminControllerTest {
             assertEquals(carFilter.getYearOfProduction(), c.getYearOfProduction());
             assertEquals(carFilter.getCarAvailability(), c.getAvailability());
         }
-        mockMvc.perform(post("/filterAdminCars"))
+        mockMvc.perform(post(ADMIN_PAGE_FILTER_CARS_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
     public void testGetAddCarForm() throws Exception {
-        mockMvc.perform(get("/addCarAdmin"))
+        mockMvc.perform(get(ADMIN_PAGE_ADD_CAR_VIEW_ACTION))
                 .andExpect(status().isOk())
-                .andExpect(view().name("addCarAdmin"));
+                .andExpect(view().name(ADMIN_PAGE_ADD_CAR));
     }
 
     @Test
     public void testGetAddCarFormAction() throws Exception {
         BindingResult bindingResult = mock(BindingResult.class);
-        doNothing().when(carValidator).validate(car, bindingResult);
+        doNothing().when(addCarValidator).validate(car, bindingResult);
         when(bindingResult.hasErrors()).thenReturn(true);
 
         doNothing().when(adminRentACarService).addACar(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
 
-        mockMvc.perform(post("/addCar.do")
+        mockMvc.perform(post(ADMIN_PAGE_ADD_CAR_ACTION).param("addCar", "addCar")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
-                        "winCode", car.getWinCode(),
-                        "manufacturer", car.getManufacturer(),
-                        "model", car.getModel(),
-                        "type", car.getType().getValue(),
-                        "yearOfProduction", car.getYearOfProduction(),
-                        "registrationNumber", car.getRegistrationNumber(),
-                        "engineVolume", "" + car.getEngineVolume(),
-                        "fuelType", car.getFuelType().getValue(),
-                        "transmission", car.getTransmission().getValue(),
-                        "economyClass", car.getEconomyClass().getValue(),
-                        "options", car.getOptions().getValue(),
-                        "carPrice", "" + car.getCarPrice())))
+                        CAR_WIN_CODE, car.getWinCode(),
+                        CAR_MANUFACTURER, car.getManufacturer(),
+                        CAR_MODEL, car.getModel(),
+                        CAR_TYPE, car.getType().getValue(),
+                        CAR_YEAR, car.getYearOfProduction(),
+                        CAR_REGISTRATION_NUMBER, car.getRegistrationNumber(),
+                        CAR_ENGINE_VOLUME, "" + car.getEngineVolume(),
+                        CAR_FUEL_TYPE, car.getFuelType().getValue(),
+                        CAR_TRANSMISSION, car.getTransmission().getValue(),
+                        CAR_ECONOMY_CLASS, car.getEconomyClass().getValue(),
+                        CAR_OPTIONS, car.getOptions().getValue(),
+                        CAR_PRICE, "" + car.getCarPrice())))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
     public void testGetEditCarForm() throws Exception {
-        mockMvc.perform(get("/editCar"))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("editCar", "editCar"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editCarAdmin"));
+                .andExpect(view().name(ADMIN_PAGE_EDIT_CAR));
     }
 
     @Test
@@ -143,90 +146,90 @@ public class AdminControllerTest {
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
 
-        mockMvc.perform(post("/editCar.do")
+        mockMvc.perform(post(ADMIN_PAGE_EDIT_CAR_ACTION).param("edit", "edit")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(TestDataUtil.buildUrlEncodedFormEntity(
-                        "winCode", car.getWinCode(),
-                        "manufacturer", car.getManufacturer(),
-                        "model", "TESTT",
-                        "type", car.getType().getValue(),
-                        "yearOfProduction", car.getYearOfProduction(),
-                        "registrationNumber", car.getRegistrationNumber(),
-                        "engineVolume", "" + car.getEngineVolume(),
-                        "fuelType", car.getFuelType().getValue(),
-                        "transmission", car.getTransmission().getValue(),
-                        "economyClass", car.getEconomyClass().getValue(),
-                        "options", car.getOptions().getValue(),
-                        "carPrice", "120")))
+                        CAR_WIN_CODE, car.getWinCode(),
+                        CAR_MANUFACTURER, car.getManufacturer(),
+                        CAR_MODEL, "TESTT",
+                        CAR_TYPE, car.getType().getValue(),
+                        CAR_YEAR, car.getYearOfProduction(),
+                        CAR_REGISTRATION_NUMBER, car.getRegistrationNumber(),
+                        CAR_ENGINE_VOLUME, "" + car.getEngineVolume(),
+                        CAR_FUEL_TYPE, car.getFuelType().getValue(),
+                        CAR_TRANSMISSION, car.getTransmission().getValue(),
+                        CAR_ECONOMY_CLASS, car.getEconomyClass().getValue(),
+                        CAR_OPTIONS, car.getOptions().getValue(),
+                        CAR_PRICE, "" + 120.0)))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
     public void testViewCarActionView() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(post("/carListAdminAction").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(get(ADMIN_PAGE_VIEW_CAR_VIEW_ACTION).param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("viewCarAdmin"));
+                .andExpect(view().name(ADMIN_PAGE_VIEW_CAR));
     }
 
     @Test
-    public void testViewCarActionCancelBook() throws Exception {
+    public void testCancelBookingAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
         doNothing().when(adminRentACarService).cancelBookingByCar(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
-        mockMvc.perform(post("/carListAdminAction").param("action", "CANCEL BOOK").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("cancelBooking", "cancelBooking").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
-    public void testViewCarActionCancelRent() throws Exception {
+    public void testCancelRentAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(post("/carListAdminAction").param("action", "CANCEL RENT").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("cancelRent", "cancelRent").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
-    public void testViewCarActionEditCar() throws Exception {
+    public void testEditCarAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        mockMvc.perform(post("/carListAdminAction").param("action", "EDIT CAR").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("editCar", "editCar").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editCarAdmin"));
+                .andExpect(view().name(ADMIN_PAGE_EDIT_CAR));
     }
 
     @Test
-    public void testViewCarActionUnSuspend() throws Exception {
+    public void testUnSuspendAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
         doNothing().when(adminRentACarService).unsuspendACar(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
-        mockMvc.perform(post("/carListAdminAction").param("action", "UNSUSPEND").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("unSuspend", "unSuspend").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
-    public void testViewCarActionSuspend() throws Exception {
+    public void testSuspendAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
         doNothing().when(adminRentACarService).suspendACar(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
-        mockMvc.perform(post("/carListAdminAction").param("action", "SUSPEND").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("suspend", "suspend").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
     @Test
-    public void testViewCarActionCancel() throws Exception {
+    public void testCancelAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
-        mockMvc.perform(post("/carListAdminAction").param("action", "CANCEL").param("carWinCode", car.getWinCode()))
+        mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("cancel", "cancel").param("carWinCode", car.getWinCode()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("adminHome"));
+                .andExpect(view().name(ADMIN_PAGE_HOME));
     }
 
 }

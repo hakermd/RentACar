@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
     private static final Logger logger = LoggerFactory
             .getLogger(Car.class);
 
+    private static final String CAR_NOT_FOUND = "Car Not Found! ";
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -49,8 +51,8 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         try {
             return (List<Car>) query.getResultList();
         } catch (NoResultException e) {
-            logger.info("Car Not Found! ");
-            return null;
+            logger.info(CAR_NOT_FOUND);
+            return new ArrayList<>();
         }
     }
 
@@ -65,7 +67,6 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         Root<Car> carRoot = criteria.from(Car.class);
         Predicate carRestriction = builder.and(
                 filter.getEconomyClass() != null ? builder.equal(carRoot.get("economyClass"), filter.getEconomyClass()) : builder.conjunction(),
-//                car.getManufacturer() != null ? builder.equal(carRoot.get("manufacturer"), car.getManufacturer()) : builder.conjunction(),
                 filter.getCarType() != null ? builder.equal(carRoot.get("type"), filter.getCarType()) : builder.conjunction(),
                 filter.getOptions() != null ? builder.equal(carRoot.get("options"), filter.getOptions()) : builder.conjunction(),
                 filter.getTransmission() != null ? builder.equal(carRoot.get("transmission"), filter.getTransmission()) : builder.conjunction(),
@@ -77,8 +78,8 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         try {
             return (List<Car>) query.getResultList();
         } catch (NoResultException e) {
-            logger.info("Cars Not Found! ");
-            return null;
+            logger.info(CAR_NOT_FOUND);
+            return new ArrayList<>();
         }
     }
 
@@ -96,7 +97,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         try {
             return (Car) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Car Not Found! ");
+            logger.info(CAR_NOT_FOUND);
             return null;
         }
     }
@@ -115,7 +116,7 @@ public class CarDaoImpl extends AbstractHibernateDAO<Car> implements CarDao {
         try {
             return (Car) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Car Not Found! ");
+            logger.info(CAR_NOT_FOUND);
             return null;
         }
     }

@@ -60,9 +60,9 @@
                             </output>
                         </h2>
                         <hr>
-                        <div><input class="button button1" type="submit" name="action"
+                        <div><input class="button button1" type="submit" name="book"
                                     value="BOOK"/>
-                            <input class="button button3" type="submit" name="action"
+                            <input class="button button3" type="submit" name="cancel"
                                    value="CANCEL"/>
                         </div>
 

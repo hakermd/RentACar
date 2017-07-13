@@ -52,11 +52,11 @@
                                         <td class="carItem">${car.engineVolume} cm3</td>
                                         <td class="carItem">${car.carPrice} $</td>
                                         <td class="carItemSpecial"><input class="button button1" type="submit"
-                                                                          name="action"
+                                                                          name="rent"
                                                                           value="RENT"/>
                                         </td>
                                         <td class="carItemSpecial"><input class="button button2" type="submit"
-                                                                          name="action"
+                                                                          name="book"
                                                                           value="BOOK"/>
                                         </td>
                                     </tr>
