@@ -1,7 +1,9 @@
 package com.rentacar.services;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.*;
-import com.rentacar.model.enums.*;
+import com.rentacar.model.enums.CarAvailability;
+import com.rentacar.model.enums.CarTransmission;
 import com.rentacar.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +22,7 @@ import static org.junit.Assert.*;
  * Created by Andrei.Plesca
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class AdminRentACarServiceTest {
     @Autowired
     private AdminRentACarService adminRentACarService;
@@ -48,14 +50,13 @@ public class AdminRentACarServiceTest {
 
     @After
     public void cleanUp() {
-        if (rent != null) {
+        if (rent != null)
             userRentACarService.deleteRent(rent);
-        }
-        if (booking != null) {
+        if (booking != null)
             userRentACarService.deleteBooking(booking);
-        }
         personService.deletePerson(person);
-        carService.deleteCar(currentCar);
+        if (currentCar != null)
+            carService.deleteCar(currentCar);
     }
 
     @Test
@@ -100,7 +101,7 @@ public class AdminRentACarServiceTest {
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
         assertEquals(currentCar.getAvailability(), CarAvailability.BROKEN);
-        adminRentACarService.unsuspendACar(car);
+        adminRentACarService.unSuspendACar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
         assertEquals(currentCar.getAvailability(), CarAvailability.AVAILABLE);
@@ -111,7 +112,7 @@ public class AdminRentACarServiceTest {
         adminRentACarService.addACar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
-        List<Car> carList = adminRentACarService.getAllCars();
+        List<Car> carList = (List<Car>) adminRentACarService.getAllCars();
         assertNotNull(carList);
         assertTrue(carList.size() >= 1);
     }
@@ -121,7 +122,7 @@ public class AdminRentACarServiceTest {
         adminRentACarService.addACar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
-        List<Car> carList = adminRentACarService.searchACar(carFilter);
+        List<Car> carList = (List<Car>) adminRentACarService.searchACar(carFilter);
         assertNotNull(carList);
         for (Car c : carList) {
             assertEquals(carFilter.getEconomyClass(), c.getEconomyClass());
@@ -149,7 +150,7 @@ public class AdminRentACarServiceTest {
         adminRentACarService.addACar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
-        List<Car> carList = adminRentACarService.searchACarByStatus(CarAvailability.AVAILABLE);
+        List<Car> carList = (List<Car>) adminRentACarService.searchACarByStatus(CarAvailability.AVAILABLE);
         assertNotNull(carList);
         for (Car c : carList) {
             assertEquals(CarAvailability.AVAILABLE, c.getAvailability());

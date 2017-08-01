@@ -1,6 +1,6 @@
 package com.rentacar.services;
 
-import com.rentacar.dao.CarDao;
+import com.rentacar.dao.CarRepository;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.model.enums.CarAvailability;
@@ -17,58 +17,54 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class CarServiceImpl implements CarService {
-    private final CarDao carDao;
-
     @Autowired
-    public CarServiceImpl(CarDao carDao) {
-        this.carDao = carDao;
-    }
+    private CarRepository carRepository;
 
     @Override
     public Car findCarById(long carId) {
-        return carDao.findOne(carId);
+        return carRepository.findOne(carId);
     }
 
     @Override
     public Car findCarByWinCode(String carWinCode) {
-        return carDao.findCarByWinCode(carWinCode);
+        return carRepository.findCarByWinCode(carWinCode);
     }
 
     @Override
     public Car findCarByRegistrationNumber(String registrationNumber) {
-        return carDao.findCarByRegistrationNumber(registrationNumber);
+        return carRepository.findCarByRegistrationNumber(registrationNumber);
     }
 
     @Override
     public List<Car> showAllAvailableCars() {
-        return carDao.searchACarByStatus(CarAvailability.AVAILABLE);
+        return carRepository.findACarByAvailability(CarAvailability.AVAILABLE);
     }
 
     @Override
     public List<Car> filterCars(CarFilter filter) {
-        return (List<Car>) carDao.searchACarByCriteria(filter);
+        return carRepository.findACarByType(filter.getCarType());
     }
 
     @Override
     public List<Car> showAllCars() {
-        return carDao.findAll();
+        return (List<Car>) carRepository.findAll();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveCar(Car car) {
-        carDao.save(car);
+        carRepository.save(car);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateCar(Car car) {
-        carDao.update(car);
+        carRepository.save(car);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteCar(Car car) {
-        carDao.delete(car);
+        carRepository.delete(car);
     }
 }

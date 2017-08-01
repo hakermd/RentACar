@@ -3,8 +3,6 @@ package com.rentacar.services;
 import com.rentacar.model.*;
 import com.rentacar.model.enums.CarAvailability;
 
-import java.util.List;
-
 /**
  * Created by Andrei.Plesca
  */
@@ -15,15 +13,15 @@ public interface AdminRentACarService {
 
     void suspendACar(Car car);
 
-    void unsuspendACar(Car car);
+    void unSuspendACar(Car car);
 
-    List<Car> getAllCars();
+    Iterable<Car> getAllCars();
 
-    List<Car> searchACar(CarFilter carFilter);
+    Iterable<Car> searchACar(CarFilter carFilter);
 
     void changeACarInfo(Car car);
 
-    List<Car> searchACarByStatus(CarAvailability carAvailability);
+    Iterable<Car> searchACarByStatus(CarAvailability carAvailability);
 
     void cancelRent(Rent rent);
 

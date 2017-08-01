@@ -1,6 +1,6 @@
 package com.rentacar.services;
 
-import com.rentacar.dao.InsuranceDao;
+import com.rentacar.dao.InsuranceRepository;
 import com.rentacar.model.Insurance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,38 +15,34 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class InsuranceServiceImpl implements InsuranceService {
-    private final InsuranceDao insuranceDao;
-
     @Autowired
-    public InsuranceServiceImpl(InsuranceDao insuranceDao) {
-        this.insuranceDao = insuranceDao;
-    }
+    private InsuranceRepository insuranceRepository;
 
     @Override
     public Insurance findInsuranceById(long id) {
-        return insuranceDao.findOne(id);
+        return insuranceRepository.findOne(id);
     }
 
     @Override
     public List<Insurance> findAllInsurances() {
-        return insuranceDao.findAll();
+        return (List<Insurance>) insuranceRepository.findAll();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveInsurance(Insurance insurance) {
-        insuranceDao.save(insurance);
+        insuranceRepository.save(insurance);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateInsurance(Insurance insurance) {
-        insuranceDao.update(insurance);
+        insuranceRepository.save(insurance);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteInsurance(Insurance insurance) {
-        insuranceDao.delete(insurance);
+        insuranceRepository.delete(insurance);
     }
 }

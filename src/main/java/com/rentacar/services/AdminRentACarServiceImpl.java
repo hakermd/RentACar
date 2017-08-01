@@ -1,8 +1,8 @@
 package com.rentacar.services;
 
-import com.rentacar.dao.BookingDao;
-import com.rentacar.dao.CarDao;
-import com.rentacar.dao.RentDao;
+import com.rentacar.dao.BookingRepository;
+import com.rentacar.dao.CarRepository;
+import com.rentacar.dao.RentRepository;
 import com.rentacar.model.*;
 import com.rentacar.model.enums.CarAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,79 +19,74 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class AdminRentACarServiceImpl implements AdminRentACarService {
-    private final CarDao carDao;
-    private final RentDao rentDao;
-    private final BookingDao bookingDao;
-
     @Autowired
-    public AdminRentACarServiceImpl(CarDao carDao, RentDao rentDao, BookingDao bookingDao) {
-        this.carDao = carDao;
-        this.rentDao = rentDao;
-        this.bookingDao = bookingDao;
-    }
-
+    private CarRepository carRepository;
+    @Autowired
+    private RentRepository rentRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addACar(Car car) {
-        carDao.save(car);
+        carRepository.save(car);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void removeACar(Car car) {
-        carDao.delete(car);
+        carRepository.delete(car);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
     public void suspendACar(Car car) {
         if (car.getAvailability().equalsName(CarAvailability.RENTED.toString())) {
-            Rent rent = rentDao.getRentByCar(car);
+            Rent rent = rentRepository.getRentByCarAndActiveTrue(car);
             Car updateCar = rent.getCar();
             updateCar.setAvailability(CarAvailability.BROKEN);
             rent.setActive(false);
-            carDao.update(updateCar);
-            rentDao.update(rent);
+            carRepository.save(updateCar);
+            rentRepository.save(rent);
         } else if (car.getAvailability().equalsName(CarAvailability.BOOKED.toString())) {
-            Booking booking = bookingDao.getBookingByCar(car);
+            Booking booking = bookingRepository.getBookingByCarAndActiveTrue(car);
             Car updateCar = booking.getCar();
             updateCar.setAvailability(CarAvailability.BROKEN);
             booking.setActive(false);
-            carDao.update(updateCar);
-            bookingDao.update(booking);
+            carRepository.save(updateCar);
+            bookingRepository.save(booking);
         } else {
             car.setAvailability(CarAvailability.BROKEN);
-            carDao.update(car);
+            carRepository.save(car);
         }
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public void unsuspendACar(Car car) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void unSuspendACar(Car car) {
         car.setAvailability(CarAvailability.AVAILABLE);
-        carDao.update(car);
+        carRepository.save(car);
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return carDao.findAll();
+    public Iterable<Car> getAllCars() {
+        return carRepository.findAll();
     }
 
     @Override
     public List<Car> searchACar(CarFilter carFilter) {
-        return (List<Car>) carDao.searchACarByCriteria(carFilter);
+        return carRepository.findACarByType(carFilter.getCarType());
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void changeACarInfo(Car car) {
-        carDao.update(car);
+        carRepository.save(car);
     }
 
     @Override
     public List<Car> searchACarByStatus(CarAvailability carAvailability) {
-        return carDao.searchACarByStatus(carAvailability);
+        return carRepository.findACarByAvailability(carAvailability);
     }
 
     @Override
@@ -99,21 +94,21 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     public void cancelRent(Rent rent) {
         Car updateCar = updateCar(rent.getCar());
         rent.setActive(false);
-        carDao.update(updateCar);
-        rentDao.update(rent);
+        carRepository.save(updateCar);
+        rentRepository.save(rent);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelRentByPerson(Person person) {
-        Rent rent = rentDao.getRentByPerson(person);
+        Rent rent = rentRepository.getRentByPersonAndActiveTrue(person);
         cancelRent(rent);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelRentByCar(Car car) {
-        Rent rent = rentDao.getRentByCar(car);
+        Rent rent = rentRepository.getRentByCarAndActiveTrue(car);
         cancelRent(rent);
     }
 
@@ -122,32 +117,32 @@ public class AdminRentACarServiceImpl implements AdminRentACarService {
     public void cancelBooking(Booking booking) {
         Car updateCar = updateCar(booking.getCar());
         booking.setActive(false);
-        carDao.update(updateCar);
-        bookingDao.update(booking);
+        carRepository.save(updateCar);
+        bookingRepository.save(booking);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByPerson(Person person) {
-        Booking booking = bookingDao.getBookingByPerson(person);
+        Booking booking = bookingRepository.getBookingByPersonAndActiveTrue(person);
         cancelBooking(booking);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelBookingByCar(Car car) {
-        Booking booking = bookingDao.getBookingByCar(car);
+        Booking booking = bookingRepository.getBookingByCarAndActiveTrue(car);
         cancelBooking(booking);
     }
 
     @Override
     public Rent getRentByCar(Car car) {
-        return rentDao.getRentByCar(car);
+        return rentRepository.getRentByCarAndActiveTrue(car);
     }
 
     @Override
     public Booking getBookingByCar(Car car) {
-        return bookingDao.getBookingByCar(car);
+        return bookingRepository.getBookingByCarAndActiveTrue(car);
     }
 
     private Car updateCar(Car car) {

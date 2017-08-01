@@ -23,5 +23,7 @@ public interface PersonService {
 
     Person findByEmail(String email);
 
+    Person findByLicenseNumber(String licenseNumber);
+
     Person findById(long id);
 }

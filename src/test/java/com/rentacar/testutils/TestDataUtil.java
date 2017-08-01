@@ -18,7 +18,6 @@ public class TestDataUtil {
 
     public static Person getMockPerson() throws ParseException {
         Person person = new Person();
-        person.setPersonId(1L);
         person.setFirstName("John");
         person.setLastName("Doe");
         person.setEmail("john.doe@test.com");
@@ -39,7 +38,6 @@ public class TestDataUtil {
 
     public static Car getMockCar() throws ParseException {
         Car car = new Car();
-        car.setCarId(1L);
         car.setWinCode("TST0000T00TT11111");
         car.setManufacturer("TEST");
         car.setModel("TST");
@@ -58,7 +56,6 @@ public class TestDataUtil {
 
     public static Insurance getMockInsurance() throws ParseException {
         Insurance insurance = new Insurance();
-        insurance.setId(1L);
         insurance.setCost(10.0);
         return insurance;
     }

@@ -20,7 +20,7 @@
 
             <div id="loginPageCentral">
                 <h1>Login Into Rent A Car Service</h1>
-                <form:form name="loginForm" method="POST" commandName="login" action="login.do">
+                <form:form name="loginForm" method="POST" modelAttribute="login" action="login.do">
                     <div class="carDetailsViewDescription"><label for="userLogin">Login :</label>
                         <form:input type="text" id="userLogin" path="email"/>
                         <form:errors type="text" id="userLogin" path="email" cssClass="error"/>

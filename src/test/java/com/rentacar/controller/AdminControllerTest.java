@@ -1,5 +1,6 @@
 package com.rentacar.controller;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
 import com.rentacar.services.AdminRentACarService;
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class AdminControllerTest {
     private Car car;
     @InjectMocks
@@ -203,7 +204,7 @@ public class AdminControllerTest {
     @Test
     public void testUnSuspendAction() throws Exception {
         when(carService.findCarByWinCode(car.getWinCode())).thenReturn(car);
-        doNothing().when(adminRentACarService).unsuspendACar(car);
+        doNothing().when(adminRentACarService).unSuspendACar(car);
         List<Car> carList = Arrays.asList(new Car());
         when(adminRentACarService.searchACar(carFilter)).thenReturn(carList);
         mockMvc.perform(post(ADMIN_PAGE_ACTION_FORM_ACTION).param("unSuspend", "unSuspend").param("carWinCode", car.getWinCode()))

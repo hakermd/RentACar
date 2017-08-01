@@ -1,5 +1,6 @@
 package com.rentacar.services;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
 import com.rentacar.testutils.TestDataUtil;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
  * Created by Andrei.Plesca
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class PersonServiceTest {
 
     @Autowired
@@ -33,13 +34,23 @@ public class PersonServiceTest {
     @Before
     public void setUp() throws ParseException {
         person = TestDataUtil.getMockPerson();
-        currentPerson = person;
-        expectedPerson = person;
     }
 
     @After
     public void cleanUp() {
-        personService.deletePerson(currentPerson);
+        if (person != null)
+            personService.deletePerson(person);
+    }
+
+    @Test
+    public void savePerson() throws Exception {
+        currentPerson = personService.findByEmail(person.getEmail());
+        assertNull(currentPerson);
+        personService.savePerson(person);
+        expectedPerson = person;
+        currentPerson = personService.findById(person.getPersonId());
+        assertNotNull(currentPerson);
+        assertEquals(expectedPerson, currentPerson);
     }
 
     @Test
@@ -51,18 +62,9 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void savePerson() throws Exception {
-        currentPerson = personService.findById(person.getPersonId());
-        assertNull(currentPerson);
-        personService.savePerson(person);
-        currentPerson = personService.findById(person.getPersonId());
-        assertNotNull(currentPerson);
-        assertEquals(expectedPerson, currentPerson);
-    }
-
-    @Test
     public void updatePerson() throws Exception {
         personService.savePerson(person);
+        currentPerson = person;
         currentPerson.setLastName("Deer");
         currentPerson.setAddress("deer street");
         currentPerson.setUserPassword("test1234");
@@ -86,6 +88,7 @@ public class PersonServiceTest {
     @Test
     public void logIn() throws Exception {
         personService.savePerson(person);
+        expectedPerson = person;
         Login login = new Login();
         login.setEmail(person.getEmail());
         login.setUserPassword(person.getUserPassword());
@@ -107,6 +110,7 @@ public class PersonServiceTest {
     @Test
     public void findByEmail() throws Exception {
         personService.savePerson(person);
+        expectedPerson = person;
         currentPerson = personService.findByEmail(person.getEmail());
         assertNotNull(currentPerson);
         assertEquals(expectedPerson, currentPerson);

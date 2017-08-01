@@ -1,5 +1,6 @@
 package com.rentacar.controller;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Car;
 import com.rentacar.model.Login;
 import com.rentacar.model.Person;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class PersonControllerTest {
     private Person person;
     @InjectMocks

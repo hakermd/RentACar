@@ -114,7 +114,7 @@ public class PersonController {
         }
         Person person = personService.adminLogIn(login);
         session.setAttribute(USER_MODEL_ATTRIBUTE, person);
-        List<Car> cars = carService.showAllCars();
+        List<Car> cars = (List<Car>) carService.showAllCars();
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         return ADMIN_PAGE_HOME;
     }

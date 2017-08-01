@@ -1,5 +1,6 @@
 package com.rentacar.services;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Car;
 import com.rentacar.model.Insurance;
 import com.rentacar.model.Person;
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
  * Created by Andrei.Plesca
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class InsuranceServiceTest {
     @Autowired
     private InsuranceService insuranceService;
@@ -35,30 +36,38 @@ public class InsuranceServiceTest {
     private Insurance expectedInsurance;
     private Car car;
     private Person person;
-    private Car currentCar;
-    private Person currentPerson;
 
     @Before
     public void setUp() throws ParseException {
         insurance = TestDataUtil.getMockInsurance();
         car = TestDataUtil.getMockCar();
         person = TestDataUtil.getMockPerson();
-        currentInsurance = insurance;
-        expectedInsurance = insurance;
 
         personService.savePerson(person);
         carService.saveCar(car);
-        currentPerson = personService.findById(person.getPersonId());
-        currentCar = carService.findCarById(car.getCarId());
-        insurance.setPerson(currentPerson);
-        insurance.setCar(currentCar);
+        person = personService.findById(person.getPersonId());
+        car = carService.findCarById(car.getCarId());
+        insurance.setPerson(person);
+        insurance.setCar(car);
     }
 
     @After
     public void cleanUp() {
-        insuranceService.deleteInsurance(currentInsurance);
-        personService.deletePerson(currentPerson);
-        carService.deleteCar(currentCar);
+        if (insurance != null)
+            insuranceService.deleteInsurance(insurance);
+        personService.deletePerson(person);
+        carService.deleteCar(car);
+    }
+
+    @Test
+    public void saveInsurance() throws Exception {
+        currentInsurance = insuranceService.findInsuranceById(insurance.getId());
+        assertNull(currentInsurance);
+        insuranceService.saveInsurance(insurance);
+        expectedInsurance = insurance;
+        currentInsurance = insuranceService.findInsuranceById(insurance.getId());
+        assertNotNull(currentInsurance);
+        assertEquals(expectedInsurance, currentInsurance);
     }
 
     @Test
@@ -70,18 +79,10 @@ public class InsuranceServiceTest {
     }
 
     @Test
-    public void saveInsurance() throws Exception {
-        currentInsurance = insuranceService.findInsuranceById(insurance.getId());
-        assertNull(currentInsurance);
+    public void updateInsurance() throws Exception {
         insuranceService.saveInsurance(insurance);
         currentInsurance = insuranceService.findInsuranceById(insurance.getId());
         assertNotNull(currentInsurance);
-        assertEquals(expectedInsurance, currentInsurance);
-    }
-
-    @Test
-    public void updateInsurance() throws Exception {
-        insuranceService.saveInsurance(insurance);
         currentInsurance.setCost(15.5);
         expectedInsurance = currentInsurance;
         insuranceService.updateInsurance(currentInsurance);
@@ -95,7 +96,7 @@ public class InsuranceServiceTest {
         insuranceService.saveInsurance(insurance);
         currentInsurance = insuranceService.findInsuranceById(insurance.getId());
         assertNotNull(currentInsurance);
-        insuranceService.deleteInsurance(insurance);
+        insuranceService.deleteInsurance(currentInsurance);
         currentInsurance = insuranceService.findInsuranceById(insurance.getId());
         assertNull(currentInsurance);
     }

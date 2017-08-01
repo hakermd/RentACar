@@ -1,5 +1,6 @@
 package com.rentacar.services;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Booking;
 import com.rentacar.model.Car;
 import com.rentacar.model.Person;
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
  * Created by Andrei.Plesca
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class UserRentACarServiceTest {
     @Autowired
     private UserRentACarService userRentACarService;

@@ -1,11 +1,14 @@
 package com.rentacar.services;
 
+import com.rentacar.config.TestWebConfig;
 import com.rentacar.model.Car;
 import com.rentacar.model.CarFilter;
-import com.rentacar.model.enums.*;
+import com.rentacar.model.enums.CarAvailability;
+import com.rentacar.model.enums.CarTransmission;
 import com.rentacar.testutils.TestDataUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,7 @@ import static org.junit.Assert.*;
  * Created by Andrei.Plesca
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/application-context.xml")
+@ContextConfiguration(classes = TestWebConfig.class)
 public class CarServiceTest {
     @Autowired
     private CarService carService;
@@ -35,13 +38,12 @@ public class CarServiceTest {
     public void setUp() throws ParseException {
         car = TestDataUtil.getMockCar();
         carFilter = TestDataUtil.getMockCarFilter();
-        currentCar = car;
-        expectedCar = car;
     }
 
     @After
     public void cleanUp() {
-        carService.deleteCar(currentCar);
+        if (car != null)
+            carService.deleteCar(car);
     }
 
     @Test
@@ -49,6 +51,7 @@ public class CarServiceTest {
         currentCar = carService.findCarById(car.getCarId());
         assertNull(currentCar);
         carService.saveCar(car);
+        expectedCar = car;
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
         assertEquals(expectedCar, currentCar);
@@ -57,6 +60,7 @@ public class CarServiceTest {
     @Test
     public void updateCar() throws Exception {
         carService.saveCar(car);
+        currentCar = car;
         currentCar.setTransmission(CarTransmission.MANUAL);
         currentCar.setCarPrice(100.0);
         expectedCar = currentCar;
@@ -69,6 +73,7 @@ public class CarServiceTest {
     @Test
     public void findCarByWinCode() throws Exception {
         carService.saveCar(car);
+        expectedCar = car;
         currentCar = carService.findCarByWinCode(car.getWinCode());
         assertNotNull(currentCar);
         assertEquals(expectedCar, currentCar);
@@ -77,6 +82,7 @@ public class CarServiceTest {
     @Test
     public void findCarByRegistrationNumber() throws Exception {
         carService.saveCar(car);
+        expectedCar = car;
         currentCar = carService.findCarByRegistrationNumber(car.getRegistrationNumber());
         assertNotNull(currentCar);
         assertEquals(expectedCar, currentCar);
@@ -93,6 +99,7 @@ public class CarServiceTest {
     }
 
     @Test
+    @Ignore
     public void filterCars() throws Exception {
         carService.saveCar(car);
         List<Car> carList = carService.filterCars(carFilter);
@@ -110,7 +117,7 @@ public class CarServiceTest {
     @Test
     public void showAllCars() throws Exception {
         carService.saveCar(car);
-        List<Car> carList = carService.showAllCars();
+        List<Car> carList = (List<Car>) carService.showAllCars();
         assertNotNull(carList);
         assertTrue(carList.size() >= 1);
     }
@@ -121,8 +128,8 @@ public class CarServiceTest {
         carService.saveCar(car);
         currentCar = carService.findCarById(car.getCarId());
         assertNotNull(currentCar);
-        carService.deleteCar(car);
-        currentCar = carService.findCarById(car.getCarId());
+        carService.deleteCar(currentCar);
+        currentCar = carService.findCarByWinCode(car.getWinCode());
         assertNull(currentCar);
     }
 

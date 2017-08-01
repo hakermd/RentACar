@@ -17,6 +17,6 @@ public class PersonModelConstants {
     public static final String PERSON_GENDER = "gender";
     public static final String PERSON_ROLE = "userRole";
     public static final String PERSON_DRIVING_LICENSE_NUMBER = "drivingLicense.licenseNumber";
-    public static final String PERSON_DRIVING_LICENSE_OBTAIN_DATE = "drivingLicense.licenseObtainingDate";
-    public static final String PERSON_DRIVING_LICENSE_EXPIRE_DATE = "drivingLicense.licenseExpiringDate";
+    public static final String PERSON_DRIVING_LICENSE_OBTAIN_DATE = "drivingLicense.obtainingDate";
+    public static final String PERSON_DRIVING_LICENSE_EXPIRE_DATE = "drivingLicense.expiringDate";
 }

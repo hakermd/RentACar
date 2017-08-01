@@ -27,8 +27,8 @@ import static com.rentacar.util.PageNavigationConstants.*;
  */
 @Controller
 public class AdminController {
-    private final AdminRentACarService adminRentACarService;
     private final CarService carService;
+    private final AdminRentACarService adminRentACarService;
     private final AddCarValidator addCarValidator;
     private final EditCarValidator editCarValidator;
 
@@ -66,7 +66,7 @@ public class AdminController {
 
     @RequestMapping(value = ADMIN_PAGE_FILTER_CARS_ACTION, method = RequestMethod.POST)
     public String filterAdminCars(@ModelAttribute(FILTER_MODEL_ATTRIBUTE) CarFilter filter, Model model) {
-        cars = adminRentACarService.searchACar(filter);
+        cars = (List<Car>) adminRentACarService.searchACar(filter);
         carFilter = filter;
         carFilter.setCarAvailability(null);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
@@ -88,7 +88,7 @@ public class AdminController {
         }
         car.setAvailability(CarAvailability.AVAILABLE);
         adminRentACarService.addACar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -108,7 +108,7 @@ public class AdminController {
             return ADMIN_PAGE_EDIT_CAR;
         }
         carService.updateCar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -116,7 +116,7 @@ public class AdminController {
 
     @RequestMapping(value = {ADMIN_PAGE_ACTION_FORM_ACTION, ADMIN_PAGE_ADD_CAR_ACTION, ADMIN_PAGE_EDIT_CAR_ACTION}, params = "cancel", method = RequestMethod.POST)
     public String cancelAction(Model model) {
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -126,7 +126,7 @@ public class AdminController {
     public String getSuspendCarAction(@ModelAttribute(CAR_WIN_CODE_MODEL_ATTRIBUTE) String carWinCode, Model model) {
         checkWinCode(carWinCode, model);
         adminRentACarService.suspendACar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -135,8 +135,8 @@ public class AdminController {
     @RequestMapping(value = ADMIN_PAGE_ACTION_FORM_ACTION, params = "unSuspend", method = RequestMethod.POST)
     public String getUnSuspendCarAction(@ModelAttribute(CAR_WIN_CODE_MODEL_ATTRIBUTE) String carWinCode, Model model) {
         checkWinCode(carWinCode, model);
-        adminRentACarService.unsuspendACar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        adminRentACarService.unSuspendACar(car);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -152,7 +152,7 @@ public class AdminController {
     public String geCancelBookingAction(@ModelAttribute(CAR_WIN_CODE_MODEL_ATTRIBUTE) String carWinCode, Model model) {
         checkWinCode(carWinCode, model);
         adminRentACarService.cancelBookingByCar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -162,7 +162,7 @@ public class AdminController {
     public String geCancelRentAction(@ModelAttribute(CAR_WIN_CODE_MODEL_ATTRIBUTE) String carWinCode, Model model) {
         checkWinCode(carWinCode, model);
         adminRentACarService.cancelRentByCar(car);
-        cars = adminRentACarService.searchACar(carFilter);
+        cars = (List<Car>) adminRentACarService.searchACar(carFilter);
         model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
         model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         return ADMIN_PAGE_HOME;
@@ -173,7 +173,7 @@ public class AdminController {
             car = carService.findCarByWinCode(winCode);
             model.addAttribute(CAR_MODEL_ATTRIBUTE, car);
         } else {
-            cars = adminRentACarService.searchACar(carFilter);
+            cars = (List<Car>) adminRentACarService.searchACar(carFilter);
             model.addAttribute(CARS_MODEL_ATTRIBUTE, cars);
             model.addAttribute(FILTER_MODEL_ATTRIBUTE, carFilter);
         }
